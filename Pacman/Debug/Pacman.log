@@ -1,1 +1,4 @@
-﻿  Pacman.vcxproj -> C:\Users\SaxorKH\Desktop\ProyectosSDL\bin\PacmanDebug.exe
+﻿  Texture.cpp
+c:\users\saxorkh\desktop\proyectossdl\pacman\texture.cpp(46): warning C4018: '>' : no coinciden signed/unsigned
+c:\users\saxorkh\desktop\proyectossdl\pacman\texture.cpp(48): warning C4018: '>' : no coinciden signed/unsigned
+  Pacman.vcxproj -> C:\Users\SaxorKH\Desktop\ProyectosSDL\bin\PacmanDebug.exe

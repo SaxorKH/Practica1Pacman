@@ -38,8 +38,8 @@ void Texture::render(SDL_Renderer * renderer, const SDL_Rect & destRect, SDL_Ren
 void Texture::renderFrame(SDL_Renderer * renderer, const SDL_Rect & destRect, int row, int col, SDL_RendererFlip flip)
 {
 	SDL_Rect srcRect;
-	srcRect.x = fw * row;
-	srcRect.y = fh * col;
+	srcRect.x = fw * col;
+	srcRect.y = fh * row;
 	srcRect.w = fw;
 	srcRect.h = fh;
 
