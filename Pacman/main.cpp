@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 		unsigned int textFrameWHel = 640 / 5;
 		unsigned int textFrameHHel = 55 / 1;
 
-		unsigned int dist = winWidth + desRect.w * 2;
+		unsigned int dist = winWidth + 100 * 2;
 
 
 		while (!exit) {
@@ -78,13 +78,13 @@ int main(int argc, char* argv[]) {
 
 			desRect.y = 500;
 
-			actualDogFrame = dogFrames * int((SDL_GetTicks() / TIME_PER_FRAME) % dogFrames);
+			actualDogFrame = int((SDL_GetTicks() / TIME_PER_FRAME) % dogFrames);
 			desRect.x = int(((SDL_GetTicks() * velocidad) / TIME_PER_FRAME) % dist) - desRect.w;
 			textures[1].renderFrame(renderer, desRect, 0, actualDogFrame);
 
 			desRect.y = 0;
 
-			actualHelFrame = helFrames * int((SDL_GetTicks() / TIME_PER_FRAME) % helFrames);
+			actualHelFrame = int((SDL_GetTicks() / TIME_PER_FRAME) % helFrames);
 			desRect.x = dist - (int(((SDL_GetTicks() * velocidad) / TIME_PER_FRAME) % dist)) - desRect.w;
 			textures[2].renderFrame(renderer, desRect, 0, actualHelFrame);
 
