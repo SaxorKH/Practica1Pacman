@@ -43,6 +43,6 @@ void Pacman::Forward() {
 		y++;
 	else if (dir == 2)
 		x--;
-	else
+	else if (dir == 3)
 		y--;
 }
