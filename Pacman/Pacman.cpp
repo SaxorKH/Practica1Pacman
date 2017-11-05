@@ -25,3 +25,24 @@ void Pacman::Render() {
 	destRect.y = y * cellSize;
 	texture->renderFrame(game->getRenderer,destRect,dir,11);
 }
+
+void Pacman::Update(int input) {
+	dirbuffer = input;
+	if (game.NextCell(dirbuffer)) {
+		dir = dirbuffer;
+		Forward();
+	}
+	else if (game.NextCell(dir))
+		Forward();
+}
+
+void Pacman::Forward() {
+	if (dir == 0)
+		x++;
+	else if (dir == 1)
+		y++;
+	else if (dir == 2)
+		x--;
+	else
+		y--;
+}
