@@ -9,23 +9,29 @@ Game::Game()
 	int winX, winY;	//	Posición	de	la	ventana
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 
-	loadMap("");
+	if (!loadMap("..\\levels\\nivelPrueba.txt")) {
+		cout << "Error cargando mapa";
+			funcional = false;
+	}	
+	else{
+		SDL_Init(SDL_INIT_EVERYTHING);
+		window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
+			winWidth, winHeight, SDL_WINDOW_SHOWN);
 
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
-		winWidth, winHeight, SDL_WINDOW_SHOWN);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		if (window == nullptr || renderer == nullptr) {
+			cout << "Error	initializing	SDL\n";
+			funcional = false;
+		}
+		else {
+			funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
+			funcional = textures[1].load(renderer, "..\\images\\wall2.png");
+			if (!funcional)
+				cout << "Error loading textures\n";
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr) {
-		cout << "Error	initializing	SDL\n";
-		funcional = false;
-	}
-	else {
-		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
-		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
-		if (!funcional)
-			cout << "Error loading textures\n";
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			pacman = Pacman(this, &textures[0]);
+		}
 	}
 }
 
@@ -34,6 +40,7 @@ Game::~Game()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	SDL_Quit();
 }
 
 void Game::run()
@@ -50,6 +57,7 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	gameMap.render();
 	pacman.render();
+	SDL_RenderPresent(renderer);	//	Muestra	la	escena
 }
 
 void Game::update()
@@ -70,7 +78,7 @@ bool Game::loadMap(const string & filename)
 	archivo >> rows;
 	archivo >> cols;
 	unsigned int cellVal;
-	gameMap = GameMap(rows, cols, &textures[1]);
+	gameMap = GameMap(rows, cols, &textures[1], this);
 
 	winWidth = cols*cellSize;
 	winHeight = rows*cellSize;
@@ -80,16 +88,16 @@ bool Game::loadMap(const string & filename)
 			archivo >> cellVal;
 			switch (cellVal) {
 			case 0:
-				gameMap.setCellType(i, j, GameMap.MapCell.Empty);
+				gameMap.setCellType(i, j, Empty);
 				break;
 			case 1:
-				gameMap.setCellType(i, j, sfsf);
+				gameMap.setCellType(i, j, Wall);
 				break;
 			case 2:
-				gameMap.setCellType(i, j, sfsf);
+				gameMap.setCellType(i, j, Food);
 				break;
 			case 3:
-				gameMap.setCellType(i, j, sfsf);
+				gameMap.setCellType(i, j, Vitamins);
 				break;
 			case 5:
 				break;
@@ -115,13 +123,47 @@ void Game::handleEvents()
 		case SDL_QUIT:
 			exit = true;
 			break;
+		case SDL_KEYDOWN:
+			unsigned int dir;
+			switch(event.key.keysym.sym) {
+			case SDLK_RIGHT:
+				dir = 0;
+				break;
+			case SDLK_DOWN:
+				dir = 1;
+				break;
+			case SDLK_LEFT:
+				dir = 2;
+				break;
+			case SDLK_UP:
+				dir = 3;
+				break;
+			}
+			pacman.bufferUpdate(dir);
 		default:
 			break;
 		}
-
-		if (event.type == SDL_QUIT)
-			exit = true;
 	}
+}
+
+const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) const
+{
+	switch (dir) {
+	case 0:
+		x++;
+		break;
+	case 1:
+		y++;
+		break;
+	case 2:
+		x--;
+		break;
+	case 3:
+		y--;
+		break;
+	}
+
+	return gameMap.getCellType(x, y) != Wall;
 }
 
 const bool Game::getFuncional() const

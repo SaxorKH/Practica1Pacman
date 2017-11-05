@@ -20,7 +20,7 @@ private:
 
 public:
 	GameMap();
-	GameMap(unsigned int rows, unsigned int cols, Texture* wall);
+	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Game * game);
 	~GameMap();
 	const MapCell getCellType(unsigned int row, unsigned int col) const;
 	void setCellType(unsigned int row, unsigned int col, MapCell type);

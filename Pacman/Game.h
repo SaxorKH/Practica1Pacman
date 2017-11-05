@@ -35,5 +35,6 @@ public:
 	void update();
 	bool loadMap(const string& filename);
 	void handleEvents();
+	const bool nextCell(unsigned int x, unsigned int y, unsigned int dir) const;
 };
 

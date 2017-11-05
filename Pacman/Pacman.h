@@ -17,14 +17,14 @@ private:
 	unsigned int energy = 0;//Remaining energy
 	Texture* texture = nullptr;
 	Game* game = nullptr;
-	void Forward();
+	void forward();
 public:
 	Pacman(Game* a, Texture* b);
 	~Pacman();
 	void setPos(unsigned int row, unsigned int col);
-	void Render();
-	void Update();
-	void Die();
-	void BufferUpdate(unsigned int input);
+	void render();
+	void update();
+	void die();
+	void bufferUpdate(unsigned int input);
 };
 

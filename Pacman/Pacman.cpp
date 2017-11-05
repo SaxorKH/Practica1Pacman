@@ -17,7 +17,7 @@ void Pacman::setPos(unsigned int row, unsigned int col) {
 	inix = x = col;
 	iniy = y = row;
 }
-void Pacman::Render() {
+void Pacman::render() {
 	SDL_Rect destRect;
 	unsigned int cellSize = game->getCellSize();
 	destRect.w = destRect.h = cellSize;
@@ -26,16 +26,20 @@ void Pacman::Render() {
 	texture->renderFrame(game->getRenderer,destRect,dir,11);
 }
 
-void Pacman::Update() {
-	if (game.NextCell(dirbuffer)) {
+void Pacman::update() {
+	if (game->nextCell(x, y, dirbuffer)) {
 		dir = dirbuffer;
-		Forward();
+		forward();
 	}
-	else if (game.NextCell(dir))
-		Forward();
+	else if (game->nextCell(x, y, dir))
+		forward();
 }
 
-void Pacman::Forward() {
+void Pacman::die()
+{
+}
+
+void Pacman::forward() {
 	if (dir == 0)
 		x++;
 	else if (dir == 1)
@@ -45,7 +49,7 @@ void Pacman::Forward() {
 	else if (dir == 3)
 		y--;
 }
-void Pacman::BufferUpdate(unsigned int input) {
+void Pacman::bufferUpdate(unsigned int input) {
 	if ((input <= 3) && (input >= 0))
 		dirbuffer = input;
 }
