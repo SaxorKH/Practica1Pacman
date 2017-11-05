@@ -15,8 +15,14 @@ private:
 public:
 	Texture();
 	~Texture();
-	bool load(SDL_Renderer* renderer, string filename, unsigned int numRows = 1, unsigned int numCols = 1);
+	
+	// Carga un archivo de imagen como textura. Añadiendo filas y columnas puede funcionar como tileset.
+	bool load(SDL_Renderer* renderer, string filename, unsigned int numRows = 1, unsigned int numCols = 1); 
+
+	// Dibuja la textura completa en el rectángulo destino dado. 
 	void render(SDL_Renderer* renderer, const SDL_Rect& destRect, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void renderFrame(SDL_Renderer* renderer, const SDL_Rect& destRect, int row, int col, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	
+	// Dibuja una celda específica de la textura según la fila y columna dada, en el rectángulo destino dado.
+	void renderFrame(SDL_Renderer* renderer, const SDL_Rect& destRect, int row, int col, SDL_RendererFlip flip = SDL_FLIP_NONE); 
 };
 
