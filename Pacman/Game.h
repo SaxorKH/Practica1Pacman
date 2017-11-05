@@ -1,7 +1,10 @@
 #pragma once
 #include "SDL.h"
-#include <vector>
-#include "GameObject.h"
+#include "Texture.h"
+#include "Pacman.h"
+#include "GameMap.h"
+#define TOTAL_TEXTURAS 2
+
 using namespace std;
 
 class Game
@@ -12,7 +15,11 @@ private:
 	unsigned int winWidth = 800;
 	unsigned int winHeight = 600;
 	bool exit = false;
-	vector<GameObject*> gameObjects;
+	Texture textures[TOTAL_TEXTURAS];
+	Pacman pacman;
+	GameMap gameMap;
+
+
 
 public:
 	Game();

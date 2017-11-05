@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	//	Variables
 	SDL_Window*	window = nullptr;
 	SDL_Renderer*	renderer = nullptr;
-	SDL_Event event;
+	
 
 	SDL_Rect desRect;
 
@@ -21,15 +21,10 @@ int main(int argc, char* argv[]) {
 	unsigned int velocidad = 20;
 
 
-	int winX, winY;	//	Posición	de	la	ventana
-	winX = winY = SDL_WINDOWPOS_CENTERED;
 
-	bool exit = false;
 
 	//	Inicialización	del	sistema,	ventana	y	renderer
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
-		winWidth, winHeight, SDL_WINDOW_SHOWN);
+	
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr)
 		cout << "Error	initializing	SDL\n";
@@ -93,10 +88,7 @@ int main(int argc, char* argv[]) {
 			SDL_RenderPresent(renderer);	//	Muestra	la	escena
 
 
-			while (SDL_PollEvent(&event) && !exit) {
-				if (event.type == SDL_QUIT)
-					exit = true;
-			}
+			
 		}
 
 
