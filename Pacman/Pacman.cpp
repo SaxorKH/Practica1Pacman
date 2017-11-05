@@ -26,8 +26,7 @@ void Pacman::Render() {
 	texture->renderFrame(game->getRenderer,destRect,dir,11);
 }
 
-void Pacman::Update(int input) {
-	dirbuffer = input;
+void Pacman::Update() {
 	if (game.NextCell(dirbuffer)) {
 		dir = dirbuffer;
 		Forward();
@@ -45,4 +44,8 @@ void Pacman::Forward() {
 		x--;
 	else if (dir == 3)
 		y--;
+}
+void Pacman::BufferUpdate(unsigned int input) {
+	if ((input <= 3) && (input >= 0))
+		dirbuffer = input;
 }

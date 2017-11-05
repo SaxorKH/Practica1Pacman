@@ -23,8 +23,8 @@ public:
 	~Pacman();
 	void setPos(unsigned int row, unsigned int col);
 	void Render();
-	void Update(int input);
+	void Update();
 	void Die();
-
+	void BufferUpdate(unsigned int input);
 };
 
