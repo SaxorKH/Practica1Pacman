@@ -19,6 +19,9 @@ void Pacman::setPos(unsigned int row, unsigned int col) {
 }
 void Pacman::Render() {
 	SDL_Rect destRect;
-	destRect.x = x; destRect.y = y;
-	texture->renderFrame(game->renderer,destRect,dir,11);
+	unsigned int cellSize = game->getCellSize();
+	destRect.w = destRect.h = cellSize;
+	destRect.x = x * cellSize;
+	destRect.y = y * cellSize;
+	texture->renderFrame(game->getRenderer,destRect,dir,11);
 }

@@ -25,6 +25,7 @@ Game::Game()
 		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
 		if (!funcional)
 			cout << "Error loading textures\n";
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	}
 }
 
@@ -46,6 +47,7 @@ void Game::run()
 
 void Game::render()
 {
+	SDL_RenderClear(renderer);
 	gameMap.render();
 	pacman.render();
 }
@@ -68,22 +70,26 @@ bool Game::loadMap(const string & filename)
 	archivo >> rows;
 	archivo >> cols;
 	unsigned int cellVal;
-	gameMap(rows, cols);
+	gameMap = GameMap(rows, cols, &textures[1]);
+
+	winWidth = cols*cellSize;
+	winHeight = rows*cellSize;
+
 	for(unsigned int i = 0; i < rows; i++)
 		for (unsigned int j = 0; j < cols; j++) {
 			archivo >> cellVal;
 			switch (cellVal) {
 			case 0:
-				gameMap.setValue(i, j, GameMap.MapCell.Empty);
+				gameMap.setCellType(i, j, GameMap.MapCell.Empty);
 				break;
 			case 1:
-				gameMap.setValue(i, j, sfsf);
+				gameMap.setCellType(i, j, sfsf);
 				break;
 			case 2:
-				gameMap.setValue(i, j, sfsf);
+				gameMap.setCellType(i, j, sfsf);
 				break;
 			case 3:
-				gameMap.setValue(i, j, sfsf);
+				gameMap.setCellType(i, j, sfsf);
 				break;
 			case 5:
 				break;
@@ -123,7 +129,7 @@ const bool Game::getFuncional() const
 	return funcional;
 }
 
-const SDL_Renderer * Game::getRenderer() const
+SDL_Renderer * Game::getRenderer() const
 {
 	return renderer;
 }

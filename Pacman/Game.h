@@ -12,9 +12,9 @@ class Game
 private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-	unsigned int winWidth = 800;
-	unsigned int winHeight = 600;
-	unsigned int cellSize;
+	unsigned int winWidth;
+	unsigned int winHeight;
+	unsigned int cellSize = 128;
 	bool exit = false;
 	bool funcional;
 	Texture textures[TOTAL_TEXTURAS];
@@ -28,7 +28,7 @@ public:
 	~Game();
 
 	const bool getFuncional() const;
-	const SDL_Renderer * getRenderer() const;
+	SDL_Renderer * getRenderer() const;
 	const unsigned int getCellSize() const;
 	void run();
 	void render();
