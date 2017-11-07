@@ -12,7 +12,7 @@ enum MapCell {
 class GameMap
 {
 private:
-	Game * game;
+	Game* game;
 	Texture* wall;
 	MapCell* map;
 	unsigned int rows;
