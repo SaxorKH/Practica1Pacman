@@ -20,6 +20,7 @@ private:
 	Game * game = nullptr;
 	void forward();
 public:
+	Pacman();
 	Pacman(Game* a, Texture* b);
 	~Pacman();
 	void setPos(unsigned int row, unsigned int col);

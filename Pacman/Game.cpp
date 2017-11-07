@@ -27,7 +27,7 @@ Game::Game()
 		}
 		else {
 			funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
-			funcional = textures[1].load(renderer, "..\\images\\wall2.png");
+			funcional = textures[1].load(renderer, "..\\images\\characters1.png");
 			if (!funcional)
 				cout << "Error loading textures\n";
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -56,14 +56,14 @@ void Game::run()
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	gameMap.render();
+	gameMap->render();
 	pacman.render();
 	SDL_RenderPresent(renderer);	//	Muestra	la	escena
 }
 
 void Game::update()
 {
-	gameMap.update();
+	gameMap->update();
 	pacman.update();
 }
 
@@ -79,7 +79,7 @@ bool Game::loadMap(const string & filename)
 	archivo >> rows;
 	archivo >> cols;
 	unsigned int cellVal;
-	gameMap = GameMap(rows, cols, &textures[1], this);
+	gameMap = new GameMap(rows, cols, &textures[1], this);
 
 	winWidth = cols*cellSize;
 	winHeight = rows*cellSize;
@@ -89,16 +89,16 @@ bool Game::loadMap(const string & filename)
 			archivo >> cellVal;
 			switch (cellVal) {
 			case 0:
-				gameMap.setCellType(i, j, Empty);
+				gameMap->setCellType(i, j, Empty);
 				break;
 			case 1:
-				gameMap.setCellType(i, j, Wall);
+				gameMap->setCellType(i, j, Wall);
 				break;
 			case 2:
-				gameMap.setCellType(i, j, Food);
+				gameMap->setCellType(i, j, Food);
 				break;
 			case 3:
-				gameMap.setCellType(i, j, Vitamins);
+				gameMap->setCellType(i, j, Vitamins);
 				break;
 			case 5:
 				break;
@@ -165,7 +165,7 @@ const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) cons
 		break;
 	}
 
-	return gameMap.getCellType(x, y) != Wall;
+	return gameMap->getCellType(x, y) != Wall;
 }
 
 const bool Game::getFuncional() const

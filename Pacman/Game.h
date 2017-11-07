@@ -19,7 +19,7 @@ private:
 	bool funcional;
 	Texture textures[TOTAL_TEXTURAS];
 	Pacman pacman;
-	GameMap gameMap;
+	GameMap* gameMap;
 
 
 

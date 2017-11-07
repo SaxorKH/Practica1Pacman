@@ -2,6 +2,10 @@
 #include "Game.h"
 
 
+Pacman::Pacman()
+{
+}
+
 Pacman::Pacman(Game* g, Texture* t)
 {
 	game = g;

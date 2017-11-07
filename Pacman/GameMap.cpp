@@ -10,6 +10,8 @@ GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Game * ga
 {
 	this->wall = wall;
 	this->game = game;
+	this->cols = cols;
+	this->rows = rows;
 	map = new MapCell[rows*cols];
 }
 

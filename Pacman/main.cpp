@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	Game game = Game();
-	if (game.getFuncional()) {
+	if (!game.getFuncional()) {
 		return 1;
 	}
 	game.run();

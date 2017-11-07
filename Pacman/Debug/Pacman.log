@@ -1,8 +1,2 @@
-﻿  main.cpp
-  Game.cpp
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(10): error C2512: 'Pacman': no hay disponible un constructor predeterminado adecuado
-  c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(9): note: vea la declaración de 'Pacman'
-  Generando código...
-  Omitiendo... (no se detectaron cambios relevantes)
-  Pacman.cpp
-  GameMap.cpp
+﻿  Game.cpp
+LINK : fatal error LNK1168: no se puede abrir C:\Users\Lluís C\Documents\GitHub\Practica1Pacman\bin\PacmanDebug.exe para escritura
