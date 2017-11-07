@@ -1,5 +1,5 @@
 #include "Pacman.h"
-
+#include "Game.h"
 
 
 Pacman::Pacman(Game* g, Texture* t)
@@ -23,7 +23,7 @@ void Pacman::render() {
 	destRect.w = destRect.h = cellSize;
 	destRect.x = x * cellSize;
 	destRect.y = y * cellSize;
-	texture->renderFrame(game->getRenderer,destRect,dir,11);
+	texture->renderFrame(game->getRenderer(), destRect, dir, 11);
 }
 
 void Pacman::update() {

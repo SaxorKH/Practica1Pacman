@@ -1,6 +1,6 @@
 #pragma once
 #include "Texture.h"
-#include "Game.h"
+class Game;
 
 enum MapCell {
 	Empty,

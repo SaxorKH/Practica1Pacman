@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture.h"
-#include "Game.h"
+
+class Game;
 
 using namespace std;
 
@@ -16,7 +17,7 @@ private:
 	unsigned int lives = 3; //Numberof remaining lifes
 	unsigned int energy = 0;//Remaining energy
 	Texture* texture = nullptr;
-	Game* game = nullptr;
+	Game * game = nullptr;
 	void forward();
 public:
 	Pacman(Game* a, Texture* b);

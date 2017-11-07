@@ -26,7 +26,6 @@ private:
 public:
 	Game();
 	~Game();
-
 	const bool getFuncional() const;
 	SDL_Renderer * getRenderer() const;
 	const unsigned int getCellSize() const;

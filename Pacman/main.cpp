@@ -8,10 +8,10 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
-	Game* game = new Game;
-	if (!game->getFuncional()) {
+	Game game = Game();
+	if (game.getFuncional()) {
 		return 1;
 	}
-	game->run();
+	game.run();
 	return 0;
 }

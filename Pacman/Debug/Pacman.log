@@ -1,40 +1,8 @@
 ﻿  main.cpp
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(22): error C2061: error de sintaxis: identificador 'Game'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(23): error C2061: error de sintaxis: identificador 'Game'
-  Pacman.cpp
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(23): error C2061: error de sintaxis: identificador 'Game'
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.h(21): error C3646: 'pacman': especificador de invalidación desconocido
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.h(21): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.cpp(26): error C3867: 'Game::getRenderer': sintaxis no estándar; utilice  '&' para crear un puntero al miembro
-  GameMap.cpp
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(22): error C2061: error de sintaxis: identificador 'Game'
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.h(22): error C3646: 'gameMap': especificador de invalidación desconocido
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.h(22): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.cpp(39): warning C4018: '<': no coinciden signed/unsigned
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.cpp(40): warning C4018: '<': no coinciden signed/unsigned
   Game.cpp
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(19): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(22): error C2061: error de sintaxis: identificador 'Game'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2143: error de sintaxis: falta ';' delante de '*'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(15): error C2238: símbolos (token) inesperados delante de ';'
-c:\users\lluís c\documents\github\practica1pacman\pacman\gamemap.h(23): error C2061: error de sintaxis: identificador 'Game'
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(33): error C2440: '<function-style-cast>': no se puede realizar la conversión de 'initializer list' a 'Pacman'
-  c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(33): note: Ningún constructor ha podido aceptar el tipo de origen o bien la resolución de sobrecarga del constructor era ambigua
-c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(81): error C2440: '<function-style-cast>': no se puede realizar la conversión de 'initializer list' a 'GameMap'
-  c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(81): note: Ningún constructor ha podido aceptar el tipo de origen o bien la resolución de sobrecarga del constructor era ambigua
+c:\users\lluís c\documents\github\practica1pacman\pacman\game.cpp(10): error C2512: 'Pacman': no hay disponible un constructor predeterminado adecuado
+  c:\users\lluís c\documents\github\practica1pacman\pacman\pacman.h(9): note: vea la declaración de 'Pacman'
   Generando código...
+  Omitiendo... (no se detectaron cambios relevantes)
+  Pacman.cpp
+  GameMap.cpp

@@ -4,6 +4,8 @@
 using namespace std;
 
 
+
+
 Game::Game()
 {
 	int winX, winY;	//	Posición	de	la	ventana
@@ -11,9 +13,9 @@ Game::Game()
 
 	if (!loadMap("..\\levels\\nivelPrueba.txt")) {
 		cout << "Error cargando mapa";
-			funcional = false;
-	}	
-	else{
+		funcional = false;
+	}
+	else {
 		SDL_Init(SDL_INIT_EVERYTHING);
 		window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
 			winWidth, winHeight, SDL_WINDOW_SHOWN);
@@ -34,7 +36,6 @@ Game::Game()
 		}
 	}
 }
-
 
 Game::~Game()
 {
@@ -112,6 +113,7 @@ bool Game::loadMap(const string & filename)
 				break;
 			}
 		}
+	return true;
 }
 
 void Game::handleEvents()
