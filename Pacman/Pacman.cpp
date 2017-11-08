@@ -44,6 +44,7 @@ void Pacman::die()
 }
 
 void Pacman::forward() {
+	SDL_Delay(500);
 	if (dir == 0)
 		x++;
 	else if (dir == 1)

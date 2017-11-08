@@ -171,7 +171,7 @@ const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) cons
 		break;
 	}
 
-	return gameMap->getCellType(x, y) != Wall;
+	return gameMap->getCellType(y, x) != Wall;
 }
 
 const bool Game::getFuncional() const
