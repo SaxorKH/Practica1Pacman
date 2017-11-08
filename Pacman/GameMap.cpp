@@ -37,10 +37,10 @@ void GameMap::setCellType(unsigned int row, unsigned int col, MapCell type)
 void GameMap::render()
 {
 	SDL_Rect destRect;
-	destRect.h = destRect.y = 128;
+	unsigned int cellSize = game->getCellSize();
+	destRect.h = destRect.w = cellSize;
 	for(int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++) {
-			unsigned int cellSize = game->getCellSize();
 			destRect.x = cellSize * j;
 			destRect.y = cellSize * i;
 			switch (getCellType(i, j)) {

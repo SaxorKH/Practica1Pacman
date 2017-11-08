@@ -21,6 +21,8 @@ private:
 	Pacman pacman;
 	GameMap* gameMap;
 
+	void getMapDimensions(const string & filename);
+
 
 
 public:

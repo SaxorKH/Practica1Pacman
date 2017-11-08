@@ -1,2 +1,3 @@
 ﻿  Game.cpp
-LINK : fatal error LNK1168: no se puede abrir C:\Users\Lluís C\Documents\GitHub\Practica1Pacman\bin\PacmanDebug.exe para escritura
+  Pacman.vcxproj -> C:\hlocal\Practica1Pacman\bin\PacmanDebug.exe
+  Pacman.vcxproj -> C:\hlocal\Practica1Pacman\bin\PacmanDebug.pdb (Partial PDB)

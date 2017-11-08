@@ -11,28 +11,33 @@ Game::Game()
 	int winX, winY;	//	Posición	de	la	ventana
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 
-	if (!loadMap("..\\levels\\nivelPrueba.txt")) {
-		cout << "Error cargando mapa";
+	getMapDimensions("..\\levels\\nivelPrueba.txt");
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+	window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
+		winWidth, winHeight, SDL_WINDOW_SHOWN);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (window == nullptr || renderer == nullptr) {
+		cout << "Error	initializing	SDL\n";
 		funcional = false;
 	}
 	else {
-		SDL_Init(SDL_INIT_EVERYTHING);
-		window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
-			winWidth, winHeight, SDL_WINDOW_SHOWN);
-
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		if (window == nullptr || renderer == nullptr) {
-			cout << "Error	initializing	SDL\n";
-			funcional = false;
-		}
+		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
+		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
+		if (!funcional)
+			cout << "Error loading textures\n";
 		else {
-			funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
-			funcional = textures[1].load(renderer, "..\\images\\characters1.png");
-			if (!funcional)
-				cout << "Error loading textures\n";
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
 			pacman = Pacman(this, &textures[0]);
+
+			if (!loadMap("..\\levels\\nivelPrueba.txt")) {
+				cout << "Error cargando mapa";
+				funcional = false;
+			}
+			else {
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+			}
 		}
 	}
 }
@@ -109,6 +114,7 @@ bool Game::loadMap(const string & filename)
 			case 8:
 				break;
 			case 9:
+				gameMap->setCellType(i, j, Empty);
 				pacman.setPos(i, j);
 				break;
 			}
@@ -181,4 +187,17 @@ SDL_Renderer * Game::getRenderer() const
 const unsigned int Game::getCellSize() const
 {
 	return cellSize;
+}
+
+void Game::getMapDimensions(const string & filename) {
+	ifstream archivo;
+
+	archivo.open(filename);
+
+	unsigned int rows, cols;
+	archivo >> rows;
+	archivo >> cols;
+
+	winWidth = cols*cellSize;
+	winHeight = rows*cellSize;
 }
