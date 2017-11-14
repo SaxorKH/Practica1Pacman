@@ -60,6 +60,8 @@ void Game::run()
 
 void Game::render()
 {
+	unsigned int initTime = SDL_GetTicks();
+	unsigned int currentTime;
 	SDL_RenderClear(renderer);
 	gameMap->render();
 	pacman.render();

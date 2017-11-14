@@ -31,12 +31,16 @@ void Pacman::render() {
 }
 
 void Pacman::update() {
-	if (game->nextCell(x, y, dirbuffer)) {
-		dir = dirbuffer;
-		forward();
+	unsigned int frameTime = SDL_GetTicks() - startTime;
+	if(FRAME_RATE < frameTime){
+		if (game->nextCell(x, y, dirbuffer)) {
+			dir = dirbuffer;
+			forward();
+		}
+		else if (game->nextCell(x, y, dir))
+			forward();
+		startTime = SDL_GetTicks();
 	}
-	else if (game->nextCell(x, y, dir))
-		forward();
 }
 
 void Pacman::die()
@@ -44,7 +48,6 @@ void Pacman::die()
 }
 
 void Pacman::forward() {
-	SDL_Delay(500);
 	if (dir == 0)
 		x++;
 	else if (dir == 1)

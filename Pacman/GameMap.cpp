@@ -39,8 +39,8 @@ void GameMap::render()
 	SDL_Rect destRect;
 	unsigned int cellSize = game->getCellSize();
 	destRect.h = destRect.w = cellSize;
-	for(int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++) {
+	for(unsigned int i = 0; i < rows; i++)
+		for (unsigned int j = 0; j < cols; j++) {
 			destRect.x = cellSize * j;
 			destRect.y = cellSize * i;
 			switch (getCellType(i, j)) {

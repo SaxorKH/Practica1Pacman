@@ -4,6 +4,7 @@
 #include "Pacman.h"
 #include "GameMap.h"
 #define TOTAL_TEXTURAS 2
+#define FRAME_RATE 100
 
 using namespace std;
 
@@ -14,7 +15,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	unsigned int winWidth;
 	unsigned int winHeight;
-	unsigned int cellSize = 128;
+	unsigned int cellSize = 32;
 	bool exit = false;
 	bool funcional;
 	Texture textures[TOTAL_TEXTURAS];
