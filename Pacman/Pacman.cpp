@@ -51,13 +51,19 @@ void Pacman::die()
 
 void Pacman::forward() {
 	if (dir == 0)
-		x++;
+		x = (x + 1) % game->getCols();
 	else if (dir == 1)
-		y++;
-	else if (dir == 2)
+		y = (y + 1) % game->getRows();
+	else if (dir == 2){
+		if (x == 0)
+			x = game->getCols();
 		x--;
-	else if (dir == 3)
+	}
+	else if (dir == 3){
+		if (y == 0)
+			y = game->getRows();
 		y--;
+	}
 }
 void Pacman::bufferUpdate(unsigned int input) {
 	if ((input <= 3) && (input >= 0))
