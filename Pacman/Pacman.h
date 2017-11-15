@@ -17,6 +17,7 @@ private:
 	unsigned int lives = 3; //Numberof remaining lifes
 	unsigned int energy = 0;//Remaining energy
 	unsigned int startTime = 0;
+	unsigned int anim = 0;
 	Texture* texture = nullptr;
 	Game * game = nullptr;
 	void forward();

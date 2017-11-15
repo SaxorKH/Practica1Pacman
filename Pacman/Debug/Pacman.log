@@ -1,12 +1,1 @@
-﻿  GameMap.cpp
-  Game.cpp
-c:\hlocal\practica1pacman\pacman\game.cpp(164): warning C4552: '%': operator has no effect; expected operator with side-effect
-c:\hlocal\practica1pacman\pacman\game.cpp(167): warning C4552: '%': operator has no effect; expected operator with side-effect
-c:\hlocal\practica1pacman\pacman\game.cpp(170): warning C4552: '%': operator has no effect; expected operator with side-effect
-c:\hlocal\practica1pacman\pacman\game.cpp(173): warning C4552: '%': operator has no effect; expected operator with side-effect
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  main.cpp
-  Pacman.cpp
-  Pacman.vcxproj -> C:\hlocal\Practica1Pacman\bin\PacmanDebug.exe
-  Pacman.vcxproj -> C:\hlocal\Practica1Pacman\bin\PacmanDebug.pdb (Partial PDB)
+﻿

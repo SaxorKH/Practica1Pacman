@@ -4,7 +4,7 @@
 #include "Pacman.h"
 #include "GameMap.h"
 #define TOTAL_TEXTURAS 2
-#define FRAME_RATE 100
+#define FRAME_RATE 200
 
 using namespace std;
 
