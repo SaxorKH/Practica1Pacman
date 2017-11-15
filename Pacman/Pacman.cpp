@@ -27,7 +27,8 @@ void Pacman::render() {
 	destRect.w = destRect.h = cellSize;
 	destRect.x = x * cellSize;
 	destRect.y = y * cellSize;
-	texture->renderFrame(game->getRenderer(), destRect, dir, 11);
+	anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
+	texture->renderFrame(game->getRenderer(), destRect, dir, 10 + anim);
 }
 
 void Pacman::update() {
@@ -40,6 +41,7 @@ void Pacman::update() {
 		else if (game->nextCell(x, y, dir))
 			forward();
 		startTime = SDL_GetTicks();
+		
 	}
 }
 
