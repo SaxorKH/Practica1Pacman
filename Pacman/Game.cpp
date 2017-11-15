@@ -23,6 +23,7 @@ Game::Game()
 		funcional = false;
 	}
 	else {
+		textures = new Texture[TOTAL_TEXTURAS];
 		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
 		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
 		if (!funcional)
@@ -44,6 +45,7 @@ Game::Game()
 
 Game::~Game()
 {
+	delete[] textures;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -61,7 +63,6 @@ void Game::run()
 void Game::render()
 {
 	unsigned int initTime = SDL_GetTicks();
-	unsigned int currentTime;
 	SDL_RenderClear(renderer);
 	gameMap->render();
 	pacman.render();

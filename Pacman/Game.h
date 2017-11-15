@@ -18,7 +18,7 @@ private:
 	unsigned int cellSize = 32;
 	bool exit = false;
 	bool funcional;
-	Texture textures[TOTAL_TEXTURAS];
+	Texture* textures = nullptr;
 	Pacman pacman;
 	GameMap* gameMap;
 

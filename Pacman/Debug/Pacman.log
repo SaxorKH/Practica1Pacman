@@ -1,1 +1,10 @@
-﻿
+﻿  Texture.cpp
+c:\users\saxorkh\desktop\practica1pacman\pacman\texture.cpp(46): warning C4018: '>': no coinciden signed/unsigned
+c:\users\saxorkh\desktop\practica1pacman\pacman\texture.cpp(48): warning C4018: '>': no coinciden signed/unsigned
+  Game.cpp
+  Generando código...
+  Omitiendo... (no se detectaron cambios relevantes)
+  main.cpp
+  Pacman.cpp
+  GameMap.cpp
+  Pacman.vcxproj -> C:\Users\SaxorKH\Desktop\Practica1Pacman\bin\PacmanDebug.exe
