@@ -12,15 +12,17 @@ enum MapCell {
 class GameMap
 {
 private:
-	Game* game;
-	Texture* wall;
-	MapCell* map;
+	Game* game = nullptr;
+	Texture* wall = nullptr;
+	Texture* food = nullptr;
+	Texture * vitamin = nullptr;
+	MapCell* map = nullptr;
 	unsigned int rows;
 	unsigned int cols;
 
 public:
 	GameMap();
-	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Game * game);
+	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Texture* food, Texture * vitamin, Game * game);
 	~GameMap();
 	const MapCell getCellType(unsigned int row, unsigned int col) const;
 	void setCellType(unsigned int row, unsigned int col, MapCell type);

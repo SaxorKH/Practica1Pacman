@@ -26,6 +26,9 @@ Game::Game()
 		textures = new Texture[TOTAL_TEXTURAS];
 		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
 		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
+		funcional = textures[2].load(renderer, "..\\images\\food2.png");
+		funcional = textures[3].load(renderer, "..\\images\\food3.png");
+		funcional = textures[4].load(renderer, "..\\images\\burguer1.png");
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
@@ -87,7 +90,7 @@ bool Game::loadMap(const string & filename)
 	archivo >> rows;
 	archivo >> cols;
 	unsigned int cellVal;
-	gameMap = new GameMap(rows, cols, &textures[1], this);
+	gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
 
 	winWidth = cols*cellSize;
 	winHeight = rows*cellSize;

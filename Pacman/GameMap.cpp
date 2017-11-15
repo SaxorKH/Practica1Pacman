@@ -6,9 +6,11 @@ GameMap::GameMap()
 {
 }
 
-GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Game * game)
+GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* food, Texture * vitamin, Game * game)
 {
 	this->wall = wall;
+	this->food = food;
+	this->vitamin = vitamin;
 	this->game = game;
 	this->cols = cols;
 	this->rows = rows;
@@ -49,8 +51,10 @@ void GameMap::render()
 				wall->render(game->getRenderer(), destRect);
 				break;
 			case Food:
+				food->render(game->getRenderer(), destRect);
 				break;
 			case Vitamins:
+				vitamin->render(game->getRenderer(), destRect);
 				break;
 			}
 		}
