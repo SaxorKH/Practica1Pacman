@@ -38,5 +38,7 @@ public:
 	bool loadMap(const string& filename);
 	void handleEvents();
 	const bool nextCell(unsigned int x, unsigned int y, unsigned int dir) const;
+	const unsigned int getRows() const;
+	const unsigned int getCols() const;
 };
 

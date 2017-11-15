@@ -26,5 +26,8 @@ public:
 	void setCellType(unsigned int row, unsigned int col, MapCell type);
 	void render();
 	void update();
+
+	const unsigned int getRows() const;
+	const unsigned int getCols() const;
 };
 

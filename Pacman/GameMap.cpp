@@ -23,8 +23,7 @@ GameMap::~GameMap()
 
 const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const
 {
-	if(row < rows && col < cols)
-		return map[row*cols + col];
+		return map[(row%rows)*cols + col%cols];
 	return Wall;
 }
 
@@ -59,4 +58,14 @@ void GameMap::render()
 
 void GameMap::update()
 {
+}
+
+const unsigned int GameMap::getRows() const
+{
+	return rows;
+}
+
+const unsigned int GameMap::getCols() const
+{
+	return cols;
 }

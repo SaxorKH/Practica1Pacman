@@ -161,16 +161,16 @@ const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) cons
 {
 	switch (dir) {
 	case 0:
-		x++;
+		x++%gameMap->getCols();
 		break;
 	case 1:
-		y++;
+		y++%gameMap->getRows();
 		break;
 	case 2:
-		x--;
+		x--%gameMap->getCols();
 		break;
 	case 3:
-		y--;
+		y--%gameMap->getRows();
 		break;
 	}
 
@@ -203,4 +203,14 @@ void Game::getMapDimensions(const string & filename) {
 
 	winWidth = cols*cellSize;
 	winHeight = rows*cellSize;
+}
+
+const unsigned int Game::getRows() const
+{
+	return gameMap->getRows();
+}
+
+const unsigned int Game::getCols() const
+{
+	return gameMap->getCols();
 }
