@@ -2,6 +2,8 @@
 #include "Game.h"
 
 
+std::uniform_int_distribution<int> Ghost::distribution(0,3);
+std::default_random_engine Ghost::generator;
 
 Ghost::Ghost()
 {
@@ -38,9 +40,29 @@ void Ghost::render()
 
 void Ghost::update()
 {
+	for (int i = 0; i < 10; i++)
+		distribution(generator);
+	do {
+		dir = distribution(generator);
+	} while (!game->nextCell(x, y, dir));
+	forward();
 }
 
 
 void Ghost::forward()
 {
+	if (dir == 0)
+		x = (x + 1) % game->getCols();
+	else if (dir == 1)
+		y = (y + 1) % game->getRows();
+	else if (dir == 2) {
+		if (x == 0)
+			x = game->getCols();
+		x--;
+	}
+	else if (dir == 3) {
+		if (y == 0)
+			y = game->getRows();
+		y--;
+	}
 }

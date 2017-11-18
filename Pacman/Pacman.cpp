@@ -32,17 +32,12 @@ void Pacman::render() {
 }
 
 void Pacman::update() {
-	unsigned int frameTime = SDL_GetTicks() - startTime;
-	if(FRAME_RATE < frameTime){
 		if (game->nextCell(x, y, dirbuffer)) {
 			dir = dirbuffer;
 			forward();
 		}
 		else if (game->nextCell(x, y, dir))
 			forward();
-		startTime = SDL_GetTicks();
-		
-	}
 }
 
 void Pacman::die()

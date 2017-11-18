@@ -2,9 +2,11 @@
 #include "SDL.h"
 #include "Texture.h"
 #include "Pacman.h"
+#include "Ghost.h"
 #include "GameMap.h"
 #define TOTAL_TEXTURAS 5
 #define FRAME_RATE 200
+#define N_FANTASMAS 4
 
 using namespace std;
 
@@ -15,12 +17,15 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	unsigned int winWidth;
 	unsigned int winHeight;
-	unsigned int cellSize = 32;
+	unsigned int cellSize = 25;
+	unsigned int startTime = 0;
 	bool exit = false;
 	bool funcional;
 	Texture* textures = nullptr;
 	Pacman pacman;
+	Ghost fantasmas[N_FANTASMAS];
 	GameMap* gameMap;
+	string filename = "..\\levels\\level01.dat";
 
 	void getMapDimensions(const string & filename);
 

@@ -11,7 +11,7 @@ Game::Game()
 	int winX, winY;	//	Posición	de	la	ventana
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 
-	getMapDimensions("..\\levels\\nivelPrueba.txt");
+	getMapDimensions(filename);
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
@@ -33,8 +33,11 @@ Game::Game()
 			cout << "Error loading textures\n";
 		else {
 			pacman = Pacman(this, &textures[0]);
+			for (unsigned int i = 0; i < N_FANTASMAS; i++)
+				fantasmas[i] = Ghost(i, this, &textures[0]);
 
-			if (!loadMap("..\\levels\\nivelPrueba.txt")) {
+
+			if (!loadMap(filename)) {
 				cout << "Error cargando mapa";
 				funcional = false;
 			}
@@ -69,13 +72,21 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	gameMap->render();
 	pacman.render();
+	for (unsigned int i = 0; i < N_FANTASMAS; i++)
+		fantasmas[i].render();
 	SDL_RenderPresent(renderer);	//	Muestra	la	escena
 }
 
 void Game::update()
 {
-	gameMap->update();
-	pacman.update();
+	unsigned int frameTime = SDL_GetTicks() - startTime;
+	if (FRAME_RATE < frameTime) {
+		gameMap->update();
+		pacman.update();
+		for (unsigned int i = 0; i < N_FANTASMAS; i++)
+			fantasmas[i].update();
+		startTime = SDL_GetTicks();
+	}
 }
 
 bool Game::loadMap(const string & filename)
@@ -112,12 +123,20 @@ bool Game::loadMap(const string & filename)
 				gameMap->setCellType(i, j, Vitamins);
 				break;
 			case 5:
+				gameMap->setCellType(i, j, Empty);
+				fantasmas[0].setPos(i, j);
 				break;
 			case 6:
+				gameMap->setCellType(i, j, Empty);
+				fantasmas[1].setPos(i, j);
 				break;
 			case 7:
+				gameMap->setCellType(i, j, Empty);
+				fantasmas[2].setPos(i, j);
 				break;
 			case 8:
+				gameMap->setCellType(i, j, Empty);
+				fantasmas[3].setPos(i, j);
 				break;
 			case 9:
 				gameMap->setCellType(i, j, Empty);
@@ -164,16 +183,20 @@ const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) cons
 {
 	switch (dir) {
 	case 0:
-		x++%gameMap->getCols();
+		x = (x + 1) % getCols();
 		break;
 	case 1:
-		y++%gameMap->getRows();
+		y = (y + 1) % getRows();
 		break;
 	case 2:
-		x--%gameMap->getCols();
+		if (x == 0)
+			x = getCols();
+		x--;
 		break;
 	case 3:
-		y--%gameMap->getRows();
+		if (y == 0)
+			y = getRows();
+		y--;
 		break;
 	}
 
