@@ -64,3 +64,9 @@ void Pacman::bufferUpdate(unsigned int input) {
 	if ((input <= 3) && (input >= 0))
 		dirbuffer = input;
 }
+int Pacman::getX() {
+	return x;
+}
+int Pacman::getY() {
+	return y;
+}

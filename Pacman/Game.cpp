@@ -240,3 +240,7 @@ const unsigned int Game::getCols() const
 {
 	return gameMap->getCols();
 }
+void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
+	x = pacman.getX();
+	y = pacman.getY();
+}

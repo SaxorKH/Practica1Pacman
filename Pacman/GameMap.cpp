@@ -62,6 +62,12 @@ void GameMap::render()
 
 void GameMap::update()
 {
+	unsigned int px, py;
+	game->getPacmanPos(px, py);
+	if (getCellType(py, px) == Food)
+		setCellType(py, px, Empty);
+
+
 }
 
 const unsigned int GameMap::getRows() const

@@ -29,5 +29,7 @@ public:
 	void update();
 	void die();
 	void bufferUpdate(unsigned int input);
+	int getX();
+	int getY();
 };
 

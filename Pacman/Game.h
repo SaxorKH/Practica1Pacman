@@ -45,5 +45,6 @@ public:
 	const bool nextCell(unsigned int x, unsigned int y, unsigned int dir) const;
 	const unsigned int getRows() const;
 	const unsigned int getCols() const;
+	void getPacmanPos(unsigned int& x, unsigned int& y);
 };
 
