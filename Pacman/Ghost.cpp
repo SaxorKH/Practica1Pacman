@@ -57,18 +57,14 @@ void Ghost::update()
 		frameTime = SDL_GetTicks() - startVulTime;
 		if (vulTime < frameTime)
 			state = 0;
-		else {
-			unsigned int pacmanX, pacmanY;
-			game->getPacmanPos(pacmanX, pacmanY);
-			if (x == pacmanX && y == pacmanY) {
-				state = 2;
-			}
-		}
 		break;
 	case 2:
 		frameTime = SDL_GetTicks() - startDeadTime;
-		if (deadTime < frameTime)
+		if (deadTime < frameTime) {
 			state = 0;
+			x = inix;
+			y = iniy;
+		}
 	}
 
 	unsigned int auxDir;
@@ -109,7 +105,7 @@ void Ghost::update()
 
 void Ghost::vulnerable()
 {
-	if (state == 0) {
+	if (state != 2) {
 		state = 1;
 		startVulTime = SDL_GetTicks();
 	}
@@ -118,8 +114,6 @@ void Ghost::vulnerable()
 void Ghost::die()
 {
 	state = 2;
-	x = inix;
-	y = iniy;
 	startDeadTime = SDL_GetTicks();
 }
 
