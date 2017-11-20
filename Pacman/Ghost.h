@@ -9,6 +9,9 @@ class Ghost
 private:
 	static std::default_random_engine generator;
 	static std::uniform_int_distribution<int> distribution;
+	static const unsigned int vulTime = 10000;
+	static const unsigned int deadTime = 5000;
+
 	unsigned int color;
 	unsigned int x = 0;//Position X
 	unsigned int y = 0;// Position Y
@@ -16,6 +19,9 @@ private:
 	unsigned int iniy = 0;//Start Position Y
 	unsigned int dir = 0;//Movement direction
 	unsigned int anim = 0;
+	unsigned int state = 0;
+	unsigned int startVulTime = 0;
+	unsigned int startDeadTime = 0;
 	Texture* texture = nullptr;
 	Game * game = nullptr;
 	void forward();
@@ -26,5 +32,11 @@ public:
 	void setPos(unsigned int row, unsigned int col);
 	void render();
 	void update();
+	void vulnerable();
+	void die();
+	unsigned int getState();
+
+	int getX();
+	int getY();
 };
 

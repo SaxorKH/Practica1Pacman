@@ -28,6 +28,7 @@ private:
 	string filename = "..\\levels\\level01.dat";
 
 	void getMapDimensions(const string & filename);
+	void collision();
 
 
 
@@ -47,5 +48,6 @@ public:
 	const unsigned int getCols() const;
 	void getPacmanPos(unsigned int& x, unsigned int& y);
 	void endGame();
+	void ghostVulnerable();
 };
 

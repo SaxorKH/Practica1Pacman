@@ -42,6 +42,13 @@ void Pacman::update() {
 
 void Pacman::die()
 {
+	if (lives == 0)
+		game->endGame();
+	else {
+		lives--;
+		x = inix;
+		y = iniy;
+	}
 }
 
 void Pacman::forward() {

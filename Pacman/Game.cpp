@@ -83,8 +83,10 @@ void Game::update()
 	if (FRAME_RATE < frameTime) {
 		gameMap->update();
 		pacman.update();
-		for (unsigned int i = 0; i < N_FANTASMAS; i++)
+		collision();
+		for (int i = 0; i < N_FANTASMAS; i++)
 			fantasmas[i].update();
+		collision();
 		startTime = SDL_GetTicks();
 	}
 }
@@ -231,6 +233,19 @@ void Game::getMapDimensions(const string & filename) {
 	winHeight = rows*cellSize;
 }
 
+void Game::collision()
+{
+	for (int i = 0; i < N_FANTASMAS; i++) {
+		if (fantasmas[i].getX() == pacman.getX() && fantasmas[i].getY() == pacman.getY()) {
+			if (fantasmas[i].getState() == 1)
+				fantasmas[i].die();
+			else if (fantasmas[i].getState() == 0)
+				pacman.die();
+		}
+	}
+
+}
+
 const unsigned int Game::getRows() const
 {
 	return gameMap->getRows();
@@ -248,4 +263,10 @@ void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
 void Game::endGame()
 {
 	exit = true;
+}
+
+void Game::ghostVulnerable()
+{
+	for (unsigned int i = 0; i < N_FANTASMAS; i++)
+		fantasmas[i].vulnerable();
 }

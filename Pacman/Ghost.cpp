@@ -35,15 +35,45 @@ void Ghost::render()
 	destRect.x = x * cellSize;
 	destRect.y = y * cellSize;
 	anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
-	texture->renderFrame(game->getRenderer(), destRect, dir, color*2 + anim);
+	unsigned int vulColor = int(((SDL_GetTicks() / (FRAME_RATE * 2)) % 2));
+	switch (state) {
+	case 0:
+		texture->renderFrame(game->getRenderer(), destRect, dir, color * 2 + anim);
+		break;
+	case 1:
+		texture->renderFrame(game->getRenderer(), destRect, vulColor, 12 + anim);
+		break;
+	case 2:
+		texture->renderFrame(game->getRenderer(), destRect, 2, 12 + anim);
+		break;
+	}
 }
 
 void Ghost::update()
 {
-	for (int i = 0; i < 10; i++)
-		distribution(generator);
+	unsigned int frameTime;
+	switch (state) {
+	case 1:
+		frameTime = SDL_GetTicks() - startVulTime;
+		if (vulTime < frameTime)
+			state = 0;
+		else {
+			unsigned int pacmanX, pacmanY;
+			game->getPacmanPos(pacmanX, pacmanY);
+			if (x == pacmanX && y == pacmanY) {
+				state = 2;
+			}
+		}
+		break;
+	case 2:
+		frameTime = SDL_GetTicks() - startDeadTime;
+		if (deadTime < frameTime)
+			state = 0;
+	}
+
 	unsigned int auxDir;
 	bool elegido = false;
+
 	do {
 		auxDir = distribution(generator);
 		switch (auxDir)
@@ -72,11 +102,30 @@ void Ghost::update()
 				elegido = true;
 			}
 			break;
-		default:
-			break;
 		}
 	} while (!elegido);
 	forward();
+}
+
+void Ghost::vulnerable()
+{
+	if (state == 0) {
+		state = 1;
+		startVulTime = SDL_GetTicks();
+	}
+}
+
+void Ghost::die()
+{
+	state = 2;
+	x = inix;
+	y = iniy;
+	startDeadTime = SDL_GetTicks();
+}
+
+unsigned int Ghost::getState()
+{
+	return state;
 }
 
 
@@ -96,4 +145,11 @@ void Ghost::forward()
 			y = game->getRows();
 		y--;
 	}
+}
+
+int Ghost::getX() {
+	return x;
+}
+int Ghost::getY() {
+	return y;
 }

@@ -67,14 +67,16 @@ void GameMap::update()
 {
 	unsigned int px, py;
 	game->getPacmanPos(px, py);
-	if (getCellType(py, px) == Food || getCellType(py, px) == Vitamins) {
+	switch (getCellType(py, px)) {
+	case Vitamins:
+		game->ghostVulnerable();
+	case Food:
 		setCellType(py, px, Empty);
 		totalFood--;
+		break;
 	}
 	if (totalFood == 0)
 		game->endGame();
-
-
 }
 
 const unsigned int GameMap::getRows() const
