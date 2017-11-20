@@ -5,7 +5,7 @@
 #include "Ghost.h"
 #include "GameMap.h"
 #define TOTAL_TEXTURAS 5
-#define FRAME_RATE 200
+#define FRAME_RATE 150
 #define N_FANTASMAS 4
 
 using namespace std;
@@ -46,5 +46,6 @@ public:
 	const unsigned int getRows() const;
 	const unsigned int getCols() const;
 	void getPacmanPos(unsigned int& x, unsigned int& y);
+	void endGame();
 };
 

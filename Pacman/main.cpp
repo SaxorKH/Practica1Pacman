@@ -2,7 +2,6 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
-#define TIME_PER_FRAME 100
 
 using namespace std;
 

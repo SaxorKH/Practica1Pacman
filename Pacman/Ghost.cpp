@@ -42,9 +42,40 @@ void Ghost::update()
 {
 	for (int i = 0; i < 10; i++)
 		distribution(generator);
+	unsigned int auxDir;
+	bool elegido = false;
 	do {
-		dir = distribution(generator);
-	} while (!game->nextCell(x, y, dir));
+		auxDir = distribution(generator);
+		switch (auxDir)
+		{
+		case 0:
+			if (dir != 2 && game->nextCell(x, y, auxDir)) {
+				dir = auxDir;
+				elegido = true;
+			}
+			break;
+		case 1:
+			if (dir != 3 && game->nextCell(x, y, auxDir)) {
+				dir = auxDir;
+				elegido = true;
+			}
+			break;
+		case 2:
+			if (dir != 0 && game->nextCell(x, y, auxDir)) {
+				dir = auxDir;
+				elegido = true;
+			}
+			break;
+		case 3:
+			if (dir != 1 && game->nextCell(x, y, auxDir)) {
+				dir = auxDir;
+				elegido = true;
+			}
+			break;
+		default:
+			break;
+		}
+	} while (!elegido);
 	forward();
 }
 

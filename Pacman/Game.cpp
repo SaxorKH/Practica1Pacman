@@ -244,3 +244,8 @@ void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
 	x = pacman.getX();
 	y = pacman.getY();
 }
+
+void Game::endGame()
+{
+	exit = true;
+}

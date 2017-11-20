@@ -31,8 +31,11 @@ const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const
 
 void GameMap::setCellType(unsigned int row, unsigned int col, MapCell type)
 {
-	if (row < rows && col < cols)
+	if (row < rows && col < cols) {
 		map[row*cols + col] = type;
+		if (type == Food || type == Vitamins) 
+			totalFood++;
+	}
 }
 
 void GameMap::render()
@@ -64,8 +67,12 @@ void GameMap::update()
 {
 	unsigned int px, py;
 	game->getPacmanPos(px, py);
-	if (getCellType(py, px) == Food)
+	if (getCellType(py, px) == Food || getCellType(py, px) == Vitamins) {
 		setCellType(py, px, Empty);
+		totalFood--;
+	}
+	if (totalFood == 0)
+		game->endGame();
 
 
 }

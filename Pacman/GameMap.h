@@ -19,6 +19,7 @@ private:
 	MapCell* map = nullptr;
 	unsigned int rows;
 	unsigned int cols;
+	unsigned int totalFood = 0;
 
 public:
 	GameMap();
