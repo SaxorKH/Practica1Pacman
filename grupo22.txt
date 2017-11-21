@@ -1,0 +1,5 @@
+LLuís Cañellas Salesa
+Carlos María González Martínez
+
+No hemos encontrado ningun error en la última versión y hemos añadido la extensión de animar a pacman y los fantasmas
+ y la de que pacman pueda comerse los puntos y cuando se termine se acabe el nivel

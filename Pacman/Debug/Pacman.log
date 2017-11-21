@@ -1,1 +1,11 @@
-﻿
+﻿  Texture.cpp
+c:\users\lluís c\documents\github\practica1pacman\pacman\texture.cpp(46): warning C4018: '>': no coinciden signed/unsigned
+c:\users\lluís c\documents\github\practica1pacman\pacman\texture.cpp(48): warning C4018: '>': no coinciden signed/unsigned
+  Pacman.cpp
+  main.cpp
+  Ghost.cpp
+  GameMap.cpp
+  Game.cpp
+  Generando código...
+  Pacman.vcxproj -> C:\Users\Lluís C\Documents\GitHub\Practica1Pacman\bin\PacmanDebug.exe
+  Pacman.vcxproj -> C:\Users\Lluís C\Documents\GitHub\Practica1Pacman\bin\PacmanDebug.pdb (Partial PDB)
