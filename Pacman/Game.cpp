@@ -1,6 +1,7 @@
 #include "Game.h"
-#include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <time.h>
 using namespace std;
 
 
@@ -8,13 +9,83 @@ using namespace std;
 
 Game::Game()
 {
+	srand(time(nullptr));
+	characters.push_front(new Pacman(this));
+	if (!loadMap(filename)) {
+		cout << "Error cargando mapa";
+		funcional = false;
+	}
+}
+
+Game::~Game()
+{
+	if (textures != nullptr) {
+		for (int i = 0; i < TOTAL_TEXTURAS; i++)
+			textures[i].~Texture();
+		delete[] textures;
+	}
+	if(gameMap != nullptr)
+		delete gameMap;
+	while (!characters.empty()) {
+		delete characters.back();
+		characters.pop_back();
+	}
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+void Game::run()
+{
+	while (!exit) {
+			handleEvents();
+			update();
+			render();
+			if (saveState) {
+				SaveState();
+			}
+	}
+}
+
+void Game::render()
+{
+	unsigned int initTime = SDL_GetTicks();
+	SDL_RenderClear(renderer);
+	gameMap->render();
+	for (list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); it++)
+		(*it)->render();
+	SDL_RenderPresent(renderer);	//	Muestra	la	escena
+}
+
+void Game::update()
+{
+	unsigned int frameTime = SDL_GetTicks() - startTime;
+	if (FRAME_RATE < frameTime) {
+		characters.front()->update();
+		collision();
+		for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++)
+			(*it)->update();
+		collision();
+		gameMap->update();
+		startTime = SDL_GetTicks();
+	}
+}
+
+bool Game::loadMap(const string & filename)
+{
+
+	ifstream archivo;
+	archivo.open(filename);
+	if (!archivo.is_open())
+		return false;
+
 	int winX, winY;	//	Posición	de	la	ventana
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 
-	getMapDimensions(filename);
+	getMapDimensions(archivo);
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First	test	with	SDL", winX, winY,
+	window = SDL_CreateWindow(filename.c_str(), winX, winY,
 		winWidth, winHeight, SDL_WINDOW_SHOWN);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -28,174 +99,82 @@ Game::Game()
 		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
 		funcional = textures[2].load(renderer, "..\\images\\food2.png");
 		funcional = textures[3].load(renderer, "..\\images\\food3.png");
-		funcional = textures[4].load(renderer, "..\\images\\burguer1.png");
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
-			pacman = Pacman(this, &textures[0]);
-			for (unsigned int i = 0; i < N_FANTASMAS; i++)
-				fantasmas[i] = Ghost(i, this, &textures[0]);
-
-
-			if (!loadMap(filename)) {
-				cout << "Error cargando mapa";
-				funcional = false;
-			}
-			else {
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-			}
+			gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		}
 	}
-}
+	gameMap->loadFromFile(archivo);
+	archivo >> nChar;
+	for (unsigned int i = 0; i < nChar; i++) {
+		bool tipo;
+		archivo >> tipo;
+		if (tipo) {
 
-Game::~Game()
-{
-	delete[] textures;
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}
-
-void Game::run()
-{
-	while (!exit) {
-			handleEvents();
-			update();
-			render();
-	}
-}
-
-void Game::render()
-{
-	unsigned int initTime = SDL_GetTicks();
-	SDL_RenderClear(renderer);
-	gameMap->render();
-	pacman.render();
-	for (unsigned int i = 0; i < N_FANTASMAS; i++)
-		fantasmas[i].render();
-	SDL_RenderPresent(renderer);	//	Muestra	la	escena
-}
-
-void Game::update()
-{
-	unsigned int frameTime = SDL_GetTicks() - startTime;
-	if (FRAME_RATE < frameTime) {
-		gameMap->update();
-		pacman.update();
-		collision();
-		for (int i = 0; i < N_FANTASMAS; i++)
-			fantasmas[i].update();
-		collision();
-		startTime = SDL_GetTicks();
-	}
-}
-
-bool Game::loadMap(const string & filename)
-{
-	ifstream archivo;
-
-	archivo.open(filename);
-	if (!archivo.is_open())
-		return false;
-
-	unsigned int rows, cols;
-	archivo >> rows;
-	archivo >> cols;
-	unsigned int cellVal;
-	gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
-
-	winWidth = cols*cellSize;
-	winHeight = rows*cellSize;
-
-	for(unsigned int i = 0; i < rows; i++)
-		for (unsigned int j = 0; j < cols; j++) {
-			archivo >> cellVal;
-			switch (cellVal) {
-			case 0:
-				gameMap->setCellType(i, j, Empty);
-				break;
-			case 1:
-				gameMap->setCellType(i, j, Wall);
-				break;
-			case 2:
-				gameMap->setCellType(i, j, Food);
-				break;
-			case 3:
-				gameMap->setCellType(i, j, Vitamins);
-				break;
-			case 5:
-				gameMap->setCellType(i, j, Empty);
-				fantasmas[0].setPos(i, j);
-				break;
-			case 6:
-				gameMap->setCellType(i, j, Empty);
-				fantasmas[1].setPos(i, j);
-				break;
-			case 7:
-				gameMap->setCellType(i, j, Empty);
-				fantasmas[2].setPos(i, j);
-				break;
-			case 8:
-				gameMap->setCellType(i, j, Empty);
-				fantasmas[3].setPos(i, j);
-				break;
-			case 9:
-				gameMap->setCellType(i, j, Empty);
-				pacman.setPos(i, j);
-				break;
-			}
 		}
+		else
+			characters.push_back(new Ghost(i%4, this, &textures[0]));
+		characters.back()->loadFromFile(archivo);
+	}
+	characters.front()->setTexture(&textures[0]);
+	characters.front()->loadFromFile(archivo);
 	return true;
 }
 
 void Game::handleEvents()
 {
 	SDL_Event event;
-
+	Pacman * p;
 	while (SDL_PollEvent(&event) && !exit) {
 		switch (event.type) {
 		case SDL_QUIT:
 			exit = true;
 			break;
 		case SDL_KEYDOWN:
-			unsigned int dir;
+			Direction dir;
 			switch(event.key.keysym.sym) {
 			case SDLK_RIGHT:
-				dir = 0;
+				dir = Right;
 				break;
 			case SDLK_DOWN:
-				dir = 1;
+				dir = Down;
 				break;
 			case SDLK_LEFT:
-				dir = 2;
+				dir = Left;
 				break;
 			case SDLK_UP:
-				dir = 3;
+				dir = Up;
+				break;
+			case SDLK_s:
+				saveState = true;
 				break;
 			}
-			pacman.bufferUpdate(dir);
+			p = (Pacman*) characters.front();
+			p->bufferUpdate(dir);
+
 		default:
 			break;
 		}
 	}
 }
 
-const bool Game::nextCell(unsigned int x, unsigned int y, unsigned int dir) const
+const bool Game::nextCell(unsigned int x, unsigned int y, Direction dir) const
 {
 	switch (dir) {
-	case 0:
+	case Right:
 		x = (x + 1) % getCols();
 		break;
-	case 1:
+	case Down:
 		y = (y + 1) % getRows();
 		break;
-	case 2:
+	case Left:
 		if (x == 0)
 			x = getCols();
 		x--;
 		break;
-	case 3:
+	case Up:
 		if (y == 0)
 			y = getRows();
 		y--;
@@ -220,12 +199,7 @@ const unsigned int Game::getCellSize() const
 	return cellSize;
 }
 
-void Game::getMapDimensions(const string & filename) {
-	ifstream archivo;
-
-	archivo.open(filename);
-
-	unsigned int rows, cols;
+void Game::getMapDimensions(istream &archivo) {
 	archivo >> rows;
 	archivo >> cols;
 
@@ -235,29 +209,46 @@ void Game::getMapDimensions(const string & filename) {
 
 void Game::collision()
 {
-	for (int i = 0; i < N_FANTASMAS; i++) {
-		if (fantasmas[i].getX() == pacman.getX() && fantasmas[i].getY() == pacman.getY()) {
-			if (fantasmas[i].getState() == 1)
-				fantasmas[i].die();
-			else if (fantasmas[i].getState() == 0)
-				pacman.die();
+	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
+		if ((*it)->getX() == characters.front()->getX() && (*it)->getY() == characters.front()->getY()) {
+			Ghost* aux = (Ghost*)(*it);
+			if (aux->getState() == Escared)
+				aux->die();
+			else if (aux->getState() == Alive)
+				characters.front()->die();
 		}
 	}
+}
 
+void Game::SaveState()
+{
+	SDL_Event event;
+	unsigned int code = 0;
+	while (saveState && !exit) {
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_QUIT)
+			exit = true;
+		else if (event.key.keysym.sym == SDLK_RETURN)
+			saveState = false;
+		else if (event.key.keysym.sym >= SDLK_0 && event.key.keysym.sym <= SDLK_9)
+			code = 10 * code + (event.key.keysym.sym - SDLK_0);
+	}
+
+	// implementar guardado
 }
 
 const unsigned int Game::getRows() const
 {
-	return gameMap->getRows();
+	return rows;
 }
 
 const unsigned int Game::getCols() const
 {
-	return gameMap->getCols();
+	return cols;
 }
 void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
-	x = pacman.getX();
-	y = pacman.getY();
+	x = characters.front()->getX();
+	y = characters.front()->getY();
 }
 
 void Game::endGame()
@@ -267,6 +258,8 @@ void Game::endGame()
 
 void Game::ghostVulnerable()
 {
-	for (unsigned int i = 0; i < N_FANTASMAS; i++)
-		fantasmas[i].vulnerable();
+	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
+		Ghost * g = (Ghost*)(*it);
+		g->vulnerable();
+	}
 }

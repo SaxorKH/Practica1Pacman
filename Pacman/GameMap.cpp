@@ -1,19 +1,18 @@
 #include "GameMap.h"
 #include "Game.h"
 
-
 GameMap::GameMap()
 {
 }
 
 GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* food, Texture * vitamin, Game * game)
+	: GameObject(game)
 {
+	this->rows = rows;
+	this->cols = cols;
 	this->wall = wall;
 	this->food = food;
 	this->vitamin = vitamin;
-	this->game = game;
-	this->cols = cols;
-	this->rows = rows;
 	map = new MapCell[rows*cols];
 }
 
@@ -21,6 +20,19 @@ GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* 
 GameMap::~GameMap()
 {
 	delete[] map;
+}
+
+void GameMap::loadFromFile(istream &archivo)
+{
+	rows = game->getRows();
+	cols = game->getCols();
+	unsigned int cellVal;
+	for (unsigned int i = 0; i < rows; i++)
+		for (unsigned int j = 0; j < cols; j++) {
+			archivo >> cellVal;
+			if(cellVal < 4)
+				setCellType(i, j, (MapCell) cellVal);
+		}
 }
 
 const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const

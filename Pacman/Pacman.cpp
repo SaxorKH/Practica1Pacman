@@ -1,15 +1,12 @@
 #include "Pacman.h"
 #include "Game.h"
 
-
 Pacman::Pacman()
 {
 }
 
-Pacman::Pacman(Game* g, Texture* t)
+Pacman::Pacman(Game* g) : GameCharacter(g, nullptr, 6)
 {
-	game = g;
-	texture = t;
 }
 
 
@@ -51,29 +48,7 @@ void Pacman::die()
 	}
 }
 
-void Pacman::forward() {
-	if (dir == 0)
-		x = (x + 1) % game->getCols();
-	else if (dir == 1)
-		y = (y + 1) % game->getRows();
-	else if (dir == 2){
-		if (x == 0)
-			x = game->getCols();
-		x--;
-	}
-	else if (dir == 3){
-		if (y == 0)
-			y = game->getRows();
-		y--;
-	}
-}
-void Pacman::bufferUpdate(unsigned int input) {
+void Pacman::bufferUpdate(Direction input) {
 	if ((input <= 3) && (input >= 0))
 		dirbuffer = input;
-}
-int Pacman::getX() {
-	return x;
-}
-int Pacman::getY() {
-	return y;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h"
 #include "Texture.h"
 class Game;
 
@@ -9,10 +10,9 @@ enum MapCell {
 	Vitamins
 };
 
-class GameMap
+class GameMap : public GameObject
 {
 private:
-	Game* game = nullptr;
 	Texture* wall = nullptr;
 	Texture* food = nullptr;
 	Texture * vitamin = nullptr;
@@ -25,6 +25,8 @@ public:
 	GameMap();
 	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Texture* food, Texture * vitamin, Game * game);
 	~GameMap();
+
+	virtual void loadFromFile(istream &archivo);
 	const MapCell getCellType(unsigned int row, unsigned int col) const;
 	void setCellType(unsigned int row, unsigned int col, MapCell type);
 	void render();

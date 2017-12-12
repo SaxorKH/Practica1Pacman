@@ -1,6 +1,7 @@
 #include "Ghost.h"
 #include "Game.h"
-
+#include <cstdlib>
+using namespace std;
 
 std::uniform_int_distribution<int> Ghost::distribution(0,3);
 std::default_random_engine Ghost::generator;
@@ -9,11 +10,8 @@ Ghost::Ghost()
 {
 }
 
-Ghost::Ghost(unsigned int color, Game * g, Texture * t)
+Ghost::Ghost(unsigned int color, Game * g, Texture * t) : GameCharacter(g, t, color)
 {
-	this->color = color;
-	game = g;
-	texture = t;
 }
 
 
@@ -38,7 +36,7 @@ void Ghost::render()
 	unsigned int vulColor = int(((SDL_GetTicks() / (FRAME_RATE * 2)) % 2));
 	switch (state) {
 	case 0:
-		texture->renderFrame(game->getRenderer(), destRect, dir, color * 2 + anim);
+		texture->renderFrame(game->getRenderer(), destRect, dir, spriteCol * 2 + anim);
 		break;
 	case 1:
 		texture->renderFrame(game->getRenderer(), destRect, vulColor, 12 + anim);
@@ -67,26 +65,27 @@ void Ghost::update()
 		}
 	}
 
-	unsigned int auxDir;
+	Direction auxDir;
 	bool elegido = false;
 
 	do {
-		auxDir = distribution(generator);
+		unsigned int random = rand() % 4;
+		auxDir = (Direction) random;
 		switch (auxDir)
 		{
-		case 0:
+		case Right:
 			if (dir != 2 && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
 			break;
-		case 1:
+		case Down:
 			if (dir != 3 && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
 			break;
-		case 2:
+		case Left:
 			if (dir != 0 && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
@@ -139,11 +138,4 @@ void Ghost::forward()
 			y = game->getRows();
 		y--;
 	}
-}
-
-int Ghost::getX() {
-	return x;
-}
-int Ghost::getY() {
-	return y;
 }

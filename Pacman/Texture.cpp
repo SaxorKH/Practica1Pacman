@@ -10,7 +10,8 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	SDL_DestroyTexture(texture);
+	if(texture != nullptr)
+		SDL_DestroyTexture(texture);
 }
 
 bool Texture::load(SDL_Renderer * renderer, string filename, unsigned int numRows, unsigned int numCols)

@@ -1,12 +1,13 @@
 #pragma once
 #include "SDL.h"
-#include "Texture.h"
+#include <list>
+#include "texture.h"
 #include "Pacman.h"
 #include "Ghost.h"
 #include "GameMap.h"
-#define TOTAL_TEXTURAS 5
+
+#define TOTAL_TEXTURAS 4
 #define FRAME_RATE 150
-#define N_FANTASMAS 4
 
 using namespace std;
 
@@ -19,16 +20,21 @@ private:
 	unsigned int winHeight;
 	unsigned int cellSize = 25;
 	unsigned int startTime = 0;
+	unsigned int nChar;
+	unsigned int rows;
+	unsigned int cols;
+
 	bool exit = false;
 	bool funcional;
+	bool saveState = false;
 	Texture* textures = nullptr;
-	Pacman pacman;
-	Ghost fantasmas[N_FANTASMAS];
-	GameMap* gameMap;
-	string filename = "..\\levels\\level01.dat";
+	list<GameCharacter*> characters;
+	GameMap* gameMap = nullptr;
+	string filename = "..\\levels\\test1.dat";
 
-	void getMapDimensions(const string & filename);
+	void getMapDimensions(istream & archivo);
 	void collision();
+	void SaveState();
 
 
 
@@ -43,7 +49,7 @@ public:
 	void update();
 	bool loadMap(const string& filename);
 	void handleEvents();
-	const bool nextCell(unsigned int x, unsigned int y, unsigned int dir) const;
+	const bool nextCell(unsigned int x, unsigned int y, Direction dir) const;
 	const unsigned int getRows() const;
 	const unsigned int getCols() const;
 	void getPacmanPos(unsigned int& x, unsigned int& y);
