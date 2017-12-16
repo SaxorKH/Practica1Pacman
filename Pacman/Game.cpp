@@ -10,12 +10,34 @@ using namespace std;
 
 Game::Game()
 {
+	currentLevel = 1;
 	srand(time(nullptr));
 	characters.push_front(new Pacman(this));
-	if (!loadMap(filename)) {
-		cout << "Error cargando mapa";
+	int winX, winY;	//	Posición	de	la	ventana
+	winX = winY = SDL_WINDOWPOS_CENTERED;
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+	window = SDL_CreateWindow("Pacman", winX, winY,
+		1, 1, SDL_WINDOW_SHOWN);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (window == nullptr || renderer == nullptr) {
+		cout << "Error	initializing	SDL\n";
 		funcional = false;
 	}
+	else {
+		textures = new Texture[TOTAL_TEXTURAS];
+		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
+		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
+		funcional = textures[2].load(renderer, "..\\images\\food2.png");
+		funcional = textures[3].load(renderer, "..\\images\\food3.png");
+		if (!funcional)
+			cout << "Error loading textures\n";
+		else {
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		}
+	}
+	
 }
 
 Game::~Game()
@@ -39,6 +61,17 @@ Game::~Game()
 void Game::run()
 {
 	while (!exit) {
+		if (newLevel) {
+			string levelName = levelPrefix;
+			char *intStr = new char[2]; 
+			sprintf_s(intStr, 2,"%d", currentLevel);
+			string str = string(intStr);
+			if (currentLevel < 10)
+				levelName += "0";
+			levelName += str + ".pac";
+			
+			loadMap(levelName);
+		}
 			handleEvents();
 			update();
 			render();
@@ -73,39 +106,17 @@ void Game::update()
 
 bool Game::loadMap(const string & filename)
 {
-
 	ifstream archivo;
 	archivo.open(filename);
+
 	if (!archivo.is_open())
 		return false;
 
-	int winX, winY;	//	Posición	de	la	ventana
-	winX = winY = SDL_WINDOWPOS_CENTERED;
-
 	getMapDimensions(archivo);
+	SDL_SetWindowSize(window, winWidth, winHeight);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
 
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow(filename.c_str(), winX, winY,
-		winWidth, winHeight, SDL_WINDOW_SHOWN);
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr) {
-		cout << "Error	initializing	SDL\n";
-		funcional = false;
-	}
-	else {
-		textures = new Texture[TOTAL_TEXTURAS];
-		funcional = textures[0].load(renderer, "..\\images\\characters1.png", 4, 14);
-		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
-		funcional = textures[2].load(renderer, "..\\images\\food2.png");
-		funcional = textures[3].load(renderer, "..\\images\\food3.png");
-		if (!funcional)
-			cout << "Error loading textures\n";
-		else {
-			gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		}
-	}
 	gameMap->loadFromFile(archivo);
 	archivo >> nChar;
 	for (unsigned int i = 0; i < nChar; i++) {
@@ -119,6 +130,7 @@ bool Game::loadMap(const string & filename)
 	}
 	characters.front()->setTexture(&textures[0]);
 	characters.front()->loadFromFile(archivo);
+	newLevel = false;
 	return true;
 }
 
@@ -246,6 +258,17 @@ void Game::SaveState()
 	// implementar guardado
 }
 
+void Game::cleanMap()
+{
+	if (gameMap != nullptr)
+		delete gameMap;
+	while (characters.size != 1) {
+		delete characters.back();
+		characters.pop_back();
+	}
+}
+
+
 const unsigned int Game::getRows() const
 {
 	return rows;
@@ -270,5 +293,15 @@ void Game::ghostVulnerable()
 	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
 		Ghost * g = (Ghost*)(*it);
 		g->vulnerable();
+	}
+}
+
+void Game::nextLevel()
+{
+	if (currentLevel == TOTAL_LEVELS)
+		endGame();
+	else {
+		currentLevel++;
+		newLevel = true;
 	}
 }

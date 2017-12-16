@@ -88,7 +88,7 @@ void GameMap::update()
 		break;
 	}
 	if (totalFood == 0)
-		game->endGame();
+		game->nextLevel();
 }
 
 const unsigned int GameMap::getRows() const

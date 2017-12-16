@@ -8,6 +8,7 @@
 
 #define TOTAL_TEXTURAS 4
 #define FRAME_RATE 150
+#define TOTAL_LEVELS 2
 
 using namespace std;
 
@@ -23,18 +24,22 @@ private:
 	unsigned int nChar;
 	unsigned int rows;
 	unsigned int cols;
+	unsigned int points;
+	unsigned int currentLevel;
 
 	bool exit = false;
 	bool funcional;
 	bool saveState = false;
+	bool newLevel = true;
 	Texture* textures = nullptr;
 	list<GameCharacter*> characters;
 	GameMap* gameMap = nullptr;
-	string filename = "..\\levels\\level01.pac";
+	string levelPrefix = "..\\levels\\level";
 
 	void getMapDimensions(istream & archivo);
 	void collision(list<GameCharacter*>::iterator ini);
 	void SaveState();
+	void cleanMap();
 
 
 
@@ -55,5 +60,6 @@ public:
 	void getPacmanPos(unsigned int& x, unsigned int& y);
 	void endGame();
 	void ghostVulnerable();
+	void nextLevel();
 };
 
