@@ -26,6 +26,8 @@ protected:
 	GameCharacter(Game * g);
 	GameCharacter(Game * g, Texture * t, unsigned int col);
 
+	void forward();
+
 public:
 	virtual ~GameCharacter();
 	virtual void render();
@@ -35,6 +37,5 @@ public:
 	virtual void die();
 	int getX();
 	int getY();
-	void forward();
 };
 

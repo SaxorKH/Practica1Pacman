@@ -30,7 +30,7 @@ void GameCharacter::render()
 	destRect.x = x * cellSize;
 	destRect.y = y * cellSize;
 	anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
-	texture->renderFrame(game->getRenderer(), destRect, dir, spriteCol + anim);
+	texture->renderFrame(game->getRenderer(), destRect, dir, spriteCol * 2 + anim);
 }
 
 void GameCharacter::loadFromFile(istream &archivo)

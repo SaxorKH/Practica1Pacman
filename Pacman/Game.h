@@ -30,10 +30,10 @@ private:
 	Texture* textures = nullptr;
 	list<GameCharacter*> characters;
 	GameMap* gameMap = nullptr;
-	string filename = "..\\levels\\test1.dat";
+	string filename = "..\\levels\\level01.pac";
 
 	void getMapDimensions(istream & archivo);
-	void collision();
+	void collision(list<GameCharacter*>::iterator ini);
 	void SaveState();
 
 

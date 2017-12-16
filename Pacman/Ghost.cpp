@@ -3,8 +3,27 @@
 #include <cstdlib>
 using namespace std;
 
-std::uniform_int_distribution<int> Ghost::distribution(0,3);
-std::default_random_engine Ghost::generator;
+
+bool Ghost::sinSalida(Direction nextDir)
+{
+	Direction dirUno, dirDos;
+	if (nextDir == Right)
+		dirUno = Up;
+	else {
+		unsigned int ui = nextDir-1;
+		dirUno = (Direction) ui;
+	}
+
+	if (nextDir == Up)
+		dirDos = Right;
+	else {
+		unsigned int ui = nextDir + 1;
+		dirDos = (Direction) ui;
+	}
+
+	return !game->nextCell(x, y, dirUno) && !game->nextCell(x, y, nextDir) && !game->nextCell(x, y, dirDos);
+
+}
 
 Ghost::Ghost()
 {
@@ -27,23 +46,22 @@ void Ghost::setPos(unsigned int row, unsigned int col)
 
 void Ghost::render()
 {
-	SDL_Rect destRect;
-	unsigned int cellSize = game->getCellSize();
-	destRect.w = destRect.h = cellSize;
-	destRect.x = x * cellSize;
-	destRect.y = y * cellSize;
-	anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
-	unsigned int vulColor = int(((SDL_GetTicks() / (FRAME_RATE * 2)) % 2));
-	switch (state) {
-	case 0:
-		texture->renderFrame(game->getRenderer(), destRect, dir, spriteCol * 2 + anim);
-		break;
-	case 1:
-		texture->renderFrame(game->getRenderer(), destRect, vulColor, 12 + anim);
-		break;
-	case 2:
-		texture->renderFrame(game->getRenderer(), destRect, 2, 12 + anim);
-		break;
+
+	if (state == Alive || state == Adult)
+		GameCharacter::render();
+	else {
+		SDL_Rect destRect;
+		unsigned int cellSize = game->getCellSize();
+		destRect.w = destRect.h = cellSize;
+		destRect.x = x * cellSize;
+		destRect.y = y * cellSize;
+		anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
+		if (state == Scared || state == Old) {
+			unsigned int vulColor = int(((SDL_GetTicks() / (FRAME_RATE * 2)) % 2));
+			texture->renderFrame(game->getRenderer(), destRect, vulColor, 12 + anim);
+		}
+		else
+			texture->renderFrame(game->getRenderer(), destRect, 2, 12 + anim);
 	}
 }
 
@@ -51,15 +69,15 @@ void Ghost::update()
 {
 	unsigned int frameTime;
 	switch (state) {
-	case 1:
+	case Scared:
 		frameTime = SDL_GetTicks() - startVulTime;
 		if (vulTime < frameTime)
-			state = 0;
+			state = defaultState;
 		break;
-	case 2:
+	case Dead:
 		frameTime = SDL_GetTicks() - startDeadTime;
 		if (deadTime < frameTime) {
-			state = 0;
+			state = Alive;
 			x = inix;
 			y = iniy;
 		}
@@ -74,28 +92,37 @@ void Ghost::update()
 		switch (auxDir)
 		{
 		case Right:
-			if (dir != 2 && game->nextCell(x, y, auxDir)) {
+			if (dir != Left && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
+			else if (dir == Left && sinSalida(auxDir))
+				elegido = true;
+
 			break;
 		case Down:
-			if (dir != 3 && game->nextCell(x, y, auxDir)) {
+			if (dir != Up && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
+			else if (dir == Up && sinSalida(auxDir))
+				elegido = true;
 			break;
 		case Left:
-			if (dir != 0 && game->nextCell(x, y, auxDir)) {
+			if (dir != Right && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
+			else if (dir == Right && sinSalida(auxDir))
+				elegido = true;
 			break;
-		case 3:
-			if (dir != 1 && game->nextCell(x, y, auxDir)) {
+		case Up:
+			if (dir != Down && game->nextCell(x, y, auxDir)) {
 				dir = auxDir;
 				elegido = true;
 			}
+			else if (dir == Down && sinSalida(auxDir))
+				elegido = true;
 			break;
 		}
 	} while (!elegido);
@@ -119,23 +146,4 @@ void Ghost::die()
 unsigned int Ghost::getState()
 {
 	return state;
-}
-
-
-void Ghost::forward()
-{
-	if (dir == 0)
-		x = (x + 1) % game->getCols();
-	else if (dir == 1)
-		y = (y + 1) % game->getRows();
-	else if (dir == 2) {
-		if (x == 0)
-			x = game->getCols();
-		x--;
-	}
-	else if (dir == 3) {
-		if (y == 0)
-			y = game->getRows();
-		y--;
-	}
 }

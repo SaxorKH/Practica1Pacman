@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "SmartGhost.h"
 #include <fstream>
 #include <cstdlib>
 #include <time.h>
@@ -61,11 +62,10 @@ void Game::update()
 {
 	unsigned int frameTime = SDL_GetTicks() - startTime;
 	if (FRAME_RATE < frameTime) {
-		characters.front()->update();
-		collision();
-		for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++)
+		for (list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); it++){
 			(*it)->update();
-		collision();
+			collision(it);
+		}
 		gameMap->update();
 		startTime = SDL_GetTicks();
 	}
@@ -109,11 +109,10 @@ bool Game::loadMap(const string & filename)
 	gameMap->loadFromFile(archivo);
 	archivo >> nChar;
 	for (unsigned int i = 0; i < nChar; i++) {
-		bool tipo;
+		int tipo;
 		archivo >> tipo;
-		if (tipo) {
-
-		}
+		if (tipo == 1)
+			characters.push_back(new SmartGhost(this, &textures[0]));
 		else
 			characters.push_back(new Ghost(i%4, this, &textures[0]));
 		characters.back()->loadFromFile(archivo);
@@ -207,15 +206,25 @@ void Game::getMapDimensions(istream &archivo) {
 	winHeight = rows*cellSize;
 }
 
-void Game::collision()
+void Game::collision(list<GameCharacter*>::iterator ini)
 {
-	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
-		if ((*it)->getX() == characters.front()->getX() && (*it)->getY() == characters.front()->getY()) {
-			Ghost* aux = (Ghost*)(*it);
-			if (aux->getState() == Escared)
-				aux->die();
-			else if (aux->getState() == Alive)
-				characters.front()->die();
+	for (list<GameCharacter*>::iterator it = ++ini; it != characters.end(); it++) {
+		if ((*it)->getX() == (*ini)->getX() && (*it)->getY() == (*ini)->getY()) {
+			if (*ini == characters.front()) {
+				Ghost* aux = (Ghost*)(*it);
+				if (aux->getState() == Scared || aux->getState() == Old)
+					aux->die();
+				else if (aux->getState() == Alive || aux->getState() == Adult)
+					characters.front()->die();
+			}
+			else{
+				Ghost* auxIni = (Ghost*)(*ini);
+				Ghost* aux = (Ghost*)(*it);
+				if (auxIni->getState() == Adult && aux->getState() == Adult) {
+					
+				}
+
+			}
 		}
 	}
 }
