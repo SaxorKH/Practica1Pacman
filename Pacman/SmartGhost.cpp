@@ -54,6 +54,13 @@ void SmartGhost::update()
 		}
 		if (posNum > 2)
 			dir = mejorDir;
+		else if (!game->nextCell(x, y, dir)) {
+			for (int i = 0; i < 4; i++){
+				if (game->nextCell(x, y, (Direction)i))
+					dir = (Direction)i;
+			}
+		}
+
 		forward();
 		break;
 	}
