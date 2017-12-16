@@ -20,9 +20,41 @@ void SmartGhost::update()
 		pacY = pacYAux;
 		int distX, distY;
 
-		distX = pacX - x;
-		distY = pacY - y;
-		
+		Direction mejorDir;
+		int mejor =  999;
+		int posNum = 0;
+		for (int i = 0; i < 4; i++) {
+			if (game->nextCell(x, y, (Direction)i)) {
+				posNum++;
+				switch ((Direction)i) {
+				default:
+					break;
+				case Up:
+					distX = pacX - x;
+					distY = pacY - y - 1;
+					break;
+				case Left:
+					distX = pacX - x -1;
+					distY = pacY - y;
+					break;
+				case Down:
+					distX = pacX - x;
+					distY = pacY - y - 1;
+					break;
+				case Right:
+					distX = pacX - x - 1;
+					distY = pacY - y;
+					break;
+				}
+				if (distX + distY < mejor) {
+					mejorDir = (Direction)i;
+					mejor = distX + distY;
+				}
+			}
+		}
+		if (posNum > 2)
+			dir = mejorDir;
+		forward();
 		break;
 	}
 
