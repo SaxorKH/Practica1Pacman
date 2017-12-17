@@ -89,50 +89,18 @@ void Ghost::update()
 	do {
 		unsigned int random = rand() % 4;
 		auxDir = (Direction) random;
-		switch (auxDir)
-		{
-		case Right:
-			if (dir != Left && game->nextCell(x, y, auxDir)) {
-				dir = auxDir;
-				elegido = true;
-			}
-			else if (dir == Left && sinSalida(auxDir))
-				elegido = true;
-
-			break;
-		case Down:
-			if (dir != Up && game->nextCell(x, y, auxDir)) {
-				dir = auxDir;
-				elegido = true;
-			}
-			else if (dir == Up && sinSalida(auxDir))
-				elegido = true;
-			break;
-		case Left:
-			if (dir != Right && game->nextCell(x, y, auxDir)) {
-				dir = auxDir;
-				elegido = true;
-			}
-			else if (dir == Right && sinSalida(auxDir))
-				elegido = true;
-			break;
-		case Up:
-			if (dir != Down && game->nextCell(x, y, auxDir)) {
-				dir = auxDir;
-				elegido = true;
-			}
-			else if (dir == Down && sinSalida(auxDir))
-				elegido = true;
-			break;
-		}
+		if ((auxDir != (dir + 2) % 4 && game->nextCell(x, y, auxDir)) || (auxDir == (dir + 2) % 4 && sinSalida(auxDir))) {
+			dir = auxDir;
+			elegido = true;
+		} 
 	} while (!elegido);
 	forward();
 }
 
-void Ghost::vulnerable()
+void Ghost::scared()
 {
-	if (state != 2) {
-		state = 1;
+	if (state != Dead && state != Old) {
+		state = Scared;
 		startVulTime = SDL_GetTicks();
 	}
 }

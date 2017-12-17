@@ -23,18 +23,20 @@ void SmartGhost::update()
 		Direction mejorDir;
 		int mejor =  999;
 		int posNum = 0;
+		if (sinSalida(dir))
+			dir = (Direction) ((dir + 2) % 2);
 		for (int i = 0; i < 4; i++) {
-			if (game->nextCell(x, y, (Direction)i)) {
+			if (i != ((dir+2)%4) && game->nextCell(x, y, (Direction)i)) {
 				posNum++;
 				switch ((Direction)i) {
 				default:
 					break;
 				case Up:
 					distX = pacX - x;
-					distY = pacY - y - 1;
+					distY = pacY - y + 1;
 					break;
 				case Left:
-					distX = pacX - x -1;
+					distX = pacX - x + 1;
 					distY = pacY - y;
 					break;
 				case Down:
@@ -46,28 +48,23 @@ void SmartGhost::update()
 					distY = pacY - y;
 					break;
 				}
-				if (distX + distY < mejor) {
+				if (abs(distX) + abs(distY) < mejor) {
 					mejorDir = (Direction)i;
-					mejor = distX + distY;
+					mejor = abs(distX) + abs(distY);
 				}
 			}
 		}
-		if (posNum > 2)
 			dir = mejorDir;
-		else if (!game->nextCell(x, y, dir)) {
-			for (int i = 0; i < 4; i++){
-				if (game->nextCell(x, y, (Direction)i))
-					dir = (Direction)i;
-			}
-		}
 
 		forward();
 		break;
 	}
 
 	age++;
-	if (age == ADULT_AGE)
+	if (age == ADULT_AGE) {
 		state = Adult;
+		defaultState = Adult;
+	}
 	if (age == OLD_AGE)
 		state = Old;
 }

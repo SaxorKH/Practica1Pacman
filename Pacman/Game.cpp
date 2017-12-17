@@ -262,7 +262,7 @@ void Game::cleanMap()
 {
 	if (gameMap != nullptr)
 		delete gameMap;
-	while (characters.size != 1) {
+	while (characters.size() != 1) {
 		delete characters.back();
 		characters.pop_back();
 	}
@@ -288,11 +288,11 @@ void Game::endGame()
 	exit = true;
 }
 
-void Game::ghostVulnerable()
+void Game::ghostScared()
 {
 	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
 		Ghost * g = (Ghost*)(*it);
-		g->vulnerable();
+		g->scared();
 	}
 }
 

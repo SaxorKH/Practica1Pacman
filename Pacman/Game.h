@@ -59,7 +59,7 @@ public:
 	const unsigned int getCols() const;
 	void getPacmanPos(unsigned int& x, unsigned int& y);
 	void endGame();
-	void ghostVulnerable();
+	void ghostScared();
 	void nextLevel();
 };
 

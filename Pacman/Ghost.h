@@ -31,7 +31,7 @@ public:
 	void setPos(unsigned int row, unsigned int col);
 	void render();
 	virtual void update();
-	void vulnerable();
+	void scared();
 	void die();
 	unsigned int getState();
 };
