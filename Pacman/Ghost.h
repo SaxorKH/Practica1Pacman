@@ -33,7 +33,7 @@ public:
 	virtual void render();
 	virtual void update();
 	void scared();
-	void die();
+	virtual void die();
 	unsigned int getState();
 };
 

@@ -60,19 +60,25 @@ void SmartGhost::update()
 
 	age++;
 	if (age == ADULT_AGE) {
-		state = Adult;
+		if(state != Scared)
+			state = Adult;
 		defaultState = Adult;
 	}
-	if (age == OLD_AGE)
+	if (age == OLD_AGE) {
 		state = Old;
+		defaultState = Old;
+	}
+		
 }
 
 void SmartGhost::loadFromFile(istream & archivo)
 {
 	Ghost::loadFromFile(archivo);
 	archivo >> age;
-	if (age >= OLD_AGE)
+	if (age >= OLD_AGE){
 		state = Old;
+		defaultState = Old;
+	}
 	else if (age >= ADULT_AGE) {
 		state = Adult;
 		defaultState = Adult;
@@ -81,6 +87,14 @@ void SmartGhost::loadFromFile(istream & archivo)
 
 void SmartGhost::saveToFile(ostream & archivo)
 {
+}
+
+void SmartGhost::die()
+{
+	if (state != Old) {
+		Ghost::die();
+	}
+	game->increasePoints(200);
 }
 
 

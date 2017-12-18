@@ -24,7 +24,7 @@ private:
 	unsigned int nChar;
 	unsigned int rows;
 	unsigned int cols;
-	unsigned int points;
+	unsigned int points = 0;
 	unsigned int currentLevel;
 
 	bool exit = false;
@@ -61,5 +61,6 @@ public:
 	void endGame();
 	void ghostScared();
 	void nextLevel();
+	void increasePoints(unsigned int p);
 };
 

@@ -229,8 +229,16 @@ void Game::collision(list<GameCharacter*>::iterator character)
 					aux = (Ghost*)(*character);
 				else if(*character == characters.front())
 					aux = (Ghost*)(*it);
-				if (aux->getState() == Scared || aux->getState() == Old)
+				if (aux->getState() == Scared || aux->getState() == Old) {
 					aux->die();
+					if (aux->getState() == Old) {
+						(*it)->~GameCharacter();
+						it = characters.erase(it);
+						it--;
+					}
+						
+				}
+					
 				else if (aux->getState() == Alive || aux->getState() == Adult)
 					characters.front()->die();
 			}
@@ -316,4 +324,9 @@ void Game::nextLevel()
 		currentLevel++;
 		newLevel = true;
 	}
+}
+
+void Game::increasePoints(unsigned int p)
+{
+	points += p;
 }

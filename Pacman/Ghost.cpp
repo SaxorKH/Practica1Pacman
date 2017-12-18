@@ -80,6 +80,7 @@ void Ghost::update()
 			state = Alive;
 			x = inix;
 			y = iniy;
+			dir = None;
 		}
 	}
 
@@ -110,8 +111,9 @@ void Ghost::scared()
 
 void Ghost::die()
 {
-	state = 2;
+	state = Dead;
 	startDeadTime = SDL_GetTicks();
+	game->increasePoints(500);
 }
 
 unsigned int Ghost::getState()

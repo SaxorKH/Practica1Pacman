@@ -81,9 +81,14 @@ void GameMap::update()
 	game->getPacmanPos(px, py);
 	switch (getCellType(py, px)) {
 	case Vitamins:
-		game->ghostScared();
+		game->increasePoints(50);
+		setCellType(py, px, Empty);
+		totalFood--;
+		game->ghostScared(); 
+		break;
 	case Food:
 		setCellType(py, px, Empty);
+		game->increasePoints(10);
 		totalFood--;
 		break;
 	}

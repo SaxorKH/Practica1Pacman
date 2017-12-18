@@ -5,7 +5,7 @@ class SmartGhost :	public Ghost
 {
 private:
 	static const unsigned int ADULT_AGE = 100;
-	static const unsigned int OLD_AGE = 1000;
+	static const unsigned int OLD_AGE = 200;
 	unsigned int age = 0;
 	SDL_Rect calcDestRect();
 
@@ -18,5 +18,6 @@ public:
 	void update();
 	void loadFromFile(istream &archivo);
 	void saveToFile(ostream &archivo);
+	void die();
 };
 
