@@ -25,6 +25,7 @@ protected:
 	GameCharacter();
 	GameCharacter(Game * g);
 	GameCharacter(Game * g, Texture * t, unsigned int col);
+	GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 
 	void forward();
 
@@ -37,5 +38,8 @@ public:
 	virtual void die();
 	int getX();
 	int getY();
+	int getIniX();
+	int getIniY();
+	Direction getDir();
 };
 

@@ -218,24 +218,36 @@ void Game::getMapDimensions(istream &archivo) {
 	winHeight = rows*cellSize;
 }
 
-void Game::collision(list<GameCharacter*>::iterator ini)
+void Game::collision(list<GameCharacter*>::iterator character)
 {
-	for (list<GameCharacter*>::iterator it = ++ini; it != characters.end(); it++) {
-		if ((*it)->getX() == (*ini)->getX() && (*it)->getY() == (*ini)->getY()) {
-			if (*ini == characters.front()) {
-				Ghost* aux = (Ghost*)(*it);
+	list<GameCharacter*>::iterator it = characters.begin();
+	for (it; it != characters.end(); it++) {
+		if (it != character && (*it)->getX() == (*character)->getX() && (*it)->getY() == (*character)->getY()) {
+			if (*character == characters.front() || *it == characters.front()) {
+				Ghost * aux = nullptr;
+				if (*it == characters.front())
+					aux = (Ghost*)(*character);
+				else if(*character == characters.front())
+					aux = (Ghost*)(*it);
 				if (aux->getState() == Scared || aux->getState() == Old)
 					aux->die();
 				else if (aux->getState() == Alive || aux->getState() == Adult)
 					characters.front()->die();
 			}
 			else{
-				Ghost* auxIni = (Ghost*)(*ini);
+				Ghost* auxIni = (Ghost*)(*character);
 				Ghost* aux = (Ghost*)(*it);
-				if (auxIni->getState() == Adult && aux->getState() == Adult) {
-					
+				if (auxIni->getState() == Adult && aux->getState() == Adult && auxIni->getDir() != aux->getDir()) {
+					int i = -1;
+					bool space = false;
+					while (!space && i < 4) {
+						i++;
+						space = nextCell(aux->getX(), aux->getY(), (Direction)i);
+					}
+					if (space) {
+						characters.push_back(new SmartGhost(this, &textures[0], auxIni->getIniX(), auxIni->getIniY(), aux->getX(), aux->getY(), (Direction)i));
+					}
 				}
-
 			}
 		}
 	}

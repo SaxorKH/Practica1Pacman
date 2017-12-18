@@ -17,6 +17,17 @@ GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col) : GameObje
 	spriteCol = col;
 }
 
+GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameObject(g)
+{
+	texture = t;
+	spriteCol = col;
+	this->inix = inix;
+	this->iniy = iniy;
+	this->x = x;
+	this->y = y;
+	this->dir = dir;
+}
+
 
 GameCharacter::~GameCharacter()
 {
@@ -67,6 +78,16 @@ int GameCharacter::getY()
 	return y;
 }
 
+int GameCharacter::getIniX()
+{
+	return inix;
+}
+
+int GameCharacter::getIniY()
+{
+	return iniy;
+}
+
 void GameCharacter::forward()
 {
 	if (dir == 0)
@@ -83,4 +104,9 @@ void GameCharacter::forward()
 			y = game->getRows();
 		y--;
 	}
+}
+
+Direction GameCharacter::getDir()
+{
+	return dir;
 }

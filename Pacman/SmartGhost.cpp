@@ -85,12 +85,19 @@ void SmartGhost::saveToFile(ostream & archivo)
 {
 }
 
+
+
 SmartGhost::SmartGhost()
 {
 }
 
 SmartGhost::SmartGhost(Game * a, Texture * b) : Ghost(4,  a, b)
 {
+}
+
+SmartGhost::SmartGhost(Game * g, Texture * t, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : Ghost(g, t, 4, inix, iniy, x, y, dir)
+{
+	forward();
 }
 
 

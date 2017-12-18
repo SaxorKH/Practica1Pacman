@@ -26,6 +26,7 @@ protected:
 public:
 	Ghost();
 	Ghost(unsigned int color, Game* a, Texture* b);
+	Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 	virtual ~Ghost();
 
 	void setPos(unsigned int row, unsigned int col);

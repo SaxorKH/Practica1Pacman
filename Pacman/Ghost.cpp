@@ -33,6 +33,10 @@ Ghost::Ghost(unsigned int color, Game * g, Texture * t) : GameCharacter(g, t, co
 {
 }
 
+Ghost::Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameCharacter(g, t, col, inix, iniy, x, y, dir)
+{
+}
+
 
 Ghost::~Ghost()
 {

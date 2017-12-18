@@ -10,7 +10,8 @@ private:
 
 public:
 	SmartGhost();
-	SmartGhost(Game* a, Texture* b);
+	SmartGhost(Game* a, Texture* b); 
+	SmartGhost(Game * g, Texture * t, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 	~SmartGhost();
 
 	void update();
