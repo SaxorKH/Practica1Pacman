@@ -8,7 +8,7 @@ using namespace std;
 class Pacman : public GameCharacter
 {
 private:
-	Direction dirbuffer = Right; //Movement direction buffer
+	Direction dirbuffer = None; //Movement direction buffer
 	unsigned int lives = 3; //Numberof remaining lifes
 	unsigned int energy = 0;//Remaining energy
 

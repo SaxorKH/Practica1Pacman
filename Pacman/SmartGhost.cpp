@@ -22,12 +22,10 @@ void SmartGhost::update()
 
 		Direction mejorDir;
 		int mejor =  999;
-		int posNum = 0;
 		if (sinSalida(dir))
 			dir = (Direction) ((dir + 2) % 2);
 		for (int i = 0; i < 4; i++) {
 			if (i != ((dir+2)%4) && game->nextCell(x, y, (Direction)i)) {
-				posNum++;
 				switch ((Direction)i) {
 				default:
 					break;
@@ -86,6 +84,19 @@ void SmartGhost::saveToFile(ostream & archivo)
 }
 
 
+
+SDL_Rect SmartGhost::calcDestRect()
+{
+	if (age >= ADULT_AGE)
+		return GameCharacter::calcDestRect();
+	SDL_Rect destRect;
+	unsigned int cellSize = game->getCellSize();
+	unsigned int ghostSize = cellSize / (3.0f - (age * 2.0f / ADULT_AGE));
+	destRect.w = destRect.h = ghostSize;
+	destRect.x = x * cellSize + cellSize / 2 - ghostSize / 2;
+	destRect.y = y * cellSize + cellSize / 2 - ghostSize / 2;
+	return destRect;
+}
 
 SmartGhost::SmartGhost()
 {

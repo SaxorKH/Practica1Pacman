@@ -4,9 +4,10 @@
 class SmartGhost :	public Ghost
 {
 private:
-	static const unsigned int ADULT_AGE = 10;
+	static const unsigned int ADULT_AGE = 100;
 	static const unsigned int OLD_AGE = 1000;
 	unsigned int age = 0;
+	SDL_Rect calcDestRect();
 
 public:
 	SmartGhost();

@@ -69,7 +69,7 @@ void Game::run()
 			if (currentLevel < 10)
 				levelName += "0";
 			levelName += str + ".pac";
-			
+			cleanMap();
 			loadMap(levelName);
 		}
 			handleEvents();

@@ -35,13 +35,13 @@ GameCharacter::~GameCharacter()
 
 void GameCharacter::render()
 {
-	SDL_Rect destRect;
-	unsigned int cellSize = game->getCellSize();
-	destRect.w = destRect.h = cellSize;
-	destRect.x = x * cellSize;
-	destRect.y = y * cellSize;
+	SDL_Rect destRect = calcDestRect();
 	anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
-	texture->renderFrame(game->getRenderer(), destRect, dir, spriteCol * 2 + anim);
+	Direction auxDir;
+	if (dir == None)
+		auxDir = Right;
+	else auxDir = dir;
+	texture->renderFrame(game->getRenderer(), destRect, auxDir, spriteCol * 2 + anim);
 }
 
 void GameCharacter::loadFromFile(istream &archivo)
@@ -104,6 +104,16 @@ void GameCharacter::forward()
 			y = game->getRows();
 		y--;
 	}
+}
+
+SDL_Rect GameCharacter::calcDestRect()
+{
+	SDL_Rect destRect;
+	unsigned int cellSize = game->getCellSize();
+	destRect.w = destRect.h = cellSize;
+	destRect.x = x * cellSize;
+	destRect.y = y * cellSize;
+	return destRect;
 }
 
 Direction GameCharacter::getDir()

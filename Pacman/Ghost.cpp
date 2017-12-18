@@ -54,11 +54,7 @@ void Ghost::render()
 	if (state == Alive || state == Adult)
 		GameCharacter::render();
 	else {
-		SDL_Rect destRect;
-		unsigned int cellSize = game->getCellSize();
-		destRect.w = destRect.h = cellSize;
-		destRect.x = x * cellSize;
-		destRect.y = y * cellSize;
+		SDL_Rect destRect = calcDestRect();
 		anim = int(((SDL_GetTicks() / FRAME_RATE) % 2));
 		if (state == Scared || state == Old) {
 			unsigned int vulColor = int(((SDL_GetTicks() / (FRAME_RATE * 2)) % 2));
@@ -93,6 +89,8 @@ void Ghost::update()
 	do {
 		unsigned int random = rand() % 4;
 		auxDir = (Direction) random;
+		if (dir == None)
+			dir = auxDir;
 		if ((auxDir != (dir + 2) % 4 && game->nextCell(x, y, auxDir)) || (auxDir == (dir + 2) % 4 && sinSalida(auxDir))) {
 			dir = auxDir;
 			elegido = true;
@@ -106,6 +104,7 @@ void Ghost::scared()
 	if (state != Dead && state != Old) {
 		state = Scared;
 		startVulTime = SDL_GetTicks();
+		dir = (Direction)((dir + 2) % 4);
 	}
 }
 

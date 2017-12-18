@@ -30,7 +30,7 @@ public:
 	virtual ~Ghost();
 
 	void setPos(unsigned int row, unsigned int col);
-	void render();
+	virtual void render();
 	virtual void update();
 	void scared();
 	void die();

@@ -20,11 +20,11 @@ void Pacman::setPos(unsigned int row, unsigned int col) {
 }
 
 void Pacman::update() {
-		if (game->nextCell(x, y, dirbuffer)) {
+		if (dirbuffer != None && game->nextCell(x, y, dirbuffer)) {
 			dir = dirbuffer;
 			forward();
 		}
-		else if (game->nextCell(x, y, dir))
+		else if (dir != None && game->nextCell(x, y, dir))
 			forward();
 }
 
@@ -36,6 +36,7 @@ void Pacman::die()
 		lives--;
 		x = inix;
 		y = iniy;
+		dir = None;
 	}
 }
 

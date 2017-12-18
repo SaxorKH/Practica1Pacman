@@ -6,7 +6,8 @@ enum Direction {
 	Right,
 	Down,
 	Left,
-	Up
+	Up,
+	None
 };
 
 class GameCharacter : public GameObject
@@ -16,7 +17,7 @@ protected:
 	unsigned int y = 0;		// Position Y
 	unsigned int inix = 0;	//Start Position X
 	unsigned int iniy = 0;	//Start Position Y
-	Direction dir = Right;	//Movement direction
+	Direction dir = None;	//Movement direction
 	unsigned int anim = 0;
 	unsigned int spriteCol;
 
@@ -28,6 +29,7 @@ protected:
 	GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 
 	void forward();
+	virtual SDL_Rect calcDestRect();
 
 public:
 	virtual ~GameCharacter();
