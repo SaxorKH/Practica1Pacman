@@ -20,6 +20,13 @@ void Pacman::setPos(unsigned int row, unsigned int col) {
 }
 
 void Pacman::update() {
+	if (hasEnergy) {
+		energy++;
+		if (energy == VUL_TIME) {
+			hasEnergy = false;
+			energy = 0;
+		}
+	}
 		if (dirbuffer != None && game->nextCell(x, y, dirbuffer)) {
 			dir = dirbuffer;
 			forward();
@@ -42,4 +49,28 @@ void Pacman::die()
 
 void Pacman::bufferUpdate(Direction input) {
 		dirbuffer = input;
+}
+
+void Pacman::loadFromfile(istream & archivo, bool saveFile)
+{
+	GameCharacter::loadFromFile(archivo);
+	if (saveFile) {
+		unsigned int energy;
+		archivo >> energy;
+		if (energy != 0) {
+			game->ghostScared(energy);
+		}
+		archivo >> lives;
+	}
+}
+
+void Pacman::startEnergy()
+{
+	hasEnergy = true;
+}
+
+void Pacman::setEnergy(unsigned int en)
+{
+	energy = en;
+	startEnergy();
 }

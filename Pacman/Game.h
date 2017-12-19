@@ -6,10 +6,10 @@
 #include "Ghost.h"
 #include "GameMap.h"
 
-#define TOTAL_TEXTURAS 4
+#define TOTAL_TEXTURAS 5
 #define FRAME_RATE 150
 #define TOTAL_LEVELS 2
-
+#define VUL_TIME 10000
 using namespace std;
 
 class Game
@@ -52,14 +52,14 @@ public:
 	void run();
 	void render();
 	void update();
-	bool loadMap(const string& filename);
+	bool loadMap(const string& filename, bool savefile = false);
 	void handleEvents();
 	const bool nextCell(unsigned int x, unsigned int y, Direction dir) const;
 	const unsigned int getRows() const;
 	const unsigned int getCols() const;
 	void getPacmanPos(unsigned int& x, unsigned int& y);
 	void endGame();
-	void ghostScared();
+	void ghostScared(unsigned int energy = 0);
 	void nextLevel();
 	void increasePoints(unsigned int p);
 };

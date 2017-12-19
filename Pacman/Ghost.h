@@ -13,7 +13,6 @@ enum GhostState {
 class Ghost : public GameCharacter
 {
 protected:
-	static const unsigned int vulTime = 10000;
 	static const unsigned int deadTime = 5000;
 	GhostState defaultState = Alive;
 
@@ -32,7 +31,7 @@ public:
 	void setPos(unsigned int row, unsigned int col);
 	virtual void render();
 	virtual void update();
-	void scared();
+	void scared(unsigned int energy = 0);
 	virtual void die();
 	unsigned int getState();
 };

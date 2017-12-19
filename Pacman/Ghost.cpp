@@ -71,7 +71,7 @@ void Ghost::update()
 	switch (state) {
 	case Scared:
 		frameTime = SDL_GetTicks() - startVulTime;
-		if (vulTime < frameTime)
+		if (VUL_TIME < frameTime)
 			state = defaultState;
 		break;
 	case Dead:
@@ -92,7 +92,7 @@ void Ghost::update()
 		auxDir = (Direction) random;
 		if (dir == None)
 			dir = auxDir;
-		if ((auxDir != (dir + 2) % 4 && game->nextCell(x, y, auxDir)) || (auxDir == (dir + 2) % 4 && sinSalida(auxDir))) {
+		if ((auxDir != (dir + 2) % 4 && game->nextCell(x, y, auxDir)) || (auxDir == (dir + 2) % 4 && sinSalida(dir))) {
 			dir = auxDir;
 			elegido = true;
 		} 
@@ -100,11 +100,11 @@ void Ghost::update()
 	forward();
 }
 
-void Ghost::scared()
+void Ghost::scared(unsigned int energy)
 {
 	if (state != Dead && state != Old) {
 		state = Scared;
-		startVulTime = SDL_GetTicks();
+		startVulTime = SDL_GetTicks() + energy;
 		dir = (Direction)((dir + 2) % 4);
 	}
 }

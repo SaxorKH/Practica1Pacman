@@ -44,7 +44,7 @@ void GameCharacter::render()
 	texture->renderFrame(game->getRenderer(), destRect, auxDir, spriteCol * 2 + anim);
 }
 
-void GameCharacter::loadFromFile(istream &archivo)
+void GameCharacter::loadFromFile(istream &archivo, bool savefile)
 {
 	archivo >> x;
 	archivo >> y;

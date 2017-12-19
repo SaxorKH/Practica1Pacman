@@ -11,6 +11,7 @@ private:
 	Direction dirbuffer = None; //Movement direction buffer
 	unsigned int lives = 3; //Numberof remaining lifes
 	unsigned int energy = 0;//Remaining energy
+	bool hasEnergy = false;
 
 public:
 	Pacman();
@@ -21,5 +22,8 @@ public:
 	void update();
 	void die();
 	void bufferUpdate(Direction input);
+	void startEnergy();
+	void setEnergy(unsigned int en);
+	void loadFromfile(istream &archivo, bool saveFile = false);
 };
 

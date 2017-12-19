@@ -16,7 +16,7 @@ public:
 
 	virtual void render();
 	virtual void update();
-	virtual void loadFromFile(istream &archivo);
+	virtual void loadFromFile(istream &archivo, bool x = false);
 	virtual void saveToFile();
 
 };

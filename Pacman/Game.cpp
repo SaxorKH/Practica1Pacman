@@ -31,6 +31,7 @@ Game::Game()
 		funcional = textures[1].load(renderer, "..\\images\\wall2.png");
 		funcional = textures[2].load(renderer, "..\\images\\food2.png");
 		funcional = textures[3].load(renderer, "..\\images\\food3.png");
+		funcional = textures[4].load(renderer, "..\\images\\font.jpg", 10, 10);
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
@@ -104,14 +105,17 @@ void Game::update()
 	}
 }
 
-bool Game::loadMap(const string & filename)
+bool Game::loadMap(const string & filename, bool savefile)
 {
 	ifstream archivo;
 	archivo.open(filename);
 
 	if (!archivo.is_open())
 		return false;
-
+	if (savefile) {
+		archivo >> currentLevel;
+		archivo >> points;
+	}
 	getMapDimensions(archivo);
 	SDL_SetWindowSize(window, winWidth, winHeight);
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
@@ -128,8 +132,9 @@ bool Game::loadMap(const string & filename)
 			characters.push_back(new Ghost(i%4, this, &textures[0]));
 		characters.back()->loadFromFile(archivo);
 	}
-	characters.front()->setTexture(&textures[0]);
-	characters.front()->loadFromFile(archivo);
+	Pacman* p =(Pacman*) characters.front();
+	p->setTexture(&textures[0]);
+	p->loadFromFile(archivo, savefile);
 	newLevel = false;
 	return true;
 }
@@ -214,7 +219,7 @@ void Game::getMapDimensions(istream &archivo) {
 	archivo >> rows;
 	archivo >> cols;
 
-	winWidth = cols*cellSize;
+	winWidth = (cols+4)*cellSize;
 	winHeight = rows*cellSize;
 }
 
@@ -308,11 +313,13 @@ void Game::endGame()
 	exit = true;
 }
 
-void Game::ghostScared()
+void Game::ghostScared(unsigned int energy)
 {
+	Pacman* p = (Pacman*)characters.front();
+	p->setEnergy(energy);
 	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
 		Ghost * g = (Ghost*)(*it);
-		g->scared();
+		g->scared(energy);
 	}
 }
 
