@@ -84,8 +84,8 @@ void Game::run()
 
 void Game::render()
 {
-	unsigned int initTime = SDL_GetTicks();
 	SDL_RenderClear(renderer);
+	renderInterface();
 	gameMap->render();
 	for (list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); it++)
 		(*it)->render();
@@ -219,7 +219,7 @@ void Game::getMapDimensions(istream &archivo) {
 	archivo >> rows;
 	archivo >> cols;
 
-	winWidth = (cols+4)*cellSize;
+	winWidth = (cols+7)*cellSize;
 	winHeight = rows*cellSize;
 }
 
@@ -290,6 +290,108 @@ void Game::cleanMap()
 	while (characters.size() != 1) {
 		delete characters.back();
 		characters.pop_back();
+	}
+}
+
+void Game::renderInterface()
+{
+	renderLetter('P', cols + 1, 1);
+	renderLetter('u', cols + 2, 1);
+	renderLetter('n', cols + 3, 1);
+	renderLetter('t', cols + 4, 1);
+	renderLetter('o', cols + 5, 1);
+	renderLetter('s', cols + 6, 1);
+	renderLetter(':', cols + 7, 1);
+	list<char> num;
+	unsigned int aux = points;
+	do {
+		num.push_front((aux % 10) + '0');
+		aux /= 10;
+	} while (aux != 0);
+	int n = 1;
+	for(list<char>::iterator it = num.begin(); n <= num.size(); it++, n++)
+		renderLetter(*it, cols + n, 2);
+	renderLetter('V', cols + 1, 3);
+	renderLetter('i', cols + 2, 3);
+	renderLetter('d', cols + 3, 3);
+	renderLetter('a', cols + 4, 3);
+	renderLetter('s', cols + 5, 3);
+	renderLetter(':', cols + 6, 3);
+}
+
+void Game::renderLetter(char l, unsigned int x, unsigned int y)
+{
+	SDL_Rect dest;
+	dest.w = dest.h = cellSize;
+	dest.x = x*cellSize;
+	dest.y = y*cellSize;
+	switch (l) {
+	default:
+		textures[4].renderFrame(renderer, dest, 9, 9);
+		break;
+	case 'P':
+		textures[4].renderFrame(renderer, dest, 4, 8);
+		break;
+	case 'u':
+		textures[4].renderFrame(renderer, dest, 8, 5);
+		break;
+	case 'n':
+		textures[4].renderFrame(renderer, dest, 7, 8);
+		break;
+	case 't':
+		textures[4].renderFrame(renderer, dest, 8, 4);
+		break;
+	case 'o':
+		textures[4].renderFrame(renderer, dest, 7, 9);
+		break;
+	case 's':
+		textures[4].renderFrame(renderer, dest, 8, 3);
+		break;
+	case 'V':
+		textures[4].renderFrame(renderer, dest, 5, 4);
+		break;
+	case 'i':
+		textures[4].renderFrame(renderer, dest, 7, 3);
+		break;
+	case 'd':
+		textures[4].renderFrame(renderer, dest, 6, 8);
+		break;
+	case 'a':
+		textures[4].renderFrame(renderer, dest, 6, 5);
+		break;
+	case ':':
+		textures[4].renderFrame(renderer, dest, 2, 6);
+		break;
+	case '0':
+		textures[4].renderFrame(renderer, dest, 1, 6);
+		break;
+	case '1':
+		textures[4].renderFrame(renderer, dest, 1, 7);
+		break;
+	case '2':
+		textures[4].renderFrame(renderer, dest, 1, 8);
+		break;
+	case '3':
+		textures[4].renderFrame(renderer, dest, 1, 9);
+		break;
+	case '4':
+		textures[4].renderFrame(renderer, dest, 2, 0);
+		break;
+	case '5':
+		textures[4].renderFrame(renderer, dest, 2, 1);
+		break;
+	case '6':
+		textures[4].renderFrame(renderer, dest, 2, 2);
+		break;
+	case '7':
+		textures[4].renderFrame(renderer, dest, 2, 3);
+		break;
+	case '8':
+		textures[4].renderFrame(renderer, dest, 2, 4);
+		break;
+	case '9':
+		textures[4].renderFrame(renderer, dest, 2, 5);
+		break;
 	}
 }
 

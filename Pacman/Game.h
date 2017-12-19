@@ -40,6 +40,8 @@ private:
 	void collision(list<GameCharacter*>::iterator ini);
 	void SaveState();
 	void cleanMap();
+	void renderInterface();
+	void renderLetter(char l, unsigned int x, unsigned int y);
 
 
 

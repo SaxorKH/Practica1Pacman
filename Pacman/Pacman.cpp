@@ -64,6 +64,18 @@ void Pacman::loadFromfile(istream & archivo, bool saveFile)
 	}
 }
 
+void Pacman::render()
+{
+	GameCharacter::render();
+	SDL_Rect destRect;
+	destRect.w = destRect.h = game->getCellSize();
+	destRect.y = game->getCellSize()*(4);
+	for (unsigned int i = 1; i <= lives; i++) {
+		destRect.x = game->getCellSize()*(game->getCols() + i);
+		texture->renderFrame(game->getRenderer(), destRect, (unsigned int)Right, spriteCol*2 + 1);
+	}
+}
+
 void Pacman::startEnergy()
 {
 	hasEnergy = true;
