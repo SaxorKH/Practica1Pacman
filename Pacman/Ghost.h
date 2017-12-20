@@ -17,7 +17,6 @@ protected:
 	GhostState defaultState = Alive;
 
 	unsigned int state = 0;
-	unsigned int startVulTime = 0;
 	unsigned int startDeadTime = 0;
 
 	bool sinSalida(Direction dirAux);

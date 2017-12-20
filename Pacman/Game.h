@@ -49,7 +49,7 @@ private:
 	void renderInterface();
 	void renderLetter(char l, unsigned int x, unsigned int y);
 	void MenuInicio();
-	void saveToFile();
+	void saveToFile(unsigned int code);
 
 
 public:
