@@ -88,6 +88,9 @@ void SmartGhost::loadFromFile(istream & archivo, bool savefile)
 
 void SmartGhost::saveToFile(ostream & archivo)
 {
+	archivo << 1 << " ";
+	GameCharacter::saveToFile(archivo);
+	archivo << age << endl;
 }
 
 void SmartGhost::die()

@@ -10,6 +10,7 @@
 #define FRAME_RATE 150
 #define TOTAL_LEVELS 2
 #define VUL_TIME 10000
+#define SAVE_CODE 666
 using namespace std;
 
 class Game
@@ -35,7 +36,8 @@ private:
 	Texture* textures = nullptr;
 	list<GameCharacter*> characters;
 	GameMap* gameMap = nullptr;
-	string levelPrefix = "..\\levels\\level";
+	const string levelPrefix = "..\\levels\\level";
+	const string saveName = "Savefile.pac";
 
 	void getMapDimensions(istream & archivo);
 	void collision(list<GameCharacter*>::iterator ini);
@@ -44,6 +46,7 @@ private:
 	void renderInterface();
 	void renderLetter(char l, unsigned int x, unsigned int y);
 	void MenuInicio();
+	void saveToFile();
 
 
 public:

@@ -34,6 +34,18 @@ void GameMap::loadFromFile(istream &archivo)
 				setCellType(i, j, (MapCell) cellVal);
 		}
 }
+void GameMap::saveToFile(ostream & archivo)
+{
+	archivo << rows << " " << cols << endl;
+	unsigned int cellVal;
+	for (unsigned int i = 0; i < rows; i++){
+		for (unsigned int j = 0; j < cols; j++) {
+			cellVal = getCellType(i, j);
+			archivo << (unsigned int) cellVal << " ";
+		}
+		archivo << endl;
+	}
+}
 //Sirve para que otros elementos fuera de la classe puedan detectar si en una casilla hay un muro 
 const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const
 {

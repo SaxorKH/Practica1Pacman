@@ -31,6 +31,7 @@ public:
 	void setPos(unsigned int row, unsigned int col);
 	virtual void render();
 	virtual void update();
+	virtual void saveToFile(ostream & archivo);
 	void scared(unsigned int energy = 0);
 	virtual void die();
 	unsigned int getState();

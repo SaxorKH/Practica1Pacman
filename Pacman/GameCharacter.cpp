@@ -55,8 +55,9 @@ void GameCharacter::loadFromFile(istream &archivo, bool savefile)
 	dir = (Direction) aux;
 }
 //saveToFile guarda la informacion del gamecharacter en un archivo
-void GameCharacter::saveToFile()
+void GameCharacter::saveToFile(ostream&archivo)
 {
+	archivo << x << " " << y << " " << inix << " " << iniy << " " << (unsigned int)dir << " ";
 }
 //setTexture carga una nueva textura para el gamecharacter
 void GameCharacter::setTexture(Texture * t)

@@ -25,6 +25,7 @@ public:
 	void startEnergy();
 	void setEnergy(unsigned int en);
 	void loadFromfile(istream &archivo, bool saveFile = false);
+	void saveToFile(ostream &archivo);
 	void render();
 };
 

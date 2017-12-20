@@ -138,6 +138,7 @@ bool Game::loadMap(const string & filename, bool savefile)
 	p->setTexture(&textures[0]);
 	p->loadFromFile(archivo, savefile);
 	newLevel = false;
+	archivo.close();
 	return true;
 }
 
@@ -181,7 +182,6 @@ void Game::handleEvents()
 void Game::MenuEvents()
 {
 	SDL_Event event;
-	Pacman * p;
 	int x;
 	int y;
 	while (SDL_PollEvent(&event) && !exit) {
@@ -302,11 +302,12 @@ void Game::SaveState()
 			exit = true;
 		else if (event.key.keysym.sym == SDLK_RETURN)
 			saveState = false;
-		else if (event.key.keysym.sym >= SDLK_0 && event.key.keysym.sym <= SDLK_9)
+		else if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym >= SDLK_0 && event.key.keysym.sym <= SDLK_9)
 			code = 10 * code + (event.key.keysym.sym - SDLK_0);
 	}
 
-	// implementar guardado
+	if (code == SAVE_CODE)
+		saveToFile();
 }
 
 void Game::cleanMap()
@@ -431,6 +432,21 @@ void Game::MenuInicio()
 	SDL_RenderPresent(renderer);
 	while (inicio) {
 		MenuEvents();
+	}
+}
+
+void Game::saveToFile()
+{
+	ofstream archivo;
+	archivo.open(levelPrefix + saveName, ios_base::trunc);
+	if (archivo.is_open()) {
+		archivo << currentLevel << " " << points << endl;
+		gameMap->saveToFile(archivo);
+		archivo << (characters.size() - 1) << endl;
+		for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++)
+			(*it)->saveToFile(archivo);
+		characters.front()->saveToFile(archivo);
+		archivo.close();
 	}
 }
 

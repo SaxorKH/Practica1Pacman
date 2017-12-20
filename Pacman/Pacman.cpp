@@ -55,13 +55,18 @@ void Pacman::loadFromfile(istream & archivo, bool saveFile)
 {
 	GameCharacter::loadFromFile(archivo);
 	if (saveFile) {
-		unsigned int energy;
 		archivo >> energy;
 		if (energy != 0) {
 			game->ghostScared(energy);
 		}
 		archivo >> lives;
 	}
+}
+
+void Pacman::saveToFile(ostream & archivo)
+{
+	GameCharacter::saveToFile(archivo);
+	archivo << energy << " " << lives << endl;
 }
 
 void Pacman::render()

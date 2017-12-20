@@ -100,6 +100,13 @@ void Ghost::update()
 	forward();
 }
 
+void Ghost::saveToFile(ostream & archivo)
+{
+	archivo << 0 << " ";
+	GameCharacter::saveToFile(archivo);
+	archivo << endl;
+}
+
 void Ghost::scared(unsigned int energy)
 {
 	if (state != Dead && state != Old) {

@@ -27,6 +27,7 @@ public:
 	~GameMap();
 
 	virtual void loadFromFile(istream &archivo);
+	virtual void saveToFile(ostream &archivo);
 	const MapCell getCellType(unsigned int row, unsigned int col) const;
 	void setCellType(unsigned int row, unsigned int col, MapCell type);
 	void render();
