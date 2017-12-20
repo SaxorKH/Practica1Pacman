@@ -14,11 +14,6 @@ Pacman::~Pacman()
 {
 }
 
-void Pacman::setPos(unsigned int row, unsigned int col) {
-	inix = x = col;
-	iniy = y = row;
-}
-
 void Pacman::update() {
 	if (hasEnergy) {
 		energy++;
