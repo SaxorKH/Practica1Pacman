@@ -10,13 +10,11 @@ GameCharacter::GameCharacter()
 GameCharacter::GameCharacter(Game * g): GameObject(g)
 {
 }
-//Constructor simple de GameCharacter
 GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col) : GameObject(g)
 {
 	texture = t;
 	spriteCol = col;
 }
-//Constructor completo de un GameCharacter con toda su informacion necesaria
 GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameObject(g)
 {
 	texture = t;
@@ -32,7 +30,6 @@ GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned i
 GameCharacter::~GameCharacter()
 {
 }
-//Render se encarga de el dibujado del gamrCharacter
 void GameCharacter::render()
 {
 	SDL_Rect destRect = calcDestRect();
@@ -43,7 +40,6 @@ void GameCharacter::render()
 	else auxDir = dir;
 	texture->renderFrame(game->getRenderer(), destRect, auxDir, spriteCol * 2 + anim);
 }
-//LoadFromFile sirve para cargar un gamecharacter a través de un archivo
 void GameCharacter::loadFromFile(istream &archivo)
 {
 	archivo >> x;
@@ -54,41 +50,33 @@ void GameCharacter::loadFromFile(istream &archivo)
 	archivo >> aux;
 	dir = (Direction) aux;
 }
-//saveToFile guarda la informacion del gamecharacter en un archivo
 void GameCharacter::saveToFile(ostream&archivo)
 {
 	archivo << x << " " << y << " " << inix << " " << iniy << " " << (unsigned int)dir << " ";
 }
-//setTexture carga una nueva textura para el gamecharacter
 void GameCharacter::setTexture(Texture * t)
 {
 	texture = t;
 }
-//Die procesa la muerte del jugador
 void GameCharacter::die()
 {
 }
-//Sirve para que se pueda obtener el valor de su posicion x desde fuera de la clase
 int GameCharacter::getX()
 {
 	return x;
 }
-//Sirve para que se pueda obtener el valor de su posicion y desde fuera de la clase
 int GameCharacter::getY()
 {
 	return y;
 }
-//Sirve para que se pueda obtener el valor de su posicion inicial x desde fuera de la clase
 int GameCharacter::getIniX()
 {
 	return inix;
 }
-//Sirve para que se pueda obtener el valor de su posicion inicial y desde fuera de la clase
 int GameCharacter::getIniY()
 {
 	return iniy;
 }
-//Procesa el avance de casilla de un gamecharacter
 void GameCharacter::forward()
 {
 	if (dir == 0)
@@ -106,7 +94,6 @@ void GameCharacter::forward()
 		y--;
 	}
 }
-//Calcula dónde dibujar el gamecharacter dependiedo de del tamaño de las celdas del mapa
 SDL_Rect GameCharacter::calcDestRect()
 {
 	SDL_Rect destRect;
@@ -116,7 +103,6 @@ SDL_Rect GameCharacter::calcDestRect()
 	destRect.y = y * cellSize;
 	return destRect;
 }
-//Sirve para que se pueda obtener el valor de su dirección actual desde fuera de la clase
 Direction GameCharacter::getDir()
 {
 	return dir;
