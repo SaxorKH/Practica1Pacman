@@ -42,12 +42,6 @@ Ghost::~Ghost()
 {
 }
 
-void Ghost::setPos(unsigned int row, unsigned int col)
-{
-	inix = x = col;
-	iniy = y = row;
-}
-
 void Ghost::render()
 {
 
@@ -123,7 +117,7 @@ void Ghost::die()
 	game->increasePoints(500);
 }
 
-unsigned int Ghost::getState()
+GhostState Ghost::getState()
 {
 	return state;
 }

@@ -14,21 +14,27 @@ private:
 	bool hasEnergy = false;
 
 public:
-	Pacman();	// Constructor básico de Pacman.
-	Pacman(Game* g);	// Constructor de Pacman con un puntero a Game.
-	virtual ~Pacman();	// Destructor de Pacman.
+	Pacman();	
+	// Constructor básico de Pacman.
+	Pacman(Game* g);
+	virtual ~Pacman();
 
-	void update();		// Actualiza la posición del Pacman, así como su energía.
-	void die();			// Pierde una vida y regresa a la posición de inicio. Si no posee vidas, se acaba el juego.
-	void bufferUpdate(Direction input);	// Actualiza la dirección del Pacman recibida por las flechas de dirección.
-	void startEnergy();					// Habilita el contador de la energía del Pacman mientras los fantasmas están 
-										// asustados.
-	void setEnergy(unsigned int en);	// Introduce la energía inicial del Pacman.
-	void loadFromSavefile(istream &archivo);	// Recibe las posiciones inicial y actual, así como la dirección, del 
-												// archivo. En caso de ser uno de guardado, también la energía y las
-												// vidas actuales.
-	void saveToFile(ostream &archivo);			// Guarda posiciones inicial y actual, dirección, energía y vidas en el
-												// archivo de guardado.
-	void render();								// Renderiza el Pacman y sus vidas.
+	// Actualiza la posición del Pacman, así como su energía.
+	void update();		
+	// Pierde una vida y regresa a la posición de inicio. Si no posee vidas, se acaba el juego.
+	void die();			
+	// Actualiza la dirección del Pacman recibida por las flechas de dirección.
+	void bufferUpdate(Direction input);	
+	// Habilita el contador de la energía del Pacman mientras los fantasmas están asustados.
+	void startEnergy();					
+	// Introduce la energía inicial del Pacman.
+	void setEnergy(unsigned int en);	
+	// Recibe las posiciones inicial y actual, así como la dirección, la energía y las vidas actuales de un archivo de
+	// guardado.
+	void loadFromSavefile(istream &archivo);	
+	// Guarda posiciones inicial y actual, dirección, energía y vidas en el archivo de guardado.
+	void saveToFile(ostream &archivo);			
+	// Renderiza el Pacman y sus vidas.
+	void render();								
 };
 

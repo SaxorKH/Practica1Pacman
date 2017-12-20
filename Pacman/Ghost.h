@@ -23,16 +23,23 @@ protected:
 
 public:
 	Ghost();
+	// Constructor básico de Ghost.
 	Ghost(unsigned int color, Game* a, Texture* b);
+	//Constructor completo de Ghost con todos sus valores necesarios
 	Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 	virtual ~Ghost();
 
-	void setPos(unsigned int row, unsigned int col);
+	//Renderiza el fantasma en todos sus estados.
 	virtual void render();
+	// Actualiza la posición y el estado del fantasma.
 	virtual void update();
+	// Guarda las posiciones inicial y final, así como la dirección, del fantasma.
 	virtual void saveToFile(ostream & archivo);
+	// Cambia el estado del fantasma a Scared, determinando con la energía el tiempo restante, siendo 0 el tiempo completo.
 	void scared(unsigned int energy = 0);
+	// Cambia el estado del fantasma a Dead.
 	virtual void die();
-	unsigned int getState();
+	// Devuelve el estado actual del Fantasma.
+	GhostState getState();
 };
 

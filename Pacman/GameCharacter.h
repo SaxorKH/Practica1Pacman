@@ -33,7 +33,7 @@ protected:
 
 	//Procesa el avance de casilla de un gamecharacter
 	void forward();
-	//Calcula dónde dibujar el gamecharacter dependiedo de del tamaño de las celdas del mapa
+	//Calcula dónde dibujar el gamecharacter dependiedo del tamaño de las celdas del mapa
 	virtual SDL_Rect calcDestRect();
 
 public:
