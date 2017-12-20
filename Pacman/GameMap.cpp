@@ -4,7 +4,6 @@
 GameMap::GameMap()
 {
 }
-//Constructora completa de un GameMap
 GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* food, Texture * vitamin, Game * game)
 	: GameObject(game)
 {
@@ -21,7 +20,6 @@ GameMap::~GameMap()
 {
 	delete[] map;
 }
-//Construye un GameMap a partir de un archivo
 void GameMap::loadFromFile(istream &archivo)
 {
 	rows = game->getRows();
@@ -46,13 +44,11 @@ void GameMap::saveToFile(ostream & archivo)
 		archivo << endl;
 	}
 }
-//Sirve para que otros elementos fuera de la classe puedan detectar si en una casilla hay un muro 
 const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const
 {
 		return map[(row%rows)*cols + col%cols];
 	return Wall;
 }
-//Establece el tipo de casilla de una posicion determinada del GameMap
 void GameMap::setCellType(unsigned int row, unsigned int col, MapCell type)
 {
 	if (row < rows && col < cols) {
@@ -61,7 +57,6 @@ void GameMap::setCellType(unsigned int row, unsigned int col, MapCell type)
 			totalFood++;
 	}
 }
-//Se encarga del dibujado especifico del GameMap
 void GameMap::render()
 {
 	SDL_Rect destRect;
@@ -86,7 +81,6 @@ void GameMap::render()
 			}
 		}
 }
-//Se encargade actualizar el estado del GameMap en cada vuelta del bucle principal del juego
 void GameMap::update()
 {
 	unsigned int px, py;
@@ -107,12 +101,10 @@ void GameMap::update()
 	if (totalFood == 0)
 		game->nextLevel();
 }
-//Sirve para que otros elementos fuera de la classe puedan detectar el numero de filas del mapa
 const unsigned int GameMap::getRows() const
 {
 	return rows;
 }
-//Sirve para que otros elementos fuera de la classe puedan detectar el numero de columnas del mapa
 const unsigned int GameMap::getCols() const
 {
 	return cols;

@@ -5,10 +5,12 @@ class Game;
 
 class GameObject
 {
+//Se nombran todos los métodos que tendran los diferentes tipos de GameObjects que serán especificados en cadatipo posteriormente
 protected:
 	Game * game = nullptr;
 
 	GameObject();
+	//Se crea el puntero del GameObject al Game
 	GameObject(Game * game);
 
 public:

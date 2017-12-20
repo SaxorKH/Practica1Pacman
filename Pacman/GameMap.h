@@ -23,17 +23,26 @@ private:
 
 public:
 	GameMap();
+	//Constructora completa de un GameMap
 	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Texture* food, Texture * vitamin, Game * game);
 	~GameMap();
 
+	//Construye un GameMap a partir de un archivo
 	virtual void loadFromFile(istream &archivo);
+	//Guarda el mapa en un archivo proporcionado
 	virtual void saveToFile(ostream &archivo);
+	//Sirve para que otros elementos fuera de la classe puedan detectar si en una casilla hay un muro 
 	const MapCell getCellType(unsigned int row, unsigned int col) const;
+	//Establece el tipo de casilla de una posicion determinada del GameMap
 	void setCellType(unsigned int row, unsigned int col, MapCell type);
+	//Se encarga del dibujado especifico del GameMap
 	void render();
+	//Se encargade actualizar el estado del GameMap en cada vuelta del bucle principal del juego
 	void update();
 
+	//Sirve para que otros elementos fuera de la classe puedan detectar el numero de filas del mapa
 	const unsigned int getRows() const;
+	//Sirve para que otros elementos fuera de la classe puedan detectar el numero de columnas del mapa
 	const unsigned int getCols() const;
 };
 
