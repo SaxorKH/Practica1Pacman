@@ -51,16 +51,14 @@ void Pacman::bufferUpdate(Direction input) {
 		dirbuffer = input;
 }
 
-void Pacman::loadFromfile(istream & archivo, bool saveFile)
+void Pacman::loadFromSavefile(istream & archivo)
 {
 	GameCharacter::loadFromFile(archivo);
-	if (saveFile) {
-		archivo >> energy;
-		if (energy != 0) {
-			game->ghostScared(energy);
-		}
-		archivo >> lives;
+	archivo >> energy;
+	if (energy != 0) {
+		game->ghostScared(energy);
 	}
+	archivo >> lives;
 }
 
 void Pacman::saveToFile(ostream & archivo)

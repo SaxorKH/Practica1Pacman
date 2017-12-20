@@ -44,7 +44,7 @@ void GameCharacter::render()
 	texture->renderFrame(game->getRenderer(), destRect, auxDir, spriteCol * 2 + anim);
 }
 //LoadFromFile sirve para cargar un gamecharacter a través de un archivo
-void GameCharacter::loadFromFile(istream &archivo, bool savefile)
+void GameCharacter::loadFromFile(istream &archivo)
 {
 	archivo >> x;
 	archivo >> y;

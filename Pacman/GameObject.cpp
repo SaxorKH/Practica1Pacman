@@ -25,10 +25,10 @@ void GameObject::update()
 {
 }
 
-void GameObject::loadFromFile(istream & archivo, bool savefile)
+void GameObject::loadFromFile(istream & archivo)
 {
 }
 
-void GameObject::saveToFile()
+void GameObject::saveToFile(ostream & archivo)
 {
 }

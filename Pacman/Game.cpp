@@ -64,23 +64,27 @@ void Game::run()
 {
 	MenuInicio();
 	while (!exit) {
-		if (newLevel) {
-			string levelName = levelPrefix;
-			char *intStr = new char[2]; 
-			sprintf_s(intStr, 2,"%d", currentLevel);
-			string str = string(intStr);
-			if (currentLevel < 10)
-				levelName += "0";
-			levelName += str + ".pac";
-			cleanMap();
-			loadMap(levelName);
-		}
+		if (loadState)
+			LoadState();
+		else {
+			if (newLevel) {
+				string levelName = levelPrefix;
+				char *intStr = new char[2];
+				sprintf_s(intStr, 2, "%d", currentLevel);
+				string str = string(intStr);
+				if (currentLevel < 10)
+					levelName += "0";
+				levelName += str + ".pac";
+				cleanMap();
+				loadMap(levelName);
+			}
 			handleEvents();
 			update();
 			render();
 			if (saveState) {
 				SaveState();
 			}
+		}
 	}
 }
 
@@ -136,7 +140,10 @@ bool Game::loadMap(const string & filename, bool savefile)
 	}
 	Pacman* p =(Pacman*) characters.front();
 	p->setTexture(&textures[0]);
-	p->loadFromFile(archivo, savefile);
+	if (savefile)
+		p->loadFromSavefile(archivo);
+	else
+		p->loadFromFile(archivo);
 	newLevel = false;
 	archivo.close();
 	return true;
@@ -184,7 +191,7 @@ void Game::MenuEvents()
 	SDL_Event event;
 	int x;
 	int y;
-	while (SDL_PollEvent(&event) && !exit) {
+	while (SDL_PollEvent(&event) && inicio) {
 		switch (event.type) {
 		case SDL_QUIT:
 			exit = true;
@@ -193,8 +200,17 @@ void Game::MenuEvents()
 			case SDL_MOUSEBUTTONDOWN:
 				x = event.button.x;
 				y = event.button.y;
-				if (event.button.button == SDL_BUTTON_LEFT && x >= 64 && x <= 187 && y >= 278 && y <= 328)
-					inicio = false;
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					if(x >= 64 && x <= 187 && y >= 278 && y <= 328)
+						inicio = false;
+					else if (x >= 314 && x <= 437 && y >= 278 && y <= 328) {
+						inicio = false;
+						newLevel = false;
+						loadState = true;
+					}
+				}
+					
+				else if(event.button.button)
 				break;
 		default:
 			break;
@@ -294,20 +310,45 @@ void Game::collision(list<GameCharacter*>::iterator character)
 
 void Game::SaveState()
 {
+	unsigned int code = GetCode(saveState);
+
+	if (code == SAVE_CODE) {
+		saveToFile();
+		saveState = false;
+	}
+}
+
+void Game::LoadState()
+{
+	unsigned int code = GetCode(loadState);
+
+	if (code == SAVE_CODE) {
+		loadMap(levelPrefix + saveName, true);
+		loadState = false;
+	}
+	else {
+
+		inicio = true;
+		newLevel = true;
+		loadState = false;
+	}
+}
+
+unsigned int Game::GetCode(bool state)
+{
 	SDL_Event event;
 	unsigned int code = 0;
-	while (saveState && !exit) {
+	while (state && !exit) {
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT)
 			exit = true;
 		else if (event.key.keysym.sym == SDLK_RETURN)
-			saveState = false;
+			state = false;
 		else if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym >= SDLK_0 && event.key.keysym.sym <= SDLK_9)
 			code = 10 * code + (event.key.keysym.sym - SDLK_0);
 	}
-
-	if (code == SAVE_CODE)
-		saveToFile();
+	
+	return code;
 }
 
 void Game::cleanMap()

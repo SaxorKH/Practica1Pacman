@@ -33,6 +33,7 @@ private:
 	bool funcional;
 	bool saveState = false;
 	bool newLevel = true;
+	bool loadState = false;
 	Texture* textures = nullptr;
 	list<GameCharacter*> characters;
 	GameMap* gameMap = nullptr;
@@ -42,6 +43,8 @@ private:
 	void getMapDimensions(istream & archivo);
 	void collision(list<GameCharacter*>::iterator ini);
 	void SaveState();
+	void LoadState();
+	unsigned int GetCode(bool state);
 	void cleanMap();
 	void renderInterface();
 	void renderLetter(char l, unsigned int x, unsigned int y);

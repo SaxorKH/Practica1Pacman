@@ -72,7 +72,7 @@ void SmartGhost::update()
 		
 }
 
-void SmartGhost::loadFromFile(istream & archivo, bool savefile)
+void SmartGhost::loadFromFile(istream & archivo)
 {
 	Ghost::loadFromFile(archivo);
 	archivo >> age;

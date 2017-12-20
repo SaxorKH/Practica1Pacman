@@ -16,7 +16,7 @@ public:
 	~SmartGhost();
 
 	void update();
-	void loadFromFile(istream &archivo, bool x = false);
+	void loadFromFile(istream &archivo);
 	void saveToFile(ostream &archivo);
 	void die();
 };

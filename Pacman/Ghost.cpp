@@ -111,7 +111,7 @@ void Ghost::scared(unsigned int energy)
 {
 	if (state != Dead && state != Old) {
 		state = Scared;
-		startVulTime = SDL_GetTicks() + energy;
+		startVulTime = SDL_GetTicks() - energy;
 		dir = (Direction)((dir + 2) % 4);
 	}
 }

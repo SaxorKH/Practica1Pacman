@@ -34,7 +34,7 @@ protected:
 public:
 	virtual ~GameCharacter();
 	virtual void render();
-	virtual void loadFromFile(istream &archivo, bool x = false);
+	virtual void loadFromFile(istream &archivo);
 	virtual void saveToFile(ostream &archivo);
 	virtual void setTexture(Texture *t);
 	virtual void die();

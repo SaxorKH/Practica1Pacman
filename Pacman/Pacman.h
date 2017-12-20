@@ -24,7 +24,7 @@ public:
 	void bufferUpdate(Direction input);
 	void startEnergy();
 	void setEnergy(unsigned int en);
-	void loadFromfile(istream &archivo, bool saveFile = false);
+	void loadFromSavefile(istream &archivo);
 	void saveToFile(ostream &archivo);
 	void render();
 };
