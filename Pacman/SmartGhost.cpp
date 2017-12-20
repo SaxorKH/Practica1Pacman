@@ -60,12 +60,13 @@ void SmartGhost::update()
 
 	age++;
 	if (age == ADULT_AGE) {
-		if(state != Scared)
+		if(state != Scared || state != Dead)
 			state = Adult;
 		defaultState = Adult;
 	}
 	if (age == OLD_AGE) {
-		state = Old;
+		if(state != Dead)
+			state = Old;
 		defaultState = Old;
 	}
 		

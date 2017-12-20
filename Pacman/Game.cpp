@@ -18,7 +18,7 @@ Game::Game()
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Pacman", winX, winY,
-		1, 1, SDL_WINDOW_SHOWN);
+		winWidth, winHeight, SDL_WINDOW_SHOWN);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) {
@@ -32,6 +32,7 @@ Game::Game()
 		funcional = textures[2].load(renderer, "..\\images\\food2.png");
 		funcional = textures[3].load(renderer, "..\\images\\food3.png");
 		funcional = textures[4].load(renderer, "..\\images\\font.jpg", 10, 10);
+		funcional = textures[5].load(renderer, "..\\images\\MenuInicio.png");
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
@@ -61,6 +62,7 @@ Game::~Game()
 
 void Game::run()
 {
+	MenuInicio();
 	while (!exit) {
 		if (newLevel) {
 			string levelName = levelPrefix;
@@ -170,6 +172,30 @@ void Game::handleEvents()
 			p = (Pacman*) characters.front();
 			p->bufferUpdate(dir);
 
+		default:
+			break;
+		}
+	}
+}
+
+void Game::MenuEvents()
+{
+	SDL_Event event;
+	Pacman * p;
+	int x;
+	int y;
+	while (SDL_PollEvent(&event) && !exit) {
+		switch (event.type) {
+		case SDL_QUIT:
+			exit = true;
+			inicio = false;
+			break;
+			case SDL_MOUSEBUTTONDOWN:
+				x = event.button.x;
+				y = event.button.y;
+				if (event.button.button == SDL_BUTTON_LEFT && x >= 64 && x <= 187 && y >= 278 && y <= 328)
+					inicio = false;
+				break;
 		default:
 			break;
 		}
@@ -392,6 +418,19 @@ void Game::renderLetter(char l, unsigned int x, unsigned int y)
 	case '9':
 		textures[4].renderFrame(renderer, dest, 2, 5);
 		break;
+	}
+}
+
+void Game::MenuInicio()
+{
+	SDL_Rect destRect;
+	destRect.h = winHeight;
+	destRect.w = winWidth;
+	destRect.x = destRect.y = 0;
+	textures[5].render(renderer, destRect);
+	SDL_RenderPresent(renderer);
+	while (inicio) {
+		MenuEvents();
 	}
 }
 

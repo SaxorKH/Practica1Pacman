@@ -6,7 +6,7 @@
 #include "Ghost.h"
 #include "GameMap.h"
 
-#define TOTAL_TEXTURAS 5
+#define TOTAL_TEXTURAS 6
 #define FRAME_RATE 150
 #define TOTAL_LEVELS 2
 #define VUL_TIME 10000
@@ -17,8 +17,8 @@ class Game
 private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-	unsigned int winWidth;
-	unsigned int winHeight;
+	unsigned int winWidth = 500;
+	unsigned int winHeight = 350;
 	unsigned int cellSize = 25;
 	unsigned int startTime = 0;
 	unsigned int nChar;
@@ -28,6 +28,7 @@ private:
 	unsigned int currentLevel;
 
 	bool exit = false;
+	bool inicio = true;
 	bool funcional;
 	bool saveState = false;
 	bool newLevel = true;
@@ -42,7 +43,7 @@ private:
 	void cleanMap();
 	void renderInterface();
 	void renderLetter(char l, unsigned int x, unsigned int y);
-
+	void MenuInicio();
 
 
 public:
@@ -56,6 +57,7 @@ public:
 	void update();
 	bool loadMap(const string& filename, bool savefile = false);
 	void handleEvents();
+	void MenuEvents();
 	const bool nextCell(unsigned int x, unsigned int y, Direction dir) const;
 	const unsigned int getRows() const;
 	const unsigned int getCols() const;
