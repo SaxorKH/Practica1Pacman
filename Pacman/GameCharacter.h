@@ -20,6 +20,7 @@ protected:
 	Direction dir = None;	//Movement direction
 	unsigned int anim = 0;
 	unsigned int spriteCol;
+	unsigned int startVulTime = 0;
 
 	Texture* texture = nullptr;
 

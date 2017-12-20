@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <time.h>
+#include <sstream>
 using namespace std;
 
 
@@ -62,19 +63,19 @@ Game::~Game()
 
 void Game::run()
 {
-	MenuInicio();
 	while (!exit) {
+		if(inicio)
+			MenuInicio();
 		if (loadState)
 			LoadState();
 		else {
 			if (newLevel) {
 				string levelName = levelPrefix;
-				char *intStr = new char[2];
-				sprintf_s(intStr, 2, "%d", currentLevel);
-				string str = string(intStr);
 				if (currentLevel < 10)
 					levelName += "0";
-				levelName += str + ".pac";
+				stringstream ss;
+				ss << currentLevel;
+				levelName += ss.str() + ".pac";
 				cleanMap();
 				loadMap(levelName);
 			}
@@ -152,7 +153,7 @@ bool Game::loadMap(const string & filename, bool savefile)
 void Game::handleEvents()
 {
 	SDL_Event event;
-	Pacman * p;
+	Pacman * p = (Pacman*)characters.front();
 	while (SDL_PollEvent(&event) && !exit) {
 		switch (event.type) {
 		case SDL_QUIT:
@@ -163,22 +164,24 @@ void Game::handleEvents()
 			switch(event.key.keysym.sym) {
 			case SDLK_RIGHT:
 				dir = Right;
+				p->bufferUpdate(dir);
 				break;
 			case SDLK_DOWN:
 				dir = Down;
+				p->bufferUpdate(dir);
 				break;
 			case SDLK_LEFT:
 				dir = Left;
+				p->bufferUpdate(dir);
 				break;
 			case SDLK_UP:
 				dir = Up;
+				p->bufferUpdate(dir);
 				break;
 			case SDLK_s:
 				saveState = true;
 				break;
 			}
-			p = (Pacman*) characters.front();
-			p->bufferUpdate(dir);
 
 		default:
 			break;
@@ -312,26 +315,24 @@ void Game::SaveState()
 {
 	unsigned int code = GetCode(saveState);
 
-	if (code == SAVE_CODE) {
-		saveToFile();
-		saveState = false;
+	if (code != 0) {
+		saveToFile(code);
 	}
+	saveState = false;
 }
 
 void Game::LoadState()
 {
 	unsigned int code = GetCode(loadState);
 
-	if (code == SAVE_CODE) {
-		loadMap(levelPrefix + saveName, true);
-		loadState = false;
-	}
-	else {
-
+	stringstream ss;
+	ss << code;
+	string filename = levelPrefix + "Save" + ss.str() + ".pac";
+	if(!loadMap(filename, true)){
 		inicio = true;
 		newLevel = true;
-		loadState = false;
 	}
+	loadState = false;
 }
 
 unsigned int Game::GetCode(bool state)
@@ -476,10 +477,14 @@ void Game::MenuInicio()
 	}
 }
 
-void Game::saveToFile()
+void Game::saveToFile(unsigned int code)
 {
 	ofstream archivo;
-	archivo.open(levelPrefix + saveName, ios_base::trunc);
+	stringstream ss;
+	ss << code;
+	string levelName = levelPrefix + "Save" + ss.str() + ".pac";
+
+	archivo.open(levelName, ios_base::trunc);
 	if (archivo.is_open()) {
 		archivo << currentLevel << " " << points << endl;
 		gameMap->saveToFile(archivo);

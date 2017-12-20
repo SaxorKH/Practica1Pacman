@@ -22,7 +22,8 @@ void Pacman::setPos(unsigned int row, unsigned int col) {
 void Pacman::update() {
 	if (hasEnergy) {
 		energy++;
-		if (energy == VUL_TIME) {
+		unsigned int frameTime = SDL_GetTicks() - startVulTime;
+		if (frameTime >= VUL_TIME) {
 			hasEnergy = false;
 			energy = 0;
 		}
@@ -87,5 +88,6 @@ void Pacman::startEnergy()
 void Pacman::setEnergy(unsigned int en)
 {
 	energy = en;
+	startVulTime = SDL_GetTicks() - en;
 	startEnergy();
 }
