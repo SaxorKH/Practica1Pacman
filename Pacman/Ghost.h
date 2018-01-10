@@ -16,14 +16,14 @@ protected:
 	static const unsigned int deadTime = 5000;
 	GhostState defaultState = Alive;
 
-	unsigned int state = 0;
+	GhostState state = Alive;
 	unsigned int startDeadTime = 0;
 
 	bool sinSalida(Direction dirAux);
 
 public:
 	Ghost();
-	// Constructor b·sico de Ghost.
+	// Constructor b√°sico de Ghost.
 	Ghost(unsigned int color, Game* a, Texture* b);
 	//Constructor completo de Ghost con todos sus valores necesarios
 	Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
@@ -31,11 +31,11 @@ public:
 
 	//Renderiza el fantasma en todos sus estados.
 	virtual void render();
-	// Actualiza la posiciÛn y el estado del fantasma.
+	// Actualiza la posici√≥n y el estado del fantasma.
 	virtual void update();
-	// Guarda las posiciones inicial y final, asÌ como la direcciÛn, del fantasma.
+	// Guarda las posiciones inicial y final, as√≠ como la direcci√≥n, del fantasma.
 	virtual void saveToFile(ostream & archivo);
-	// Cambia el estado del fantasma a Scared, determinando con la energÌa el tiempo restante, siendo 0 el tiempo completo.
+	// Cambia el estado del fantasma a Scared, determinando con la energ√≠a el tiempo restante, siendo 0 el tiempo completo.
 	void scared(unsigned int energy = 0);
 	// Cambia el estado del fantasma a Dead.
 	virtual void die();
