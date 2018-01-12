@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "PacManObject.h"
 #include "Texture.h"
 class Game;
 
@@ -10,7 +10,7 @@ enum MapCell {
 	Vitamins
 };
 
-class GameMap : public GameObject
+class GameMap : public PacManObject
 {
 private:
 	Texture* wall = nullptr;

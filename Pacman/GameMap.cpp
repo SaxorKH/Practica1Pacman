@@ -5,7 +5,7 @@ GameMap::GameMap()
 {
 }
 GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* food, Texture * vitamin, Game * game)
-	: GameObject(game)
+	: PacManObject(game)
 {
 	this->rows = rows;
 	this->cols = cols;

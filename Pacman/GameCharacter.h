@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "PacManObject.h"
 #include "Texture.h"
 
 enum Direction {
@@ -10,7 +10,7 @@ enum Direction {
 	None
 };
 
-class GameCharacter : public GameObject
+class GameCharacter : public PacManObject
 {
 protected:
 	unsigned int x = 0;		//Position X

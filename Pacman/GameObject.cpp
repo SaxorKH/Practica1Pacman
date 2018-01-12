@@ -23,10 +23,7 @@ void GameObject::update()
 {
 }
 
-void GameObject::loadFromFile(istream & archivo)
+bool GameObject::handleEvent(SDL_Event & e)
 {
-}
-
-void GameObject::saveToFile(ostream & archivo)
-{
+	return false;
 }

@@ -7,15 +7,15 @@ GameCharacter::GameCharacter()
 
 }
 
-GameCharacter::GameCharacter(Game * g): GameObject(g)
+GameCharacter::GameCharacter(Game * g): PacManObject(g)
 {
 }
-GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col) : GameObject(g)
+GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col) : PacManObject(g)
 {
 	texture = t;
 	spriteCol = col;
 }
-GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameObject(g)
+GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : PacManObject(g)
 {
 	texture = t;
 	spriteCol = col;
