@@ -5,10 +5,11 @@ MenuButton::MenuButton()
 {
 }
 
-MenuButton::MenuButton(Game * g, SDL_Rect area, CallBack*f) : GameObject(g)
+MenuButton::MenuButton(Game * g, SDL_Rect area, unsigned int col, CallBack*f) : GameObject(g)
 {
 
 	this->area = area;
+	this->col = col;
 	texture = game->getTexture(ButtonTexture);
 	callBack = f;
 }
@@ -20,6 +21,7 @@ MenuButton::~MenuButton()
 
 void MenuButton::render()
 {
+	texture->renderFrame(game->getRenderer(), area, 0, col);
 }
 
 void MenuButton::update()

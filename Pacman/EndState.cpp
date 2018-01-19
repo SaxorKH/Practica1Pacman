@@ -2,9 +2,9 @@
 #include "Game.h"
 
 
-EndState::EndState(Game * g) : GameState(g, EndTexture)
+EndState::EndState(Game * g) : GameState(g, GameOverTexture)
 {
-
+	winTexture = game->getTexture(WinTexture);
 }
 
 EndState::~EndState()

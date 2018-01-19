@@ -50,15 +50,13 @@ private:
 	bool funcional;
 	bool saveState = false;
 	bool newLevel = true;
-	bool loadState = false;
+	bool load = false;
 	Texture* textures = nullptr;
 	GameMap* gameMap = nullptr;
 	// Obtiene las dimensiones del mapa a partir del archivo abierto previamente.
 	void getMapDimensions(istream & archivo);	
 	// Le pide un código numérico al jugador y guada la partida.
 	void SaveState();	
-	// Le pide un código numérico al jugador y carga la partida.
-	void LoadState();	
 	// Lee un código numérico del teclado.
 	unsigned int GetCode(bool state);	
 	// Destruye el mapa.
@@ -67,20 +65,14 @@ private:
 	void renderInterface();				
 	//Renderiza una letra a partir de una fuente.
 	void renderLetter(char l, unsigned int x, unsigned int y);	
-	// Ejecuta el menú de inicio.
-	void MenuInicio();	
 	// Genera o abre el archivo de guardado a partir del código y escribe los datos de la partida.
 	void saveToFile(unsigned int code); 
 	// Renderiza la partida.
 	void render();					
 	// Actualiza el estado de la partida.
 	void update();						
-	// Carga un mapa de acuerdo al nombre de un archivo. Vale tanto un archivo de nivel como uno de guardado.
-	bool loadMap(const string& filename, bool savefile = false);	
 	// Recibe y gestiona los eventos del juego.
 	void handleEvents();		
-	// Recibe y gestiona los eventos del menú de inicio.
-	void MenuEvents();			
 
 
 public:

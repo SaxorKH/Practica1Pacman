@@ -9,10 +9,11 @@ protected:
 private:
 	SDL_Rect area;
 	Texture * texture;
+	unsigned int col;
 
 public:
 	MenuButton();
-	MenuButton(Game*g, SDL_Rect area, CallBack*f);
+	MenuButton(Game*g, SDL_Rect area, unsigned int col, CallBack*f);
 	~MenuButton();
 	void render();
 	void update();

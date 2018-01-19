@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <sstream>
 #include "PlayState.h"
+#include "MainMenuState.h"
 using namespace std;
 
 
@@ -34,13 +35,14 @@ Game::Game()
 		funcional = textures[6].load(renderer, "..\\images\\MenuPausa.png");
 		funcional = textures[7].load(renderer, "..\\images\\GameOver.png");
 		funcional = textures[8].load(renderer, "..\\images\\Victoria.png");
-		funcional = textures[9].load(renderer, "..\\images\\Botones.png");
+		funcional = textures[9].load(renderer, "..\\images\\Botones.png", 1, 4);
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			gameStateMachine = new GameStateMachine();
 			gameStateMachine->pushState(new PlayState(this));
+			gameStateMachine->pushState(new MainMenuState(this));
 		}
 	}
 	
@@ -62,32 +64,19 @@ Game::~Game()
 void Game::run()
 {
 	while (!exit) {
-		if(inicio)
-			MenuInicio();
-		if (loadState)
-			LoadState();
-		else {
-			if (newLevel) {
-				string levelName = levelPrefix;
-				if (currentLevel < 10)
-					levelName += "0";
-				stringstream ss;
-				ss << currentLevel;
-				levelName += ss.str() + ".pac";
-				cleanMap();
-				((PlayState*)gameStateMachine->currentState())->loadMap(levelName);
-				newLevel = false;
-			}
-			handleEvents();
+		handleEvents();
+		if (gameStateMachine->currentState() == nullptr)
+			exit = true;
+		else
 			update();
-			if (gameStateMachine->currentState() == nullptr)
-				exit = true;
-			else
-				render();
-			if (saveState) {
-				SaveState();
-			}
+		if (gameStateMachine->currentState() == nullptr)
+			exit = true;
+		else
+			render();
+		if (saveState) {
+			SaveState();
 		}
+		
 	}
 }
 
@@ -111,35 +100,6 @@ void Game::update()
 void Game::handleEvents()
 {
 	gameStateMachine->currentState()->handleEvent();
-}
-
-void Game::MenuEvents()
-{
-	SDL_Event event;
-	int x;
-	int y;
-	while (SDL_PollEvent(&event) && inicio) {
-		switch (event.type) {
-		case SDL_QUIT:
-			exit = true;
-			inicio = false;
-			break;
-			case SDL_MOUSEBUTTONDOWN:
-				x = event.button.x;
-				y = event.button.y;
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					if(x >= 64 && x <= 187 && y >= 278 && y <= 328)
-						inicio = false;
-					else if (x >= 314 && x <= 437 && y >= 278 && y <= 328) {
-						inicio = false;
-						newLevel = false;
-						loadState = true;
-					}
-				}
-		default:
-			break;
-		}
-	}
 }
 
 const bool Game::getFuncional() const
@@ -183,20 +143,6 @@ void Game::SaveState()
 		saveToFile(code);
 	}
 	saveState = false;
-}
-
-void Game::LoadState()
-{
-	unsigned int code = GetCode(loadState);
-
-	stringstream ss;
-	ss << code;
-	string filename = levelPrefix + "Save" + ss.str() + ".pac";
-	if(!(((PlayState*)gameStateMachine->currentState())->loadMap(filename, true))){
-		inicio = true;
-		newLevel = true;
-	}
-	loadState = false;
 }
 
 unsigned int Game::GetCode(bool state)
@@ -324,19 +270,6 @@ void Game::renderLetter(char l, unsigned int x, unsigned int y)
 	}
 }
 
-void Game::MenuInicio()
-{
-	SDL_Rect destRect;
-	destRect.h = winHeight;
-	destRect.w = winWidth;
-	destRect.x = destRect.y = 0;
-	textures[5].render(renderer, destRect);
-	SDL_RenderPresent(renderer);
-	while (inicio) {
-		MenuEvents();
-	}
-}
-
 void Game::saveToFile(unsigned int code)
 {
 	ofstream archivo;
@@ -393,6 +326,7 @@ void Game::increasePoints(unsigned int p)
 void Game::setFilename(string&s)
 {
 	filename = s;
+	load = true;
 }
 
 GameStateMachine * Game::getGameStateMachine()

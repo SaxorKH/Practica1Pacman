@@ -17,8 +17,6 @@ class PlayState :
 	
 	GameMap * map;
 	Pacman * pacman;
-	string filename;
-	bool end = false;
 	bool inicio = true;
 	bool saveState = false;
 	bool newLevel = true;
@@ -68,6 +66,7 @@ public:
 	// Incrementa la puntuación del jugador en la cantidad dada por el parámetro.
 	void increasePoints(unsigned int p);
 	void update();
+	void loadSaveFile(string & s);
 	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
 	void collision(GameCharacter&c);
 	void render();

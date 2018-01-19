@@ -15,9 +15,13 @@ protected:
 	Texture * texture = nullptr;
 	SDL_Event event;
 
+	unsigned int winWidth = 500;
+	unsigned int winHeight = 350;
+
 	bool first = true;
+	bool end = false;
 	// Lee un código numérico del teclado.
-	unsigned int GetCode();
+	static unsigned int GetCode(Game * g);
 	virtual void onEnter();
 	virtual void onExit();
 public:
@@ -27,5 +31,6 @@ public:
 	virtual void update();
 	virtual void render();
 	virtual void handleEvent();
+	void setEnd(bool e);
 };
 

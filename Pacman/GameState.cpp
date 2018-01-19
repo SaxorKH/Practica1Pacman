@@ -5,7 +5,7 @@
 
 
 
-unsigned int GameState::GetCode()
+unsigned int GameState::GetCode(Game * g)
 {
 	SDL_Event event;
 	bool state = true;
@@ -13,7 +13,7 @@ unsigned int GameState::GetCode()
 	while (state) {
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT) {
-			game->setExit(true);
+			g->setExit(true);
 			state = false;
 		}
 		else if (event.key.keysym.sym == SDLK_RETURN)
@@ -45,8 +45,11 @@ GameState::~GameState()
 
 void GameState::update()
 {
-	for (list<GameObject*>::iterator it = stage->begin(); it != stage->end(); it++)
-		(*it)->update();
+	if (end)
+		game->getGameStateMachine()->popState();
+	else
+		for (list<GameObject*>::iterator it = stage->begin(); it != stage->end(); it++)
+			(*it)->update();
 }
 
 void GameState::render()
@@ -66,6 +69,11 @@ void GameState::handleEvent()
 				it++;
 		}
 	}
+}
+
+void GameState::setEnd(bool e)
+{
+	end = e;
 }
 
 void GameState::onEnter()

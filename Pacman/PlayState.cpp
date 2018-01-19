@@ -384,9 +384,7 @@ void PlayState::increasePoints(unsigned int p)
 
 void PlayState::update() {
 	unsigned int frameTime = SDL_GetTicks() - startTime;
-	if (end)
-		game->getGameStateMachine()->popState();
-	else if (newLevel) {
+	if (!end & newLevel) {
 		string levelName = levelPrefix;
 		if (currentLevel < 10)
 			levelName += "0";
@@ -401,4 +399,9 @@ void PlayState::update() {
 		GameState::update();
 		startTime = SDL_GetTicks();
 	}
+}
+
+void PlayState::loadSaveFile(string&s) {
+	loadMap(s, true);
+	newLevel = false;
 }

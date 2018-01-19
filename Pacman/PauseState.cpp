@@ -5,7 +5,7 @@
 PauseState::PauseState(Game* g) : GameState(g, PauseTexture)
 {
 	SDL_Rect r = SDL_Rect();
-	stage->push_back(new MenuButton(g, r, resume));
+//	stage->push_back(new MenuButton(g, r, resume));
 	// todos botones
 }
 
