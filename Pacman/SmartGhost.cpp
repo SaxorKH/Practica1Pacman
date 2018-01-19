@@ -1,6 +1,6 @@
 #include "SmartGhost.h"
 #include "Game.h"
-
+#include "FileFormatError.h"
 
 void SmartGhost::update()
 {
@@ -72,6 +72,8 @@ void SmartGhost::update()
 void SmartGhost::loadFromFile(istream & archivo)
 {
 	Ghost::loadFromFile(archivo);
+	if (archivo.eof())
+		throw FileFormatError("Falta información de personaje");
 	archivo >> age;
 	if (age >= OLD_AGE){
 		state = Old;

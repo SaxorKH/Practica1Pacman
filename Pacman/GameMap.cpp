@@ -1,5 +1,6 @@
 #include "GameMap.h"
 #include "Game.h"
+#include "FileFormatError.h"
 
 GameMap::GameMap()
 {
@@ -25,12 +26,16 @@ void GameMap::loadFromFile(istream &archivo)
 	rows = game->getRows();
 	cols = game->getCols();
 	unsigned int cellVal;
-	for (unsigned int i = 0; i < rows; i++)
+	for (unsigned int i = 0; i < rows; i++) {
 		for (unsigned int j = 0; j < cols; j++) {
+			if (archivo.eof())
+				throw FileFormatError("Número de filas o columnas incorrecto");
 			archivo >> cellVal;
-			if(cellVal < 4)
-				setCellType(i, j, (MapCell) cellVal);
+			if (cellVal >= 4)
+				throw FileFormatError("Formato de celda imposible");
+			setCellType(i, j, (MapCell)cellVal);
 		}
+	}
 }
 void GameMap::saveToFile(ostream & archivo)
 {

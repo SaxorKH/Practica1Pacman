@@ -1,5 +1,6 @@
 #include "GameCharacter.h"
 #include "Game.h"
+#include "FileFormatError.h"
 
 
 GameCharacter::GameCharacter()
@@ -46,11 +47,29 @@ void GameCharacter::update()
 void GameCharacter::loadFromFile(istream &archivo)
 {
 	archivo >> x;
+	if (x < 0 || x >= game->getCols())
+		throw FileFormatError("x imposible.");
+	if (archivo.eof())
+		throw FileFormatError("Falta información de personaje");
 	archivo >> y;
+	if (y < 0 || x >= game->getRows())
+		throw FileFormatError("y imposible.");
+	if (archivo.eof())
+		throw FileFormatError("Falta información de personaje");
 	archivo >> inix;
+	if (inix < 0 || inix >= game->getCols())
+		throw FileFormatError("x inicial imposible.");
+	if (archivo.eof())
+		throw FileFormatError("Falta información de personaje");
 	archivo >> iniy;
+	if (iniy < 0 || iniy >= game->getCols())
+		throw FileFormatError("y inicial imposible.");
+	if (archivo.eof())
+		throw FileFormatError("Falta información de personaje");
 	unsigned int aux;
 	archivo >> aux;
+	if (aux > 4)
+		throw FileFormatError("Dirección imposible");
 	dir = (Direction) aux;
 }
 void GameCharacter::saveToFile(ostream&archivo)

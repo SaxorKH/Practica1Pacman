@@ -4,6 +4,9 @@
 #include "Game.h"
 #include "SmartGhost.h"
 #include "PauseState.h"
+#include "MainMenuState.h"
+#include "FileNotFoundError.h"
+#include "FileFormatError.h"
 #include <time.h>
 using namespace std;
 
@@ -23,38 +26,58 @@ PlayState::~PlayState()
 
 bool PlayState::loadMap(const string & filename, bool savefile)
 {
-	ifstream archivo;
-	archivo.open(filename);
+	try {
+		ifstream archivo;
+		archivo.open(filename);
 
-	if (!archivo.is_open())
-		return false;
-	if (savefile) {
-		archivo >> currentLevel;
-		archivo >> points;
-	}
-	getMapDimensions(archivo);
-	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
-	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-	stage->push_back(new GameMap(rows, cols, game));
-	map = (GameMap*)stage->back();
+		if (!archivo.is_open())
+			throw FileNotFoundError(filename);
+		try {
+			if (savefile) {
+				archivo >> currentLevel;
+				if (currentLevel > TOTAL_LEVELS)
+					throw FileFormatError("Nº de nivel por encima del máximo de niveles posible.");
+				archivo >> points;
+			}
+			getMapDimensions(archivo);
+			SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
+			SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			stage->push_back(new GameMap(rows, cols, game));
+			map = (GameMap*)stage->back();
 
-	map->loadFromFile(archivo);
-	archivo >> nChar;
-	for (unsigned int i = 0; i < nChar; i++) {
-		int tipo;
-		archivo >> tipo;
-		if (tipo == 1)
-			stage->push_back(new SmartGhost(game));
-		else
-			stage->push_back(new Ghost(i % 4, game));
-		((PacManObject*) stage->back())->loadFromFile(archivo);
+			map->loadFromFile(archivo);
+			archivo >> nChar;
+			for (unsigned int i = 0; i < nChar; i++) {
+				int tipo;
+				archivo >> tipo;
+				if (tipo > 1)
+					throw FileFormatError("tipo de Fantasma imposible");
+				if (tipo == 1)
+					stage->push_back(new SmartGhost(game));
+				else
+					stage->push_back(new Ghost(i % 4, game));
+				((PacManObject*)stage->back())->loadFromFile(archivo);
+			}
+			if (savefile)
+				pacman->loadFromSavefile(archivo);
+			else
+				pacman->loadFromFile(archivo);
+			newLevel = false;
+		}
+		catch (FileFormatError & f) {
+			cout << "Formato de archivo incorrecto: " << f.what();
+			Restart(game);
+		}
+		archivo.close();
 	}
-	if (savefile)
-		pacman->loadFromSavefile(archivo);
-	else
-		pacman->loadFromFile(archivo);
-	newLevel = false;
-	archivo.close();
+	catch (FileNotFoundError & f) {
+		cout << "Archivo no encontrado :" << f.what() << endl;
+		Restart(game);
+	}
+	catch (PacManError) {
+		cout << "Error en el archivo desconocido";
+		Restart(game);
+	}
 	return true;
 }
 
@@ -374,21 +397,27 @@ void PlayState::increasePoints(unsigned int p)
 }
 
 void PlayState::update() {
-	unsigned int frameTime = SDL_GetTicks() - startTime;
-	if (!end & newLevel) {
-		string levelName = levelPrefix;
-		if (currentLevel < 10)
-			levelName += "0";
-		stringstream ss;
-		ss << currentLevel;
-		levelName += ss.str() + ".pac";
-		cleanMap();
-		loadMap(levelName);
-		newLevel = false;
+	if (restart) {
+		Game *g = game;
+		g->getGameStateMachine()->pushState(new MainMenuState(g));
 	}
-	else if (FRAME_RATE < frameTime) {
-		GameState::update();
-		startTime = SDL_GetTicks();
+	else {
+		unsigned int frameTime = SDL_GetTicks() - startTime;
+		if (!end & newLevel) {
+			string levelName = levelPrefix;
+			if (currentLevel < 10)
+				levelName += "0";
+			stringstream ss;
+			ss << currentLevel;
+			levelName += ss.str() + ".pac";
+			cleanMap();
+			loadMap(levelName);
+			newLevel = false;
+		}
+		else if (FRAME_RATE < frameTime) {
+			GameState::update();
+			startTime = SDL_GetTicks();
+		}
 	}
 }
 

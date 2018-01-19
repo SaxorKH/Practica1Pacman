@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 		game->run();
 	}
 	catch (PacManError()) {
-		cout << "Finalizando programa" << endl;
+		cout << "Error desconocido" << endl;
 	}
 	return 0;
 }

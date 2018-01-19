@@ -1,5 +1,6 @@
 #include "Pacman.h"
 #include "Game.h"
+#include "FileFormatError.h"
 
 Pacman::Pacman()
 {
@@ -49,7 +50,11 @@ void Pacman::die()
 void Pacman::loadFromSavefile(istream & archivo)
 {
 	GameCharacter::loadFromFile(archivo);
+	if (archivo.eof())
+		throw FileFormatError("Falta información del Pacman");
 	archivo >> energy;
+	if (archivo.eof())
+		throw FileFormatError("Falta información del Pacman");
 	if (energy != 0) {
 		game->ghostScared(energy);
 	}
