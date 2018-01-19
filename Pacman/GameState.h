@@ -12,7 +12,6 @@ class GameState
 protected:
 	list<GameObject*> * stage;
 	Game * game = nullptr;
-	Texture * texture = nullptr;
 	SDL_Event event;
 
 	unsigned int winWidth = 500;
@@ -26,12 +25,12 @@ protected:
 	virtual void onExit();
 public:
 	GameState(Game * g);
-	GameState(Game*g, TextureType t);
 	virtual ~GameState();
 	virtual void update();
 	virtual void render();
 	virtual void handleEvent();
 	void setEnd(bool e);
 	void setRestart(bool r);
+	static void Restart(Game * g);
 };
 

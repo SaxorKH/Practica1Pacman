@@ -4,8 +4,9 @@
 #include <sstream>
 
 
-MainMenuState::MainMenuState(Game * g) : GameState(g, MainTexture)
+MainMenuState::MainMenuState(Game * g) : GameState(g)
 {
+	texture = game->getTexture(MainTexture);
 	SDL_Rect destRect;
 	destRect.x = 64;
 	destRect.y = 278;
@@ -55,10 +56,4 @@ void MainMenuState::load(Game * g)
 void MainMenuState::start(Game * g)
 {
 	((MainMenuState*) g->getGameStateMachine()->currentState())->setEnd(true);
-}
-
-void MainMenuState::onEnter() {
-	GameState::onEnter();
-	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
-	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }

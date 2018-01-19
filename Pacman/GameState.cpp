@@ -31,13 +31,6 @@ GameState::GameState(Game * g)
 	stage = new list<GameObject*>();
 }
 
-GameState::GameState(Game * g, TextureType t)
-{
-	game = g;
-	texture = game->getTexture(t);
-	stage = new list<GameObject*>();
-}
-
 GameState::~GameState()
 {
 	delete stage;
@@ -82,9 +75,16 @@ void GameState::setRestart(bool r)
 	setEnd(true);
 }
 
+void GameState::Restart(Game * g)
+{
+	g->getGameStateMachine()->currentState()->setRestart(true);
+}
+
 void GameState::onEnter()
 {
 	first = false;
+	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
+	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 void GameState::onExit()

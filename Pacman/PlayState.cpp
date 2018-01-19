@@ -358,8 +358,10 @@ void PlayState::ghostScared(unsigned int energy)
 
 void PlayState::nextLevel()
 {
-	if (currentLevel == TOTAL_LEVELS)
-		endGame();
+	if (currentLevel == TOTAL_LEVELS) {
+		game->winGame();
+		end = true;
+	}
 	else {
 		currentLevel++;
 		newLevel = true;
@@ -392,11 +394,4 @@ void PlayState::update() {
 
 void PlayState::loadSaveFile(string&s) {
 	loadMap(s, true);
-	newLevel = false;
-}
-
-void PlayState::onEnter() {
-	GameState::onEnter();
-	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
-	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }

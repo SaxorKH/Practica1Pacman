@@ -5,6 +5,7 @@
 #include <sstream>
 #include "PlayState.h"
 #include "MainMenuState.h"
+#include "EndState.h"
 using namespace std;
 
 
@@ -41,6 +42,7 @@ Game::Game()
 		else {
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			gameStateMachine = new GameStateMachine();
+			gameStateMachine->pushState(new EndState(this));
 			gameStateMachine->pushState(new PlayState(this));
 			gameStateMachine->pushState(new MainMenuState(this));
 		}
@@ -72,6 +74,9 @@ void Game::run()
 		if (load) {
 			load = false;
 			((PlayState*)gameStateMachine->currentState())->loadSaveFile(filename);
+		}
+		if (win) {
+			((EndState*)gameStateMachine->currentState())->setWin(true);
 		}
 		if (gameStateMachine->currentState() == nullptr)
 			exit = true;
@@ -126,13 +131,6 @@ const unsigned int Game::getCellSize() const
 	return cellSize;
 }
 
-void Game::getMapDimensions(istream &archivo) {
-	archivo >> rows;
-	archivo >> cols;
-
-	winWidth = (cols+7)*cellSize;
-	winHeight = rows*cellSize;
-}
 
 void Game::collision(GameCharacter&c)
 {
@@ -282,6 +280,11 @@ const unsigned int Game::getCols() const
 }
 void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
 	((PlayState*)gameStateMachine->currentState())->getPacmanPos(x, y);
+}
+
+void Game::winGame()
+{
+	win = true;
 }
 
 void Game::endGame()

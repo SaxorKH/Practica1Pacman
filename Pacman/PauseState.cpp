@@ -4,8 +4,9 @@
 #include "PlayState.h"
 #include "MainMenuState.h"
 
-PauseState::PauseState(Game* g) : GameState(g, PauseTexture)
+PauseState::PauseState(Game* g) : GameState(g)
 {
+	texture = game->getTexture(PauseTexture);
 	SDL_Rect r = SDL_Rect();
 	r.w = 124;
 	r.h = 51;
@@ -41,10 +42,6 @@ void PauseState::save(Game * g)
 	}
 }
 
-void PauseState::Restart(Game * g) {
-	g->getGameStateMachine()->currentState()->setRestart(true);
-}
-
 void PauseState::update() {
 	if (restart) {
 		Game *g = game;
@@ -70,9 +67,3 @@ void PauseState::render()
 	GameState::render();
 }
 
-
-void PauseState::onEnter() {
-	GameState::onEnter();
-	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
-	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-}

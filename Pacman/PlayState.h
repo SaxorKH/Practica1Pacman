@@ -5,8 +5,6 @@
 class PlayState :
 	public GameState
 {
-	unsigned int winWidth = 500;
-	unsigned int winHeight = 350;
 	unsigned int cellSize = 25;
 	unsigned int startTime = 0;
 	unsigned int nChar;
@@ -61,7 +59,6 @@ public:
 	void increasePoints(unsigned int p);
 	void update();
 	void loadSaveFile(string & s);
-	void onEnter();
 	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
 	void collision(GameCharacter&c);
 	void render();

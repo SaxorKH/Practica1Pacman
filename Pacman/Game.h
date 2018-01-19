@@ -49,13 +49,12 @@ private:
 	bool inicio = true;
 	bool funcional;
 	bool save = false;
+	bool win = false;
 	unsigned int saveCode;
 	bool newLevel = true;
 	bool load = false;
 	Texture* textures = nullptr;
 	GameMap* gameMap = nullptr;
-	// Obtiene las dimensiones del mapa a partir del archivo abierto previamente.
-	void getMapDimensions(istream & archivo);	
 	// Lee un código numérico del teclado.
 	unsigned int GetCode(bool state);	
 	// Destruye el mapa.
@@ -98,7 +97,8 @@ public:
 	// Devuelve las columnas del mapa.
 	const unsigned int getCols() const;		
 	// Escribe la posición x e y del Pacman en los atributos utilizados.
-	void getPacmanPos(unsigned int& x, unsigned int& y);	
+	void getPacmanPos(unsigned int& x, unsigned int& y);
+	void winGame();
 	// Finaliza la partida.
 	void endGame();		
 	// Pone todos los fantasmas en estado "asustado".
