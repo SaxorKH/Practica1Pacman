@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "SDL_image.h"
-
+#include "SDLError.h"
 
 
 Texture::Texture()
@@ -12,21 +12,21 @@ Texture::~Texture()
 	if(texture != nullptr)
 		SDL_DestroyTexture(texture);
 }
-bool Texture::load(SDL_Renderer * renderer, string filename, unsigned int numRows, unsigned int numCols)
+void Texture::load(SDL_Renderer * renderer, string filename, unsigned int numRows, unsigned int numCols)
 {
 	SDL_Surface* surface = IMG_Load(filename.c_str());
 
 	if (surface == NULL)
-		return false;
+		throw(SDLError(IMG_GetError()));
 	w = surface->w;
 	h = surface->h;
 	fw = w / numCols;
 	fh = h / numRows;
 
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
-
+	if (texture == nullptr)
+		throw(SDLError(IMG_GetError()));
 	SDL_FreeSurface(surface);
-	return true;
 }
 void Texture::render(SDL_Renderer * renderer, const SDL_Rect & destRect, SDL_RendererFlip flip)
 {

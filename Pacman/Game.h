@@ -34,35 +34,16 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	GameStateMachine* gameStateMachine = nullptr;
 	string filename;
-
-	unsigned int winWidth = 500;
-	unsigned int winHeight = 350;
-	unsigned int cellSize = 25;
-	unsigned int startTime = 0;
-	unsigned int nChar;
-	unsigned int rows;
-	unsigned int cols;
-	unsigned int points = 0;
-	unsigned int currentLevel = 1;
+	Texture * textures = nullptr;
 
 	bool exit = false;
-	bool inicio = true;
-	bool funcional;
 	bool save = false;
 	bool win = false;
 	unsigned int saveCode;
 	bool newLevel = true;
 	bool load = false;
-	Texture* textures = nullptr;
-	GameMap* gameMap = nullptr;
 	// Lee un código numérico del teclado.
 	unsigned int GetCode(bool state);	
-	// Destruye el mapa.
-	void cleanMap();					
-	// Renderiza la interfaz.
-	void renderInterface();				
-	//Renderiza una letra a partir de una fuente.
-	void renderLetter(char l, unsigned int x, unsigned int y);
 	// Renderiza la partida.
 	void render();					
 	// Actualiza el estado de la partida.
@@ -75,9 +56,7 @@ public:
 	// Constructor de la clase Game. Inicia SDL y crea el renderer, la ventana y las texturas.
 	Game();		
 	// Destructor de la clase Game. Destruye el renderer, la ventana y las texturas, así como cierra SDL.
-	~Game();	
-	// Devuelve un booleano que indica si el Game se ha creado correctamente.
-	const bool getFuncional() const;	
+	~Game();
 	// Devuelve un puntero al renderer.
 	SDL_Renderer * getRenderer() const; 
 	// Devuelve un puntero al window

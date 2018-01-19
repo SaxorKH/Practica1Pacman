@@ -2,17 +2,18 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
-
+#include "PacManError.h"
 using namespace std;
 
 
 int main(int argc, char* argv[]) {
-	Game game = Game();
-	if (!game.getFuncional()) {
-		return 1;
+	Game * game;
+	try {
+		game = new Game();
+		game->run();
 	}
-	game.run();
-
-
+	catch (PacManError()) {
+		cout << "Finalizando programa" << endl;
+	}
 	return 0;
 }

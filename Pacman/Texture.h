@@ -17,7 +17,7 @@ public:
 	~Texture();
 	
 	// Carga un archivo de imagen como textura. Añadiendo filas y columnas puede funcionar como tileset.
-	bool load(SDL_Renderer* renderer, string filename, unsigned int numRows = 1, unsigned int numCols = 1); 
+	void load(SDL_Renderer* renderer, string filename, unsigned int numRows = 1, unsigned int numCols = 1); 
 
 	// Dibuja la textura completa en el rectángulo destino dado. 
 	void render(SDL_Renderer* renderer, const SDL_Rect& destRect, SDL_RendererFlip flip = SDL_FLIP_NONE);
