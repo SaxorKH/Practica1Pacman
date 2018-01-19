@@ -18,7 +18,7 @@ MainMenuState::MainMenuState(Game * g) : GameState(g, MainTexture)
 
 
 	destRect.x = 314;
-	mb = new MenuButton(g, destRect, 1, loadState);
+	mb = new MenuButton(g, destRect, 1, load);
 	stage->push_back(mb);
 }
 
@@ -41,7 +41,7 @@ void MainMenuState::render()
 }
 
 
-void MainMenuState::loadState(Game * g)
+void MainMenuState::load(Game * g)
 {
 	unsigned int code = GetCode(g);
 	
@@ -49,6 +49,7 @@ void MainMenuState::loadState(Game * g)
 	ss << code;
 	string filename = levelPrefix + "Save" + ss.str() + ".pac";
 	g->setFilename(filename);
+	start(g);
 }
 
 void MainMenuState::start(Game * g)

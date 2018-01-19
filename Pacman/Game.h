@@ -48,15 +48,14 @@ private:
 	bool exit = false;
 	bool inicio = true;
 	bool funcional;
-	bool saveState = false;
+	bool save = false;
+	unsigned int saveCode;
 	bool newLevel = true;
 	bool load = false;
 	Texture* textures = nullptr;
 	GameMap* gameMap = nullptr;
 	// Obtiene las dimensiones del mapa a partir del archivo abierto previamente.
 	void getMapDimensions(istream & archivo);	
-	// Le pide un código numérico al jugador y guada la partida.
-	void SaveState();	
 	// Lee un código numérico del teclado.
 	unsigned int GetCode(bool state);	
 	// Destruye el mapa.
@@ -64,9 +63,7 @@ private:
 	// Renderiza la interfaz.
 	void renderInterface();				
 	//Renderiza una letra a partir de una fuente.
-	void renderLetter(char l, unsigned int x, unsigned int y);	
-	// Genera o abre el archivo de guardado a partir del código y escribe los datos de la partida.
-	void saveToFile(unsigned int code); 
+	void renderLetter(char l, unsigned int x, unsigned int y);
 	// Renderiza la partida.
 	void render();					
 	// Actualiza el estado de la partida.
@@ -115,5 +112,7 @@ public:
 
 	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
 	void collision(GameCharacter&c);
+	// Genera o abre el archivo de guardado a partir del código y escribe los datos de la partida.
+	void saveToFile(unsigned int code);
 };
 

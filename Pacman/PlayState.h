@@ -23,10 +23,6 @@ class PlayState :
 	bool load = false;
 	// Obtiene las dimensiones del mapa a partir del archivo abierto previamente.
 	void getMapDimensions(istream & archivo);
-	// Le pide un código numérico al jugador y guada la partida.
-	void SaveState();
-	// Le pide un código numérico al jugador y carga la partida.
-	void LoadState();
 	// Lee un código numérico del teclado.
 	unsigned int GetCode(bool state);
 	// Destruye el mapa.
@@ -35,8 +31,6 @@ class PlayState :
 	void renderInterface();
 	//Renderiza una letra a partir de una fuente.
 	void renderLetter(char l, unsigned int x, unsigned int y);
-	// Genera o abre el archivo de guardado a partir del código y escribe los datos de la partida.
-	void saveToFile(unsigned int code);
 	// Recibe y gestiona los eventos del juego.
 	void handleEvent();
 
@@ -67,8 +61,11 @@ public:
 	void increasePoints(unsigned int p);
 	void update();
 	void loadSaveFile(string & s);
+	void onEnter();
 	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
 	void collision(GameCharacter&c);
 	void render();
+	// Genera o abre el archivo de guardado a partir del código y escribe los datos de la partida.
+	void saveToFile(unsigned int code);
 };
 

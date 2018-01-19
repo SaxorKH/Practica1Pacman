@@ -64,8 +64,10 @@ void PlayState::handleEvent()
 		if (event.type == SDL_QUIT)
 			game->setExit(true);
 		else if (event.type == SDL_KEYDOWN) {
-			if (event.key.keysym.sym == SDLK_ESCAPE)
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				game->getGameStateMachine()->pushState(new PauseState(game));
+				first = true;
+			}
 			else pacman->handleEvent(event);
 		}
 	}
@@ -156,31 +158,10 @@ void PlayState::collision(GameCharacter&c)
 void PlayState::render()
 {
 	GameState::render();
-	renderInterface();
-}
-
-void PlayState::SaveState()
-{
-	unsigned int code = GetCode(saveState);
-
-	if (code != 0) {
-		saveToFile(code);
-	}
-	saveState = false;
-}
-
-void PlayState::LoadState()
-{
-//	unsigned int code = GetCode(loadState);
-
-	stringstream ss;
-//	ss << code;
-	string filename = levelPrefix + "Save" + ss.str() + ".pac";
-	if (!loadMap(filename, true)) {
-		inicio = true;
-		newLevel = true;
-	}
-//	loadState = false;
+	if (first)
+		onEnter();
+	else
+		renderInterface();
 }
 
 unsigned int PlayState::GetCode(bool state)
@@ -235,6 +216,13 @@ void PlayState::renderInterface()
 	renderLetter('a', cols + 4, 3);
 	renderLetter('s', cols + 5, 3);
 	renderLetter(':', cols + 6, 3);
+	SDL_Rect destRect;
+	destRect.w = destRect.h = game->getCellSize();
+	destRect.y = game->getCellSize()*(4);
+	for (unsigned int i = 1; i <= pacman->getLives(); i++) {
+		destRect.x = game->getCellSize()*(game->getCols() + i);
+		game->getTexture(CharacterTexture)->renderFrame(game->getRenderer(), destRect, (unsigned int)Right, 5 * 2 + 1);
+	}
 }
 
 void PlayState::renderLetter(char l, unsigned int x, unsigned int y)
@@ -324,9 +312,10 @@ void PlayState::saveToFile(unsigned int code)
 	archivo.open(levelName, ios_base::trunc);
 	if (archivo.is_open()) {
 		archivo << currentLevel << " " << points << endl;
-		((PacManObject*)(*(stage->begin()++)))->saveToFile(archivo);
-		archivo << (stage->size() - 1) << endl; 
-		list<GameObject*>::iterator it = ++stage->begin();
+		map->saveToFile(archivo);
+		archivo << (stage->size() - 2) << endl; 
+		list<GameObject*>::iterator it = stage->begin();
+		it++;
 		it++;
 		for (it; it != stage->end(); it++)
 			((PacManObject*)(*it))->saveToFile(archivo);
@@ -404,4 +393,10 @@ void PlayState::update() {
 void PlayState::loadSaveFile(string&s) {
 	loadMap(s, true);
 	newLevel = false;
+}
+
+void PlayState::onEnter() {
+	GameState::onEnter();
+	SDL_SetWindowSize(game->getWindow(), winWidth, winHeight);
+	SDL_SetWindowPosition(game->getWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }

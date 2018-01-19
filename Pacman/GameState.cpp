@@ -76,6 +76,12 @@ void GameState::setEnd(bool e)
 	end = e;
 }
 
+void GameState::setRestart(bool r)
+{
+	restart = r;
+	setEnd(true);
+}
+
 void GameState::onEnter()
 {
 	first = false;
@@ -83,5 +89,5 @@ void GameState::onEnter()
 
 void GameState::onExit()
 {
-	game->getGameStateMachine()->popState();
+	first = true;
 }

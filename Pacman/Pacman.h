@@ -26,14 +26,13 @@ public:
 	// Habilita el contador de la energía del Pacman mientras los fantasmas están asustados.
 	void startEnergy();					
 	// Introduce la energía inicial del Pacman.
-	void setEnergy(unsigned int en);	
+	void setEnergy(unsigned int en);
+	unsigned int getLives();
 	// Recibe las posiciones inicial y actual, así como la dirección, la energía y las vidas actuales de un archivo de
 	// guardado.
 	void loadFromSavefile(istream &archivo);	
 	// Guarda posiciones inicial y actual, dirección, energía y vidas en el archivo de guardado.
-	void saveToFile(ostream &archivo);			
-	// Renderiza el Pacman y sus vidas.
-	void render();				
+	void saveToFile(ostream &archivo);		
 
 	bool handleEvent(SDL_Event&e);
 };

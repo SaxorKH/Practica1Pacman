@@ -35,7 +35,7 @@ Game::Game()
 		funcional = textures[6].load(renderer, "..\\images\\MenuPausa.png");
 		funcional = textures[7].load(renderer, "..\\images\\GameOver.png");
 		funcional = textures[8].load(renderer, "..\\images\\Victoria.png");
-		funcional = textures[9].load(renderer, "..\\images\\Botones.png", 1, 4);
+		funcional = textures[9].load(renderer, "..\\images\\Botones.png", 1, 5);
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
@@ -69,14 +69,18 @@ void Game::run()
 			exit = true;
 		else
 			update();
+		if (load) {
+			load = false;
+			((PlayState*)gameStateMachine->currentState())->loadSaveFile(filename);
+		}
 		if (gameStateMachine->currentState() == nullptr)
 			exit = true;
 		else
 			render();
-		if (saveState) {
-			SaveState();
+		if (save) {
+			((PlayState*)gameStateMachine->currentState())->saveToFile(saveCode);
+			save = false;
 		}
-		
 	}
 }
 
@@ -133,16 +137,6 @@ void Game::getMapDimensions(istream &archivo) {
 void Game::collision(GameCharacter&c)
 {
 	((PlayState*)gameStateMachine->currentState())->collision(c);
-}
-
-void Game::SaveState()
-{
-	unsigned int code = GetCode(saveState);
-
-	if (code != 0) {
-		saveToFile(code);
-	}
-	saveState = false;
 }
 
 unsigned int Game::GetCode(bool state)
@@ -272,21 +266,8 @@ void Game::renderLetter(char l, unsigned int x, unsigned int y)
 
 void Game::saveToFile(unsigned int code)
 {
-	ofstream archivo;
-	stringstream ss;
-	ss << code;
-	string levelName = levelPrefix + "Save" + ss.str() + ".pac";
-
-	archivo.open(levelName, ios_base::trunc);
-	if (archivo.is_open()) {
-		archivo << currentLevel << " " << points << endl;
-		gameMap->saveToFile(archivo);
-/*		archivo << (characters.size() - 1) << endl;
-		for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++)
-			(*it)->saveToFile(archivo);
-		characters.front()->saveToFile(archivo);*/
-		archivo.close();
-	}
+	save = true;
+	saveCode = code;
 }
 
 
