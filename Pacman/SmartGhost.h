@@ -13,9 +13,9 @@ private:
 public:
 	SmartGhost();
 	//Constructor básico de SmartGhost.
-	SmartGhost(Game* a, Texture* b); 
+	SmartGhost(Game* a); 
 	//Constructor completo de SmartGhost con todos los valores necesarios.
-	SmartGhost(Game * g, Texture * t, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
+	SmartGhost(Game * g, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 	~SmartGhost();
 
 	//Actualiza el crecimiento y posición del SmartGhost de acuerdo a su edad y posición del pacman.

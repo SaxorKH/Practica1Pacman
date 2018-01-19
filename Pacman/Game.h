@@ -5,18 +5,36 @@
 #include "Pacman.h"
 #include "Ghost.h"
 #include "GameMap.h"
+#include "GameStateMachine.h"
 
-#define TOTAL_TEXTURAS 6
-#define FRAME_RATE 150
+#define TOTAL_TEXTURAS 10
 #define TOTAL_LEVELS 2
 #define VUL_TIME 10000
+#define FRAME_RATE 150
+const string levelPrefix = "..\\levels\\level";
 using namespace std;
+
+enum TextureType {
+	CharacterTexture,
+	WallTexture,
+	FoodTexture,
+	VitaminTexture,
+	FontTexture,
+	MainTexture,
+	PauseTexture,
+	GameOverTexture,
+	WinTexture,
+	ButtonTexture
+};
 
 class Game
 {
 private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
+	GameStateMachine* gameStateMachine = nullptr;
+	string filename;
+
 	unsigned int winWidth = 500;
 	unsigned int winHeight = 350;
 	unsigned int cellSize = 25;
@@ -25,7 +43,7 @@ private:
 	unsigned int rows;
 	unsigned int cols;
 	unsigned int points = 0;
-	unsigned int currentLevel;
+	unsigned int currentLevel = 1;
 
 	bool exit = false;
 	bool inicio = true;
@@ -34,13 +52,9 @@ private:
 	bool newLevel = true;
 	bool loadState = false;
 	Texture* textures = nullptr;
-	list<GameCharacter*> characters;
 	GameMap* gameMap = nullptr;
-	const string levelPrefix = "..\\levels\\level";
 	// Obtiene las dimensiones del mapa a partir del archivo abierto previamente.
 	void getMapDimensions(istream & archivo);	
-	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
-	void collision(list<GameCharacter*>::iterator ini);		
 	// Le pide un código numérico al jugador y guada la partida.
 	void SaveState();	
 	// Le pide un código numérico al jugador y carga la partida.
@@ -78,8 +92,14 @@ public:
 	const bool getFuncional() const;	
 	// Devuelve un puntero al renderer.
 	SDL_Renderer * getRenderer() const; 
+	// Devuelve un puntero al window
+	SDL_Window * getWindow() const;
 	// Devuelve el tamaño de las celdas.
-	const unsigned int getCellSize() const; 
+	const unsigned int getCellSize() const;
+
+	Texture* getTexture(TextureType t);
+	// Cambia el estado del boleano "exit".
+	void setExit(bool e);
 	// Ejecuta el juego.
 	void run();		
 	// Lee si se puede avanzar a la celda siguiente a la posición y dirección dadas.
@@ -98,5 +118,10 @@ public:
 	void nextLevel();	
 	// Incrementa la puntuación del jugador en la cantidad dada por el parámetro.
 	void increasePoints(unsigned int p);	
+	void setFilename(string&s);
+	GameStateMachine* getGameStateMachine();
+
+	// Detecta si un GameCharacter ha tocado otro, y ejecuta las respuestas necesarias.
+	void collision(GameCharacter&c);
 };
 

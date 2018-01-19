@@ -24,7 +24,7 @@ private:
 public:
 	GameMap();
 	//Constructora completa de un GameMap
-	GameMap(unsigned int rows, unsigned int cols, Texture* wall, Texture* food, Texture * vitamin, Game * game);
+	GameMap(unsigned int rows, unsigned int cols, Game * game);
 	~GameMap();
 
 	//Construye un GameMap a partir de un archivo
@@ -39,7 +39,7 @@ public:
 	void render();
 	//Se encargade actualizar el estado del GameMap en cada vuelta del bucle principal del juego
 	void update();
-
+	bool handleEvent(SDL_Event&e);
 	//Sirve para que otros elementos fuera de la classe puedan detectar el numero de filas del mapa
 	const unsigned int getRows() const;
 	//Sirve para que otros elementos fuera de la classe puedan detectar el numero de columnas del mapa

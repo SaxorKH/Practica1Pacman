@@ -2,8 +2,8 @@
 #include "SmartGhost.h"
 #include <fstream>
 #include <cstdlib>
-#include <time.h>
 #include <sstream>
+#include "PlayState.h"
 using namespace std;
 
 
@@ -11,9 +11,6 @@ using namespace std;
 
 Game::Game()
 {
-	currentLevel = 1;
-	srand(time(nullptr));
-	characters.push_front(new Pacman(this));
 	int winX, winY;	//	Posición	de	la	ventana
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 
@@ -34,10 +31,16 @@ Game::Game()
 		funcional = textures[3].load(renderer, "..\\images\\food3.png");
 		funcional = textures[4].load(renderer, "..\\images\\font.jpg", 10, 10);
 		funcional = textures[5].load(renderer, "..\\images\\MenuInicio.png");
+		funcional = textures[6].load(renderer, "..\\images\\MenuPausa.png");
+		funcional = textures[7].load(renderer, "..\\images\\GameOver.png");
+		funcional = textures[8].load(renderer, "..\\images\\Victoria.png");
+		funcional = textures[9].load(renderer, "..\\images\\Botones.png");
 		if (!funcional)
 			cout << "Error loading textures\n";
 		else {
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			gameStateMachine = new GameStateMachine();
+			gameStateMachine->pushState(new PlayState(this));
 		}
 	}
 	
@@ -45,16 +48,11 @@ Game::Game()
 
 Game::~Game()
 {
+	delete gameStateMachine;
 	if (textures != nullptr) {
 		for (int i = 0; i < TOTAL_TEXTURAS; i++)
 			textures[i].~Texture();
 		delete[] textures;
-	}
-	if(gameMap != nullptr)
-		delete gameMap;
-	while (!characters.empty()) {
-		delete characters.back();
-		characters.pop_back();
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -77,11 +75,15 @@ void Game::run()
 				ss << currentLevel;
 				levelName += ss.str() + ".pac";
 				cleanMap();
-				loadMap(levelName);
+				((PlayState*)gameStateMachine->currentState())->loadMap(levelName);
+				newLevel = false;
 			}
 			handleEvents();
 			update();
-			render();
+			if (gameStateMachine->currentState() == nullptr)
+				exit = true;
+			else
+				render();
 			if (saveState) {
 				SaveState();
 			}
@@ -89,104 +91,26 @@ void Game::run()
 	}
 }
 
+const bool Game::nextCell(unsigned int x, unsigned int y, Direction dir) const
+{
+	return ((PlayState*)gameStateMachine->currentState())->nextCell(x, y, dir);
+}
+
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	renderInterface();
-	gameMap->render();
-	for (list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); it++)
-		(*it)->render();
+	gameStateMachine->currentState()->render();
 	SDL_RenderPresent(renderer);	//	Muestra	la	escena
 }
 
 void Game::update()
 {
-	unsigned int frameTime = SDL_GetTicks() - startTime;
-	if (FRAME_RATE < frameTime) {
-		for (list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); it++){
-			(*it)->update();
-			collision(it);
-		}
-		gameMap->update();
-		startTime = SDL_GetTicks();
-	}
-}
-
-bool Game::loadMap(const string & filename, bool savefile)
-{
-	ifstream archivo;
-	archivo.open(filename);
-
-	if (!archivo.is_open())
-		return false;
-	if (savefile) {
-		archivo >> currentLevel;
-		archivo >> points;
-	}
-	getMapDimensions(archivo);
-	SDL_SetWindowSize(window, winWidth, winHeight);
-	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-	gameMap = new GameMap(rows, cols, &textures[1], &textures[2], &textures[3], this);
-
-	gameMap->loadFromFile(archivo);
-	archivo >> nChar;
-	for (unsigned int i = 0; i < nChar; i++) {
-		int tipo;
-		archivo >> tipo;
-		if (tipo == 1)
-			characters.push_back(new SmartGhost(this, &textures[0]));
-		else
-			characters.push_back(new Ghost(i%4, this, &textures[0]));
-		characters.back()->loadFromFile(archivo);
-	}
-	Pacman* p =(Pacman*) characters.front();
-	p->setTexture(&textures[0]);
-	if (savefile)
-		p->loadFromSavefile(archivo);
-	else
-		p->loadFromFile(archivo);
-	newLevel = false;
-	archivo.close();
-	return true;
+	gameStateMachine->currentState()->update();
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
-	Pacman * p = (Pacman*)characters.front();
-	while (SDL_PollEvent(&event) && !exit) {
-		switch (event.type) {
-		case SDL_QUIT:
-			exit = true;
-			break;
-		case SDL_KEYDOWN:
-			Direction dir;
-			switch(event.key.keysym.sym) {
-			case SDLK_RIGHT:
-				dir = Right;
-				p->bufferUpdate(dir);
-				break;
-			case SDLK_DOWN:
-				dir = Down;
-				p->bufferUpdate(dir);
-				break;
-			case SDLK_LEFT:
-				dir = Left;
-				p->bufferUpdate(dir);
-				break;
-			case SDLK_UP:
-				dir = Up;
-				p->bufferUpdate(dir);
-				break;
-			case SDLK_s:
-				saveState = true;
-				break;
-			}
-
-		default:
-			break;
-		}
-	}
+	gameStateMachine->currentState()->handleEvent();
 }
 
 void Game::MenuEvents()
@@ -212,37 +136,10 @@ void Game::MenuEvents()
 						loadState = true;
 					}
 				}
-					
-				else if(event.button.button)
-				break;
 		default:
 			break;
 		}
 	}
-}
-
-const bool Game::nextCell(unsigned int x, unsigned int y, Direction dir) const
-{
-	switch (dir) {
-	case Right:
-		x = (x + 1) % getCols();
-		break;
-	case Down:
-		y = (y + 1) % getRows();
-		break;
-	case Left:
-		if (x == 0)
-			x = getCols();
-		x--;
-		break;
-	case Up:
-		if (y == 0)
-			y = getRows();
-		y--;
-		break;
-	}
-
-	return gameMap->getCellType(y, x) != Wall;
 }
 
 const bool Game::getFuncional() const
@@ -253,6 +150,11 @@ const bool Game::getFuncional() const
 SDL_Renderer * Game::getRenderer() const
 {
 	return renderer;
+}
+
+SDL_Window * Game::getWindow() const
+{
+	return window;
 }
 
 const unsigned int Game::getCellSize() const
@@ -268,47 +170,9 @@ void Game::getMapDimensions(istream &archivo) {
 	winHeight = rows*cellSize;
 }
 
-void Game::collision(list<GameCharacter*>::iterator character)
+void Game::collision(GameCharacter&c)
 {
-	list<GameCharacter*>::iterator it = characters.begin();
-	for (it; it != characters.end(); it++) {
-		if (it != character && (*it)->getX() == (*character)->getX() && (*it)->getY() == (*character)->getY()) {
-			if (*character == characters.front() || *it == characters.front()) {
-				Ghost * aux = nullptr;
-				if (*it == characters.front())
-					aux = (Ghost*)(*character);
-				else if(*character == characters.front())
-					aux = (Ghost*)(*it);
-				if (aux->getState() == Scared || aux->getState() == Old) {
-					aux->die();
-					if (aux->getState() == Old) {
-						(*it)->~GameCharacter();
-						it = characters.erase(it);
-						it--;
-					}
-						
-				}
-					
-				else if (aux->getState() == Alive || aux->getState() == Adult)
-					characters.front()->die();
-			}
-			else{
-				Ghost* auxIni = (Ghost*)(*character);
-				Ghost* aux = (Ghost*)(*it);
-				if (auxIni->getState() == Adult && aux->getState() == Adult && auxIni->getDir() != aux->getDir()) {
-					int i = -1;
-					bool space = false;
-					while (!space && i < 4) {
-						i++;
-						space = nextCell(aux->getX(), aux->getY(), (Direction)i);
-					}
-					if (space) {
-						characters.push_back(new SmartGhost(this, &textures[0], auxIni->getIniX(), auxIni->getIniY(), aux->getX(), aux->getY(), (Direction)i));
-					}
-				}
-			}
-		}
-	}
+	((PlayState*)gameStateMachine->currentState())->collision(c);
 }
 
 void Game::SaveState()
@@ -328,7 +192,7 @@ void Game::LoadState()
 	stringstream ss;
 	ss << code;
 	string filename = levelPrefix + "Save" + ss.str() + ".pac";
-	if(!loadMap(filename, true)){
+	if(!(((PlayState*)gameStateMachine->currentState())->loadMap(filename, true))){
 		inicio = true;
 		newLevel = true;
 	}
@@ -356,10 +220,6 @@ void Game::cleanMap()
 {
 	if (gameMap != nullptr)
 		delete gameMap;
-	while (characters.size() != 1) {
-		delete characters.back();
-		characters.pop_back();
-	}
 }
 
 void Game::renderInterface()
@@ -488,10 +348,10 @@ void Game::saveToFile(unsigned int code)
 	if (archivo.is_open()) {
 		archivo << currentLevel << " " << points << endl;
 		gameMap->saveToFile(archivo);
-		archivo << (characters.size() - 1) << endl;
+/*		archivo << (characters.size() - 1) << endl;
 		for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++)
 			(*it)->saveToFile(archivo);
-		characters.front()->saveToFile(archivo);
+		characters.front()->saveToFile(archivo);*/
 		archivo.close();
 	}
 }
@@ -499,44 +359,52 @@ void Game::saveToFile(unsigned int code)
 
 const unsigned int Game::getRows() const
 {
-	return rows;
+	return ((PlayState*)gameStateMachine->currentState())->getRows();
 }
 
 const unsigned int Game::getCols() const
 {
-	return cols;
+	return ((PlayState*)gameStateMachine->currentState())->getCols();
 }
 void Game::getPacmanPos(unsigned int& x, unsigned int& y) {
-	x = characters.front()->getX();
-	y = characters.front()->getY();
+	((PlayState*)gameStateMachine->currentState())->getPacmanPos(x, y);
 }
 
 void Game::endGame()
 {
-	exit = true;
+	((PlayState*)gameStateMachine->currentState())->endGame();
 }
 
 void Game::ghostScared(unsigned int energy)
 {
-	Pacman* p = (Pacman*)characters.front();
-	p->setEnergy(energy);
-	for (list<GameCharacter*>::iterator it = ++characters.begin(); it != characters.end(); it++) {
-		Ghost * g = (Ghost*)(*it);
-		g->scared(energy);
-	}
+	((PlayState*)gameStateMachine->currentState())->ghostScared(energy);
 }
 
 void Game::nextLevel()
 {
-	if (currentLevel == TOTAL_LEVELS)
-		endGame();
-	else {
-		currentLevel++;
-		newLevel = true;
-	}
+	((PlayState*)gameStateMachine->currentState())->nextLevel();
 }
 
 void Game::increasePoints(unsigned int p)
 {
-	points += p;
+	((PlayState*)gameStateMachine->currentState())->increasePoints(p);
+}
+
+void Game::setFilename(string&s)
+{
+	filename = s;
+}
+
+GameStateMachine * Game::getGameStateMachine()
+{
+	return gameStateMachine;
+}
+
+void Game::setExit(bool e)
+{
+	exit = e;
+}
+
+Texture* Game::getTexture(TextureType t) {
+	return &textures[(int)t];
 }

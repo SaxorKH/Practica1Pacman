@@ -29,11 +29,11 @@ Ghost::Ghost()
 {
 }
 
-Ghost::Ghost(unsigned int color, Game * g, Texture * t) : GameCharacter(g, t, color)
+Ghost::Ghost(unsigned int color, Game * g) : GameCharacter(g, color)
 {
 }
 
-Ghost::Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameCharacter(g, t, col, inix, iniy, x, y, dir)
+Ghost::Ghost(Game * g, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : GameCharacter(g, col, inix, iniy, x, y, dir)
 {
 }
 
@@ -65,8 +65,10 @@ void Ghost::update()
 	switch (state) {
 	case Scared:
 		frameTime = SDL_GetTicks() - startVulTime;
-		if (VUL_TIME < frameTime)
+		if (VUL_TIME < frameTime) {
 			state = defaultState;
+			startVulTime = SDL_GetTicks();
+		}
 		break;
 	case Dead:
 		frameTime = SDL_GetTicks() - startDeadTime;
@@ -80,19 +82,21 @@ void Ghost::update()
 
 	Direction auxDir;
 	bool elegido = false;
-
-	do {
+		do {
 		unsigned int random = rand() % 4;
-		auxDir = (Direction) random;
+		auxDir = (Direction)random;
 		if (dir == None)
 			dir = auxDir;
 		if ((auxDir != (dir + 2) % 4 && game->nextCell(x, y, auxDir)) || (auxDir == (dir + 2) % 4 && sinSalida(dir))) {
 			dir = auxDir;
 			elegido = true;
-		} 
+		}
 	} while (!elegido);
 	forward();
+	if(state == Alive || state == Adult)
+		GameCharacter::update();
 }
+
 
 void Ghost::saveToFile(ostream & archivo)
 {
@@ -120,4 +124,8 @@ void Ghost::die()
 GhostState Ghost::getState()
 {
 	return state;
+}
+
+bool Ghost::handleEvent(SDL_Event & e) {
+	return false;
 }

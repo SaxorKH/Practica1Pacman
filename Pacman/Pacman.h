@@ -23,8 +23,6 @@ public:
 	void update();		
 	// Pierde una vida y regresa a la posición de inicio. Si no posee vidas, se acaba el juego.
 	void die();			
-	// Actualiza la dirección del Pacman recibida por las flechas de dirección.
-	void bufferUpdate(Direction input);	
 	// Habilita el contador de la energía del Pacman mientras los fantasmas están asustados.
 	void startEnergy();					
 	// Introduce la energía inicial del Pacman.
@@ -35,6 +33,8 @@ public:
 	// Guarda posiciones inicial y actual, dirección, energía y vidas en el archivo de guardado.
 	void saveToFile(ostream &archivo);			
 	// Renderiza el Pacman y sus vidas.
-	void render();								
+	void render();				
+
+	bool handleEvent(SDL_Event&e);
 };
 

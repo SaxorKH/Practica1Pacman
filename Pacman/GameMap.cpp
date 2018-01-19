@@ -4,14 +4,14 @@
 GameMap::GameMap()
 {
 }
-GameMap::GameMap(unsigned int rows, unsigned int cols, Texture * wall, Texture* food, Texture * vitamin, Game * game)
+GameMap::GameMap(unsigned int rows, unsigned int cols, Game * game)
 	: PacManObject(game)
 {
 	this->rows = rows;
 	this->cols = cols;
-	this->wall = wall;
-	this->food = food;
-	this->vitamin = vitamin;
+	wall = game->getTexture(WallTexture);
+	food = game->getTexture(FoodTexture);;
+	vitamin = game->getTexture(VitaminTexture);
 	map = new MapCell[rows*cols];
 }
 
@@ -46,8 +46,7 @@ void GameMap::saveToFile(ostream & archivo)
 }
 const MapCell GameMap::getCellType(unsigned int row, unsigned int col) const
 {
-		return map[(row%rows)*cols + col%cols];
-	return Wall;
+	return map[(row%rows)*cols + col%cols];
 }
 void GameMap::setCellType(unsigned int row, unsigned int col, MapCell type)
 {
@@ -100,6 +99,10 @@ void GameMap::update()
 	}
 	if (totalFood == 0)
 		game->nextLevel();
+}
+bool GameMap::handleEvent(SDL_Event & e)
+{
+	return false;
 }
 const unsigned int GameMap::getRows() const
 {

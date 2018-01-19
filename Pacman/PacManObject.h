@@ -7,7 +7,7 @@ public:
 	PacManObject();
 	PacManObject(Game * game);
 	virtual ~PacManObject();
-	virtual void loadFromFile(istream &archivo);
-	virtual void saveToFile(ostream &archivo);
+	virtual void loadFromFile(istream &archivo) = 0;
+	virtual void saveToFile(ostream &archivo) = 0;
 };
 

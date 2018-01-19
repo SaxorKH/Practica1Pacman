@@ -1,12 +1,15 @@
 #include "MenuButton.h"
-
+#include "GameState.h"
+#include "Game.h"
 MenuButton::MenuButton()
 {
 }
 
-MenuButton::MenuButton(Game * g, SDL_Rect area, CallBack * f) : GameObject(g)
+MenuButton::MenuButton(Game * g, SDL_Rect area, CallBack*f) : GameObject(g)
 {
+
 	this->area = area;
+	texture = game->getTexture(ButtonTexture);
 	callBack = f;
 }
 
@@ -15,14 +18,21 @@ MenuButton::~MenuButton()
 {
 }
 
+void MenuButton::render()
+{
+}
+
+void MenuButton::update()
+{
+}
+
 bool MenuButton::handleEvent(SDL_Event & event)
 {
-	int x;
-	int y;
 	if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-		x = event.button.x;
-		y = event.button.y;
-		if (x >= area.x && x <= (area.x + area.w) && y >= area.y && y <= (area.y + area.h)) {
+		SDL_Point p;
+		p.x = event.button.x;
+		p.y = event.button.y;
+		if(SDL_PointInRect(&p, &area)) {
 			(*callBack)(game);
 			return true;
 		}

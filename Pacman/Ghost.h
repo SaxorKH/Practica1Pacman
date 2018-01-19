@@ -24,9 +24,9 @@ protected:
 public:
 	Ghost();
 	// Constructor básico de Ghost.
-	Ghost(unsigned int color, Game* a, Texture* b);
+	Ghost(unsigned int color, Game* a);
 	//Constructor completo de Ghost con todos sus valores necesarios
-	Ghost(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
+	Ghost(Game * g, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir);
 	virtual ~Ghost();
 
 	//Renderiza el fantasma en todos sus estados.
@@ -41,5 +41,6 @@ public:
 	virtual void die();
 	// Devuelve el estado actual del Fantasma.
 	GhostState getState();
+	bool handleEvent(SDL_Event & e);
 };
 

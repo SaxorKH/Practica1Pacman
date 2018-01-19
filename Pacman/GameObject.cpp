@@ -14,16 +14,3 @@ GameObject::GameObject(Game * game)
 GameObject::~GameObject()
 {
 }
-
-void GameObject::render()
-{
-}
-
-void GameObject::update()
-{
-}
-
-bool GameObject::handleEvent(SDL_Event & e)
-{
-	return false;
-}

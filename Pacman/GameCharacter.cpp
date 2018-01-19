@@ -4,20 +4,19 @@
 
 GameCharacter::GameCharacter()
 {
-
 }
 
 GameCharacter::GameCharacter(Game * g): PacManObject(g)
 {
 }
-GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col) : PacManObject(g)
+GameCharacter::GameCharacter(Game * g, unsigned int col) : PacManObject(g)
 {
-	texture = t;
+	texture = g->getTexture(CharacterTexture);
 	spriteCol = col;
 }
-GameCharacter::GameCharacter(Game * g, Texture * t, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : PacManObject(g)
+GameCharacter::GameCharacter(Game * g, unsigned int col, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : PacManObject(g)
 {
-	texture = t;
+	texture = g->getTexture(CharacterTexture);
 	spriteCol = col;
 	this->inix = inix;
 	this->iniy = iniy;
@@ -40,6 +39,10 @@ void GameCharacter::render()
 	else auxDir = dir;
 	texture->renderFrame(game->getRenderer(), destRect, auxDir, spriteCol * 2 + anim);
 }
+void GameCharacter::update()
+{
+	game->collision(*this);
+}
 void GameCharacter::loadFromFile(istream &archivo)
 {
 	archivo >> x;
@@ -57,9 +60,6 @@ void GameCharacter::saveToFile(ostream&archivo)
 void GameCharacter::setTexture(Texture * t)
 {
 	texture = t;
-}
-void GameCharacter::die()
-{
 }
 int GameCharacter::getX()
 {

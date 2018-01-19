@@ -4,8 +4,6 @@
 
 void SmartGhost::update()
 {
-	
-
 	switch (state) {
 	default:
 		Ghost::update();
@@ -19,13 +17,12 @@ void SmartGhost::update()
 		pacX = pacXAux;
 		pacY = pacYAux;
 		int distX, distY;
-
-		Direction mejorDir;
-		int mejor =  999;
+			Direction mejorDir;
+		int mejor = 999;
 		if (sinSalida(dir))
-			dir = (Direction) ((dir + 2) % 2);
+			dir = (Direction)((dir + 2) % 2);
 		for (int i = 0; i < 4; i++) {
-			if (i != ((dir+2)%4) && game->nextCell(x, y, (Direction)i)) {
+			if (i != ((dir + 2) % 4) && game->nextCell(x, y, (Direction)i)) {
 				switch ((Direction)i) {
 				default:
 					break;
@@ -52,7 +49,7 @@ void SmartGhost::update()
 				}
 			}
 		}
-			dir = mejorDir;
+		dir = mejorDir;
 
 		forward();
 		break;
@@ -60,17 +57,17 @@ void SmartGhost::update()
 
 	age++;
 	if (age == ADULT_AGE) {
-		if(state != Scared || state != Dead)
+		if (state != Scared || state != Dead)
 			state = Adult;
 		defaultState = Adult;
 	}
 	if (age == OLD_AGE) {
-		if(state != Dead)
+		if (state != Dead)
 			state = Old;
 		defaultState = Old;
 	}
-		
 }
+
 
 void SmartGhost::loadFromFile(istream & archivo)
 {
@@ -120,11 +117,11 @@ SmartGhost::SmartGhost()
 {
 }
 
-SmartGhost::SmartGhost(Game * a, Texture * b) : Ghost(4,  a, b)
+SmartGhost::SmartGhost(Game * a) : Ghost(4,  a)
 {
 }
 
-SmartGhost::SmartGhost(Game * g, Texture * t, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : Ghost(g, t, 4, inix, iniy, x, y, dir)
+SmartGhost::SmartGhost(Game * g, unsigned int inix, unsigned int iniy, unsigned int x, unsigned int y, Direction dir) : Ghost(g, 4, inix, iniy, x, y, dir)
 {
 	forward();
 }

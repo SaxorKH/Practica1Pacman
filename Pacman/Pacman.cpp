@@ -5,7 +5,7 @@ Pacman::Pacman()
 {
 }
 
-Pacman::Pacman(Game* g) : GameCharacter(g, nullptr, 5)
+Pacman::Pacman(Game* g) : GameCharacter(g, 5)
 {
 }
 
@@ -21,15 +21,18 @@ void Pacman::update() {
 		if (frameTime >= VUL_TIME) {
 			hasEnergy = false;
 			energy = 0;
+			startVulTime = SDL_GetTicks();
 		}
 	}
-		if (dirbuffer != None && game->nextCell(x, y, dirbuffer)) {
-			dir = dirbuffer;
-			forward();
-		}
-		else if (dir != None && game->nextCell(x, y, dir))
-			forward();
+	if (dirbuffer != None && game->nextCell(x, y, dirbuffer)) {
+		dir = dirbuffer;
+		forward();
+	}
+	else if (dir != None && game->nextCell(x, y, dir))
+		forward();
+	GameCharacter::update();
 }
+
 
 void Pacman::die()
 {
@@ -41,10 +44,6 @@ void Pacman::die()
 		y = iniy;
 		dir = None;
 	}
-}
-
-void Pacman::bufferUpdate(Direction input) {
-		dirbuffer = input;
 }
 
 void Pacman::loadFromSavefile(istream & archivo)
@@ -73,6 +72,29 @@ void Pacman::render()
 		destRect.x = game->getCellSize()*(game->getCols() + i);
 		texture->renderFrame(game->getRenderer(), destRect, (unsigned int)Right, spriteCol*2 + 1);
 	}
+}
+
+bool Pacman::handleEvent(SDL_Event & e)
+{
+	if (e.type == SDL_KEYDOWN) {
+		switch (e.key.keysym.sym) {
+		case SDLK_RIGHT:
+			dirbuffer = Right;
+			return true;
+		case SDLK_DOWN:
+			dirbuffer = Down;
+			return true;
+		case SDLK_LEFT:
+			dirbuffer = Left;
+			return true;
+		case SDLK_UP:
+			dirbuffer = Up;
+			return true;
+		default:
+			return false;
+		}
+	}
+	return false;
 }
 
 void Pacman::startEnergy()
