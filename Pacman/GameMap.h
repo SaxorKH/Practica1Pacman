@@ -1,6 +1,7 @@
 #pragma once
 #include "PacManObject.h"
 #include "Texture.h"
+#include "checkML.h"
 class Game;
 
 enum MapCell {

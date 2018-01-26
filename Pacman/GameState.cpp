@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "Game.h"
+#include "checkML.h"
 
 
 
@@ -33,6 +34,11 @@ GameState::GameState(Game * g)
 
 GameState::~GameState()
 {
+	while (!stage->empty())
+	{
+		delete stage->back();
+		stage->pop_back();
+	}
 	delete stage;
 }
 

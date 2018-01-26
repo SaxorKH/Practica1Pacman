@@ -140,5 +140,8 @@
     <ClInclude Include="FileFormatError.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="checkML.h">
+      <Filter>Archivos de código fuente</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

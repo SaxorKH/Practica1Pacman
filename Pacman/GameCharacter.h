@@ -1,7 +1,7 @@
 #pragma once
 #include "PacManObject.h"
 #include "Texture.h"
-
+#include "checkML.h"
 enum Direction {
 	Right,
 	Down,

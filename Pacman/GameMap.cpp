@@ -1,6 +1,7 @@
 #include "GameMap.h"
 #include "Game.h"
 #include "FileFormatError.h"
+#include "checkML.h"
 
 GameMap::GameMap()
 {

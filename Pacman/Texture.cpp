@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "SDL_image.h"
 #include "SDLError.h"
+#include "checkML.h"
 
 
 Texture::Texture()

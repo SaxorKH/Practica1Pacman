@@ -1,6 +1,7 @@
 #include "SmartGhost.h"
 #include "Game.h"
 #include "FileFormatError.h"
+#include "checkML.h"
 
 void SmartGhost::update()
 {

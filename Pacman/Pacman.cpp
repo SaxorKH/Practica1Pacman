@@ -1,6 +1,7 @@
 #include "Pacman.h"
 #include "Game.h"
 #include "FileFormatError.h"
+#include "checkML.h"
 
 Pacman::Pacman()
 {

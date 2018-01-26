@@ -1,6 +1,7 @@
 #include "GameCharacter.h"
 #include "Game.h"
 #include "FileFormatError.h"
+#include "checkML.h"
 
 
 GameCharacter::GameCharacter()

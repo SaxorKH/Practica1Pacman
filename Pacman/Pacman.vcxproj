@@ -91,6 +91,7 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="checkML.h" />
     <ClInclude Include="EndState.h" />
     <ClInclude Include="FileFormatError.h" />
     <ClInclude Include="FileNotFoundError.h" />

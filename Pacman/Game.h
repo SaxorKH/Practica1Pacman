@@ -5,6 +5,7 @@
 #include "Pacman.h"
 #include "Ghost.h"
 #include "GameMap.h"
+#include "checkML.h"
 #include "GameStateMachine.h"
 
 #define TOTAL_TEXTURAS 10

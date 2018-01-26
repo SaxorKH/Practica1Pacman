@@ -1,6 +1,7 @@
 #include "Ghost.h"
 #include "Game.h"
 #include <cstdlib>
+#include "checkML.h"
 using namespace std;
 
 

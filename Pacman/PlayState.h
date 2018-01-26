@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "checkML.h"
 #include "GameMap.h"
 #include "Pacman.h"
 class PlayState :
